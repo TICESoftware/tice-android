@@ -1,0 +1,7 @@
+This update adds new features and fixes some bugs:
+- In the team list screen new indicators show if there is currently a meetup running in a team or if there are some unread chat messages.
+- New UI when viewing a team invitation.
+- Location markers of other team members are being removed after the meetup has been terminated.
+- A registration bug has been fixed.
+- Some progress indicators have been added to several screens.
+- Some misleading error messages have been fixed.

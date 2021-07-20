@@ -1,0 +1,8 @@
+api_key: 4a1fa895e7442e19b284300a8bffd385
+project_id: 367193
+type: android_strings
+
+languages: [en, de]
+path: app/src/main/res/values-{LANGUAGE}/strings.xml
+path_replace:
+  en: app/src/main/res/values/strings.xml

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <!-- Toolbar Menu -->
+    <string name="settings_title">"Settings"</string>
+    <string name="groupSettings_participation_leave">"Leave Group"</string>
+    <string name="groupSettings_participation_delete">"Delete Group"</string>
+    <string name="groupSettings_title">"Group Info"</string>
+    <!-- CreateUser -->
+    <string name="register_title">"TICE"</string>
+    <string name="register_register">"Let's go"</string>
+    <string name="register_name_placeholder">"Public Name"</string>
+    <string name="register_welcome">"Welcome to"</string>
+    <string name="register_name_title">"Your name as shown to others:"</string>
+    <string name="register_sign_in">"To join a group, you have to sign up first."</string>
+    <!-- ShowGroups -->
+    <string name="teams_title">"Groups"</string>
+    <string name="teams_owner_name">"%1$s's Group"</string>
+    <string name="teams_owner_name_endsWith_s">"%1$s' Group"</string>
+    <string name="teams_empty_body">"TICE is all you need to organize your meetups with your loved ones"</string>
+    <string name="teams_empty_title">"Create your first TICE Group"</string>
+    <string name="teams_memberNames_you">"You"</string>
+    <!-- CreateGroup -->
+    <string name="createGroup_title">"Create Group"</string>
+    <string name="createGroup_startMeetingUp_title">"Start meetup immediately"</string>
+    <string name="createGroup_basic_name">"Group Name"</string>
+    <string name="createGroup_done">"Continue"</string>
+    <!-- CreateGroup Invite -->
+    <string name="createTeamInvite_share">"Share"</string>
+    <string name="createTeamInvite_description">"Invite people by sharing this link, its all they need to join your group."</string>
+    <string name="createTeamInvite_copied">"URL copied"</string>
+    <string name="createTeamInvite_emailSubject">"Invitation to a TICE Group"</string>
+    <string name="createTeamInvite_chooserTitle">"Send invitation via"</string>
+    <string name="createTeamInvite_invitation_text">"Join %1$s and meet up with the secure TICE app or directly in your browser. Tap here: "</string>
+    <!-- Map -->
+    <string name="map_title">"Map"</string>
+    <string name="map_location_meetingPoint">"Meeting Point"</string>
+    <string name="map_location_permission_later">"Not now"</string>
+    <string name="map_location_permission_enable">"Allow"</string>
+    <string name="map_location_permission_info">"By denying access to your location, TICE will not show your position on the map and will not be able to share your location with others while you are meeting up.
+
+Do you want to allow TICE to access your location?"</string>
+    <string name="map_location_info_okay">"Okay"</string>
+    <string name="map_location_string">"%1$s, %2$s"</string>
+    <!-- MapBottomSheet -->
+    <string name="map_location_pin">"Marked Location"</string>
+    <string name="map_location_unknown">"Unknown Location"</string>
+    <string name="map_location_lastSeen">"Last seen at %1$s."</string>
+    <string name="map_createMeetingPoint">"Set as Meeting Point"</string>
+    <string name="team_locationSharing_start_title">"Share location"</string>
+    <string name="team_locationSharing_active_title">"Sharing location"</string>
+    <string name="team_locationSharing_active_subtitle">"Stop sharing"</string>
+    <string name="team_locationSharing_othersActive_subtitle">"Others are sharing"</string>
+    <string name="team_locationSharing_otherActive_subtitle">"%1$s is sharing"</string>
+    <string name="team_startLocationSharing_title">"Start sharing location?"</string>
+    <string name="team_startLocationSharing_message">"Your location will be shared with all members of the group."</string>
+    <string name="team_stopLocationSharing_title">"Stop location sharing?"</string>
+    <string name="team_stopLocationSharing_message">"Other members will not see your location anymore."</string>
+    <string name="team_locationSharing_confirm">"Share location"</string>
+    <!-- MeetupButton -->
+    <string name="meetup_snackbar_started">"Meetup was started"</string>
+    <string name="meetup_snackbar_locationDisabled">"To retrieve your position, you have to allow TICE to access your location."</string>
+    <string name="meetup_manageParticipation_locationSharingOff">"Location hidden"</string>
+    <string name="alert_cancel">"Cancel"</string>
+    <!-- Settings Preferences -->
+    <string name="settings_name_header">"User Settings"</string>
+    <string name="settings_name_title">"Your Name"</string>
+    <string name="settings_privacy_header">"Privacy"</string>
+    <string name="settings_privacy_readPolicy">"Privacy Policy"</string>
+    <string name="settings_account_header">"Your Data"</string>
+    <string name="settings_feedback_header">"Feedback"</string>
+    <string name="settings_feedback_give">"Give us your feedback."</string>
+    <string name="settings_account_delete">"Delete all my data"</string>
+    <string name="settings_account_confirmDeletion_title">"Delete all your data?"</string>
+    <string name="settings_account_confirmDeletion_message">"Deleting all your user data will delete your user on TICE and all groups you are the only leader of. Do you want to delete all your data?"</string>
+    <string name="settings_account_confirmDeletion_delete">"Delete"</string>
+    <string name="settings_account_confirmDeletion_cancel">"Cancel"</string>
+    <string name="settings_about_header">"About TICE"</string>
+    <string name="settings_about_footer">"Made with ♥ in Berlin by
+TICE Software UG (haftungsbeschränkt)"</string>
+    <string name="settings_feedback_email">"feedback@ticeapp.com"</string>
+    <string name="settings_feedback_subject">"TICE: Feedback"</string>
+    <string name="settings_feedback_chooserText">"Choose an email client"</string>
+    <string name="settings_privacy_url">"https://ticeapp.com/en/privacy/"</string>
+    <string name="settings_version_title">"Version"</string>
+    <string name="settings_third_party_licenses">View third party licenses.</string>
+    <!-- GroupInfo -->
+    <string name="groupInfo_groupName">"Group Name"</string>
+    <string name="groupInfo_members_header">"Members"</string>
+    <string name="groupInfo_members_add">"Invite more people"</string>
+    <string name="groupInfo_start_location_sharing">"Start sharing"</string>
+    <string name="groupInfo_stop_location_sharing">"Stop sharing"</string>
+    <string name="groupInfo_participation_header">"Participation"</string>
+    <string name="groupInfo_admin">"Leader"</string>
+    <string name="groupInfo_member">"Member"</string>
+    <string name="groupInfo_manage_location_sharing">"Manage Location Sharing"</string>
+    <string name="groupInfo_delete_group_text">"Do you really want to delete this group?"</string>
+    <string name="groupInfo_delete_group_confirm">"Delete"</string>
+    <string name="groupInfo_leave_group_text">"Do you really want to leave this group?"</string>
+    <string name="groupInfo_leave_group_confirm">"Leave"</string>
+    <!-- JoinGroup -->
+    <string name="joinGroup_title">"Join Group"</string>
+    <string name="joinGroup_participation_join">"Join"</string>
+    <string name="joinGroup_info_text">"You received an invitation to join this group: \"%1$s\". Do you want to join now?"</string>
+    <string name="joinGroup_already_member">"You are already a member of this group."</string>
+    <!-- MeetupInfo -->
+    <string name="meetupSettings_title">"Manage Meetup"</string>
+    <string name="meetupSettings_participants_header">"Participants"</string>
+    <string name="meetupSettings_nonParticipants_header">"Pending"</string>
+    <string name="meetupSettings_participation_delete_title">"You lead this meetup"</string>
+    <string name="meetupSettings_participation_leave_title">"You participate in this meetup"</string>
+    <string name="meetupSettings_participation_join_title">"You are invited to join this meetup"</string>
+    <string name="meetupSettings_locationSharing_on">"You share your location with all participants"</string>
+    <string name="meetupSettings_participation_join_join">"Join meetup"</string>
+    <string name="meetupSettings_participation_leave_leave">"Leave meetup"</string>
+    <string name="meetupSettings_participation_delete_delete">"End meetup"</string>
+    <string name="meetupSettings_stopSharing_notAuthorized_message">"TICE is not authorized to use your location. Please revisit the settings to grant the necessary permission."</string>
+    <!-- Notification + Foregroundservice -->
+    <string name="notification_locationService_title">"TICE is tracking your location."</string>
+    <string name="notification_locationService_body">"TICE accesses your location to share it with the members of the meetup even when the app is closed or not in use until you leave the meetup."</string>
+    <string name="notification_group_deleted_title">"Group deleted"</string>
+    <string name="notification_group_memberAdded_title_unknown">"Member added"</string>
+    <string name="notification_group_memberDeleted_title_unknown">"Member deleted"</string>
+    <string name="notification_group_memberUpdated_title_unknown">"Member updated"</string>
+    <string name="notification_meetup_deleted_title">"Meetup ended"</string>
+    <string name="notification_meetup_created_title">"Invited to meet up"</string>
+    <string name="notification_group_updated_title">"Group updated"</string>
+    <string name="notification_group_message_title_unknown">"New Message"</string>
+    <string name="notification_placeholder_title">"New message"</string>
+    <string name="notification_placeholder_body">"Something happened inside TICE."</string>
+    <string name="notification_channel_name">"TICE Notification"</string>
+    <!-- Migration Screen -->
+    <string name="migration_info_text">Migrating data …</string>
+    <string name="migration_button_retry">"Retry"</string>
+    <string name="migration_button_error">"Report issue"</string>
+    <string name="migration_dialog_text">"Migrating the data from a previous app version failed. Please try again. If you like you can report the error to help us resolving the issue."</string>
+    <string name="force_update_title">"Update Available"</string>
+    <string name="force_update_text">"There is an update to version %1$s available please update."</string>
+    <string name="force_update_button_text">"Try again"</string>
+    <string name="force_update_title_error">"Error!"</string>
+    <string name="force_update_text_error">"Process failed due to %1$s."</string>
+    <!-- Error -->
+    <string name="error_message">"An error occurred! Please try again."</string>
+    <string name="error_create_group">"Creating group failed."</string>
+    <string name="error_process_group">"Processing group URL failed."</string>
+    <string name="error_marker_update">"Updating marker failed."</string>
+    <string name="error_meetup">"Start sharing location failed."</string>
+    <string name="error_meetup_interaction">"Meetup interaction failed."</string>
+    <string name="error_no_deviceid">"No device ID."</string>
+    <string name="error_verification">"Verification failed."</string>
+    <string name="error_create_user">"Creating user failed."</string>
+    <string name="error_change_name">"Changing username failed."</string>
+    <string name="error_delete_user">"Deleting user failed."</string>
+    <string name="error_user_in_group">"This user is still in active groups."</string>
+    <string name="error_update_settings">"Updating settings failed."</string>
+    <string name="error_delete_group">"Deleting group failed."</string>
+    <string name="error_leave_group">"Leaving group failed."</string>
+    <string name="error_not_found">"Group not found."</string>
+    <!-- ChatScreen -->
+    <string name="chat_title">"Chat - "</string>
+    <string name="chat_bar_placeholder">"New Message…"</string>
+    <!-- Chat MetaInfo Other -->
+    <string name="chat_metaInfo_other_group_memberAdded_title_unknown">"Someone joined the group"</string>
+    <string name="chat_metaInfo_other_group_memberDeleted_title_unknown">"Someone left the group"</string>
+    <string name="chat_metaInfo_other_group_updated_title">"The group got updated"</string>
+    <string name="chat_metaInfo_other_meetup_deleted_title">"The meetup got canceled"</string>
+    <string name="chat_metaInfo_other_meetup_created_title">"The meetup got started"</string>
+    <string name="chat_metaInfo_other_meetup_info_text">"%1$s - %2$s"</string>
+    <!-- Chat MetaInfo Self -->
+    <string name="chat_metaInfo_self_group_created_title">"You created the group"</string>
+    <string name="chat_metaInfo_self_group_joined_title">"You joined the group"</string>
+    <string name="chat_metaInfo_self_group_updated_title">"You updated the group"</string>
+    <string name="chat_metaInfo_self_meetup_deleted_title">"You ended the meetup"</string>
+    <string name="chat_metaInfo_self_meetup_created_title">"You started a meetup"</string>
+    <string name="chat_metaInfo_self_meetup_joined_title">"You joined the meetup"</string>
+    <string name="chat_metaInfo_self_meetup_deleteGroupMember_title_unknown">"You deleted a group member"</string>
+    <string name="chat_metaInfo_self_meetup_left_title">"You left the meetup"</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/delete_group"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/groupSettings_participation_delete"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/leave_group"
+        android:icon="@drawable/ic_close_black_24dp"
+        android:title="@string/groupSettings_participation_leave"
+        app:showAsAction="ifRoom" />
+</menu>

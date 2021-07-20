@@ -1,0 +1,4 @@
+Location sharing has been redesigned and now works easier as ever before.
+No need to create or join a meetup first. Just share your location with your group members!
+
+If you encounter a bug or want to share your thoughts on TICE feel free to reach out to us.

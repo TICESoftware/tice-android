@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="useless_key">
+
+
+    <PreferenceCategory android:title="@string/settings_name_header">
+        <EditTextPreference
+            android:key="@string/usernameKey"
+            android:negativeButtonText="@string/alert_cancel"
+            android:title="@string/settings_name_title"
+            app:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_privacy_header">
+        <Preference
+            android:key="@string/privacyPolicy"
+            android:title="@string/settings_privacy_readPolicy"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_account_header">
+        <Preference
+            android:key="@string/deleteAllData"
+            android:title="@string/settings_account_delete"
+            app:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_feedback_header">
+        <Preference
+            android:key="@string/giveFeedback"
+            android:title="@string/settings_feedback_give"
+            app:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_about_header">
+        <Preference android:summary="@string/settings_about_footer" />
+        <Preference
+            android:key="@string/thirdPartyLicenses"
+            android:title="@string/settings_third_party_licenses"
+            app:persistent="false" />
+        <Preference
+            android:id="@+id/Settings_Version_Title"
+            android:summary="@string/settings_version_title"
+            app:key="@string/versionKey" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

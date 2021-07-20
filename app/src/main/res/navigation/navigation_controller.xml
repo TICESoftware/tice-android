@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_controller"
+    android:label="@string/register_title"
+    app:startDestination="@id/migrationFragment">
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="tice.ui.fragments.RegisterFragment"
+        android:label="Register"
+        app:startDestination="@id/action_global_RegisterFragment" />
+    <fragment
+        android:id="@+id/createTeamFragment"
+        android:name="tice.ui.fragments.CreateTeamFragment"
+        android:label="@string/createGroup_title">
+        <action
+            android:id="@+id/action_teamCreated"
+            app:destination="@id/createTeamInviteFragment"
+            app:popUpTo="@id/teamListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamListFragment"
+        android:name="tice.ui.fragments.TeamListFragment"
+        android:label="@string/teams_title" />
+    <action
+        android:id="@+id/action_global_team_list"
+        app:destination="@+id/teamListFragment"
+        app:popUpTo="@id/navigation_controller" />
+    <action
+        android:id="@+id/action_global_RegisterFragment"
+        app:destination="@id/registerFragment"
+        app:popUpTo="@id/navigation_controller" />
+    <action
+        android:id="@+id/action_global_createTeamFragment"
+        app:destination="@id/createTeamFragment"
+        app:popUpTo="@+id/teamListFragment" />
+    <fragment
+        android:id="@+id/createTeamInviteFragment"
+        android:name="tice.ui.fragments.CreateTeamInviteFragment"
+        android:label="@string/createGroup_title">
+        <argument
+            android:name="teamId"
+            app:argType="java.util.UUID" />
+        <argument
+            android:name="startImmediately"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/returnToSource_createTeamInvite"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="tice.ui.fragments.MapFragment"
+        android:label="@string/map_title">
+        <argument
+            android:name="teamId"
+            app:argType="java.util.UUID" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="tice.ui.fragments.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/settings_fragment" />
+    <action
+        android:id="@+id/action_global_settings"
+        app:destination="@id/settingsFragment" />
+    <fragment
+        android:id="@+id/teamInfoFragment"
+        android:name="tice.ui.fragments.TeamInfoFragment"
+        android:label="@string/groupSettings_title">
+        <argument
+            android:name="teamId"
+            app:argType="java.util.UUID" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_teamInfo"
+        app:destination="@id/teamInfoFragment"
+        app:popUpTo="@id/teamInfoFragment" />
+    <dialog
+        android:id="@+id/joinTeamFragment"
+        android:name="tice.ui.fragments.JoinTeamFragment"
+        android:label="@string/joinGroup_title">
+        <deepLink
+            android:id="@+id/deepLink3"
+            android:autoVerify="true"
+            app:uri="https://preview.tice.app/group/{groupId}#{groupKey}"
+            tools:ignore="UnusedAttribute" />
+        <deepLink
+            android:id="@+id/deepLink4"
+            android:autoVerify="true"
+            app:uri="https://testing.tice.app/group/{groupId}#{groupKey}"
+            tools:ignore="UnusedAttribute" />
+        <deepLink
+            android:id="@+id/deepLink6"
+            android:autoVerify="true"
+            app:uri="https://tice.app/group/{groupId}#{groupKey}"
+            tools:ignore="UnusedAttribute" />
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+        <argument
+            android:name="groupKey"
+            app:argType="string" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_mapFragment"
+        app:destination="@id/mapFragment"
+        app:popUpTo="@id/teamListFragment" />
+    <fragment
+        android:id="@+id/meetupInfoFragment"
+        android:name="tice.ui.fragments.MeetupInfoFragment"
+        android:label="@string/meetupSettings_title">
+        <argument
+            android:name="teamId"
+            app:argType="java.util.UUID" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_meetupInfo"
+        app:destination="@id/meetupInfoFragment"
+        app:popUpTo="@id/meetupInfoFragment" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="tice.ui.fragments.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/chat_fragment">
+        <argument
+            android:name="teamId"
+            app:argType="java.util.UUID" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_chatFragment"
+        app:destination="@id/chatFragment"
+        app:popUpTo="@id/mapFragment" />
+    <fragment
+        android:id="@+id/migrationFragment"
+        android:name="tice.ui.fragments.MigrationFragment"
+        android:label="migration_fragment"
+        tools:layout="@layout/migration_fragment" />
+    <action
+        android:id="@+id/action_global_joinTeamFragment"
+        app:destination="@id/joinTeamFragment" />
+    <fragment
+        android:id="@+id/forceUpdateFragment"
+        android:name="tice.ui.fragments.ForceUpdateFragment"
+        android:label="ForceUpdateFragment" />
+    <action
+        android:id="@+id/action_global_forceUpdateFragment"
+        app:destination="@id/forceUpdateFragment"/>
+</navigation>
+

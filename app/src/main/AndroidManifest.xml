@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ticeapp.TICE">
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name="tice.TICEApplication"
+        tools:replace="android:allowBackup"
+        android:allowBackup="false"
+        android:icon="@mipmap/tice_ic_launcher"
+        android:label="${displayName}"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/tice_ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:targetApi="n">
+        <activity
+            android:name="tice.ui.activitys.MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="${deepLinkHost}"
+                    android:pathPrefix="/group"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="base_url"
+            android:value="${baseURL}" />
+        <meta-data
+            android:name="websocket_url"
+            android:value="${websocketURL}" />
+        <meta-data
+            android:name="cnc_base_url"
+            android:value="${cncBaseURL}" />
+        <meta-data
+            android:name="beekeeper_product"
+            android:value="${beekeeperProduct}" />
+        <meta-data
+            android:name="beekeeper_secret"
+            android:value="${beekeeperSecret}" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${googleMapsAPIKey}" />
+        <meta-data
+            android:name="development_verification_code"
+            android:value="${developmentVerificationCode}" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name="tice.managers.services.LocationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location"
+            android:stopWithTask="true" />
+
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove"
+            android:exported="false" />
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="tice.managers.messaging.FirebaseReceiverService"
+            tools:node="remove"
+            android:exported="false" />
+
+        <service
+            android:name="tice.managers.messaging.FirebaseReceiverService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <uses-library
+            android:name="android.test.runner"
+            android:required="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="publicServerKey" translatable="false">-----BEGIN PUBLIC KEY-----MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBSSntp0C+D3s0ed0MhZJDccw3GuWkwYqr0/ieY7V2xz1Mj+cWLgxd+4bOgrAgp6F1o8ElTaYz67jCkwGGckcbIgMBfhFR2kZpEDgBk2pdbNr6+bK7GSH3zEDQzmDH4X8TZnMh2IkYK12vs06DBEXPkYBjUmzT/6VbDnZOSiUzz7RKqsU=-----END PUBLIC KEY-----</string>
+</resources>

@@ -1,0 +1,114 @@
+package tice.managers.storageManagers.migration
+
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import net.sqlcipher.database.SupportFactory
+import tice.exceptions.DatabaseManagerException
+import tice.managers.storageManagers.AppDatabase
+import tice.managers.storageManagers.DatabaseManager
+import tice.managers.storageManagers.StorageLocker
+import tice.managers.storageManagers.StorageLockerType
+import tice.models.SecretKey
+import tice.utility.dataFromBase64
+import tice.utility.getLogger
+import java.security.KeyStore
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+
+class MigrationManager constructor(context: Context) {
+    private val logger by getLogger()
+
+    private val keyStore: KeyStore = KeyStore.getInstance(DatabaseManager.KEYSTORE_PROVIDER)
+    private val storageLocker: StorageLockerType
+
+    init {
+        keyStore.load(null)
+
+        val sharedPreferences = context.getSharedPreferences("tice", MODE_PRIVATE)
+        storageLocker = StorageLocker(sharedPreferences)
+    }
+
+    private fun loadDatabaseKey(): SecretKey? {
+        logger.debug("Loading encrypted database key.")
+
+        storageLocker.load(StorageLockerType.StorageKey.ENCRYPTED_DATABASE_KEY)?.dataFromBase64()
+            ?.let { ciphertext ->
+                val iv = storageLocker.load(StorageLockerType.StorageKey.DATABASE_KEY_ENCRYPTION_IV)
+                    ?.dataFromBase64()
+                    ?: throw DatabaseManagerException.DatabaseEncryptionIVMissing
+
+                val secretKeyEntry = keyStore.getEntry(
+                    DatabaseManager.MASTER_KEY_ALIAS,
+                    null
+                ) as KeyStore.SecretKeyEntry
+                val secretKey = secretKeyEntry.secretKey
+
+                val cipher = Cipher.getInstance(DatabaseManager.ALGORITHM_SPEC)
+                val gcmParameterSpec = GCMParameterSpec(128, iv)
+                cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmParameterSpec)
+
+                return cipher.doFinal(ciphertext)
+            }
+
+        logger.debug("Did not find stored encrypted database key. Checking for key stored in plaintext.")
+        return storageLocker.load(StorageLockerType.StorageKey.PLAINTEXT_DATABASE_KEY)
+            ?.dataFromBase64()
+    }
+
+    fun executeMigrationsBlocking(context: Context) {
+        val databaseKey = loadDatabaseKey()
+
+        if (databaseKey == null) {
+            logger.info("No database key found. Skipping migration.")
+            return
+        }
+
+        val factory = SupportFactory(databaseKey)
+        Room.databaseBuilder(context, AppDatabase::class.java, "db")
+            .openHelperFactory(factory)
+            .addMigrations(*allMigrations())
+            .build()
+            .openHelper.readableDatabase
+            .close()
+
+        logger.debug("Migrating database done.")
+    }
+
+    companion object {
+        fun allMigrations(): Array<Migration> = arrayOf(
+            migration1To2,
+            migration2To3
+        )
+
+        val migration1To2 = object : Migration(1, 2) {
+            private val logger by getLogger()
+
+            override fun migrate(database: SupportSQLiteDatabase) {
+                logger.debug("Executing migration from $startVersion to $endVersion.")
+
+                database.execSQL("CREATE TEMP TABLE ConversationStateEntityBackup (`userId` TEXT NOT NULL, `conversationId` TEXT NOT NULL, `rootKey` BLOB NOT NULL, `rootChainPublicKey` BLOB NOT NULL, `rootChainPrivateKey` BLOB NOT NULL, `rootChainRemotePublicKey` BLOB, `sendingChainKey` BLOB, `receivingChainKey` BLOB, `sendMessageNumber` INTEGER NOT NULL, `receivedMessageNumber` INTEGER NOT NULL, `previousSendingChanLength` INTEGER NOT NULL, `messageKeyCache` TEXT NOT NULL, PRIMARY KEY(`userId`, `conversationId`))")
+                database.execSQL("INSERT INTO ConversationStateEntityBackup SELECT * FROM ConversationStateEntity")
+                database.execSQL("DROP TABLE ConversationStateEntity")
+                database.execSQL("CREATE TABLE ConversationStateEntity (`userId` TEXT NOT NULL, `conversationId` TEXT NOT NULL, `rootKey` BLOB NOT NULL, `rootChainPublicKey` BLOB NOT NULL, `rootChainPrivateKey` BLOB NOT NULL, `rootChainRemotePublicKey` BLOB, `sendingChainKey` BLOB, `receivingChainKey` BLOB, `sendMessageNumber` INTEGER NOT NULL, `receivedMessageNumber` INTEGER NOT NULL, `previousSendingChanLength` INTEGER NOT NULL, PRIMARY KEY(`userId`, `conversationId`))")
+                database.execSQL("INSERT INTO ConversationStateEntity SELECT userId,conversationId,rootKey,rootChainPublicKey,rootChainPrivateKey,rootChainRemotePublicKey,sendingChainKey,receivingChainKey,sendMessageNumber,receivedMessageNumber,previousSendingChanLength FROM ConversationStateEntityBackup")
+                database.execSQL("DROP TABLE ConversationStateEntityBackup")
+
+                database.execSQL("CREATE TABLE MessageKeyCacheEntry (`conversationId` TEXT NOT NULL, `messageKey` BLOB NOT NULL, `messageNumber` INTEGER NOT NULL, `publicKey` BLOB NOT NULL, `timestamp` TEXT NOT NULL, PRIMARY KEY(`conversationId`, `messageNumber`, `publicKey`))")
+            }
+        }
+
+        val migration2To3 = object : Migration(2, 3) {
+            private val logger by getLogger()
+
+            override fun migrate(database: SupportSQLiteDatabase) {
+                logger.debug("Executing migration from $startVersion to $endVersion.")
+
+                database.execSQL("ALTER TABLE team ADD COLUMN meetingPoint TEXT")
+                database.execSQL("CREATE TABLE IF NOT EXISTS LocationSharingState (`userId` TEXT NOT NULL, `groupId` TEXT NOT NULL, `sharingEnabled` INTEGER NOT NULL, `lastUpdate` TEXT NOT NULL, PRIMARY KEY(`userId`, `groupId`))")
+            }
+        }
+    }
+}

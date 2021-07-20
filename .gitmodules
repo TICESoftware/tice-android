@@ -1,0 +1,6 @@
+[submodule "CnC"]
+	path = CnC
+	url = git@github.com:TICESoftware/tice-cnc-server.git
+[submodule "Server"]
+	path = Server
+	url = git@github.com:TICESoftware/tice-server.git

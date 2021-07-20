@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomsheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:behavior_skipCollapsed="true"
+    app:layout_insetEdge="bottom"
+    android:padding="20dp"
+    android:layout_margin="8dp"
+    style="@style/BottomSheetTheme"
+    app:elevation="@dimen/fab_margin">
+
+    <TextView
+        android:id="@+id/sheet_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/map_location_pin"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/primaryTextColor"
+        android:textIsSelectable="true"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/map_location_unknown" />
+
+    <TextView
+        android:id="@+id/last_seen_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/primaryTextColor"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/bs_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_createMeetingPoint"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/fab_margin"
+        app:layout_constraintTop_toBottomOf="@id/last_seen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:icon="@drawable/ic_location"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon" />
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

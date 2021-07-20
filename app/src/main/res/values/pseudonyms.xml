@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pseudonyms">
+        <item> Red Uakari </item>
+        <item> Narwhal </item>
+        <item> Nudibranch </item>
+        <item> Horseshoe Crab </item>
+        <item> Coelacanth </item>
+        <item> Giant Clam </item>
+        <item> Chicken </item>
+        <item> Flying Fish </item>
+        <item> Eastern Mole </item>
+        <item> Marine Iguana </item>
+        <item> Pallid Sturgeon </item>
+        <item> Opossum </item>
+        <item> Snail </item>
+        <item> Damselfish </item>
+        <item> Pygmy Octopus </item>
+        <item> Barramundi </item>
+        <item> Giant Squid </item>
+        <item> June Bug </item>
+        <item> Maned Wolf  </item>
+        <item> Genet </item>
+        <item> Horned Lizard </item>
+        <item> Box Jellyfish </item>
+        <item> Cormorant </item>
+        <item> Starfish </item>
+        <item> Swordfish </item>
+        <item> Gecko </item>
+        <item> Turkey </item>
+        <item> Whale Shark </item>
+        <item> Wolverine </item>
+        <item> Cattle </item>
+        <item> Warthog </item>
+        <item> Walrus </item>
+        <item> Ostrich </item>
+        <item> Piglet Squid </item>
+        <item> Humpback Whale </item>
+        <item> Ladybug </item>
+        <item> Butterfly </item>
+        <item> Glass Frog </item>
+        <item> Elephants </item>
+        <item> Toucan </item>
+        <item> Elephant Seal  </item>
+        <item> Teacup Pig </item>
+        <item> Octopus </item>
+        <item> Seahorse </item>
+        <item> Firefly </item>
+        <item> Leafy Seadragon </item>
+        <item> Musk Ox </item>
+        <item> Chameleon </item>
+        <item> Cuttlefish </item>
+        <item> Puffer Fish </item>
+        <item> Zebra Finch </item>
+        <item> Kuhli Loach </item>
+        <item> Lionfish </item>
+        <item> Argonaut </item>
+        <item> Dingo </item>
+        <item> Quetzal </item>
+        <item> Skunk </item>
+        <item> Butterflyfish </item>
+        <item> Hippopotamus </item>
+        <item> Impala </item>
+        <item> White Rhinoceros  </item>
+        <item> Proboscis Monkey </item>
+        <item> Snowy Owl </item>
+        <item> Peacock </item>
+        <item> Llama </item>
+        <item> Domesticated Duck </item>
+        <item> Grizzly Bear </item>
+        <item> Kangaroo Rat </item>
+        <item> Tawny Frogmouth </item>
+        <item> Aardvark </item>
+        <item> Axolotl  </item>
+        <item> Plover </item>
+        <item> Boar </item>
+        <item> Black Rhinoceros </item>
+        <item> Bison</item>
+        <item> Arabian camel</item>
+        <item> Emu</item>
+        <item> Vole</item>
+        <item> Panther</item>
+        <item> Reindeer</item>
+        <item> Banteng</item>
+        <item> Echidna</item>
+        <item> Tapir</item>
+        <item> Flamingo</item>
+        <item> Takin</item>
+        <item> Okapi</item>
+        <item> Cape Buffalo</item>
+        <item> Bengal Tiger</item>
+        <item> Galapagos Tortoise</item>
+        <item> Great Egret</item>
+        <item> Addax</item>
+        <item> Wildebeest</item>
+        <item> Sumatran Tiger</item>
+        <item> Snares Penguin</item>
+        <item> Pangolin</item>
+        <item> European Wolf</item>
+        <item> Oryx</item>
+        <item> Dwarf Zebu</item>
+        <item> Lion</item>
+        <item> Serow</item>
+        <item> Bactrian Camel</item>
+        <item> Sloth </item>
+        <item> Jaguarundi </item>
+        <item> Weasel </item>
+        <item> Cougars </item>
+        <item> Kudu </item>
+        <item> Donkey </item>
+        <item> Baboon </item>
+        <item> Rockhopper Penguin </item>
+        <item> Coyote </item>
+        <item> Alpaca </item>
+        <item> Mole rat </item>
+        <item> Domestic goat </item>
+        <item> Topi </item>
+        <item> Moose </item>
+        <item> Golden Mole </item>
+        <item> Transcaspian Urial </item>
+        <item> Eland </item>
+        <item> Marbled Polecat </item>
+        <item> Ross Seal </item>
+        <item> Cheetah </item>
+        <item> Spectacled Bear </item>
+        <item> Red Fox </item>
+        <item> Pronghorn </item>
+        <item> Bobcat </item>
+        <item> Horse </item>
+        <item> Tenrec </item>
+        <item> Black Bear </item>
+        <item> Sifaka </item>
+        <item> Mountain Beaver </item>
+        <item> Pig </item>
+        <item> Bearded Pig </item>
+        <item> Puma </item>
+        <item> Manatee </item>
+        <item> Lemming </item>
+        <item> Gorilla </item>
+        <item> Iberian Mole </item>
+        <item> Polar Bear </item>
+        <item> Mallard </item>
+        <item> Mountain Bongo </item>
+        <item> River Dolphin </item>
+        <item> Spotted Hyena </item>
+        <item> Musk Deer </item>
+        <item> American Wolf </item>
+        <item> Liger </item>
+        <item> Orca </item>
+        <item> Mountain Goat </item>
+        <item> Spotted Seal </item>
+        <item> Onager </item>
+        <item> Sitatunga </item>
+        <item> Olingo </item>
+        <item> Colugo </item>
+        <item> African Linsang </item>
+        <item> Numbat </item>
+        <item> Coypu </item>
+        <item> Spinner Dolphin </item>
+        <item> Peccary </item>
+        <item> Dugong </item>
+        <item> Elephant Shrew </item>
+        <item> Barbirusa Pig </item>
+        <item> Muntjac </item>
+        <item> Nyala </item>
+        <item> Owl </item>
+        <item> Chuditch </item>
+        <item> Springhaas </item>
+        <item> Porcupine </item>
+        <item> Kouprey </item>
+        <item> Sloth Bear </item>
+        <item> Dibbler </item>
+        <item> Robin </item>
+        <item> Nilgai </item>
+        <item> Gerenuk </item>
+        <item> Yak </item>
+        <item> Tamandua </item>
+        <item> Klipspringer </item>
+        <item> Southern Viscacha </item>
+        <item> Tahr </item>
+        <item> Mouflon </item>
+        <item> Weddell Seal </item>
+        <item> Miniature Horse </item>
+        <item> Badger </item>
+        <item> Blackbuck </item>
+        <item> Goral </item>
+        <item> Sandpipers </item>
+        <item> Argali </item>
+        <item> Quoll </item>
+        <item> Baikal Seal </item>
+        <item> Pademelon </item>
+        <item> Dibatag </item>
+        <item> Brocket Deer </item>
+        <item> Emperor Tamarin </item>
+        <item> Bighorn Sheep </item>
+        <item> Hartebeest </item>
+        <item> Aoudad </item>
+        <item> Marmot </item>
+        <item> Hog Deer </item>
+        <item> Norway Rat </item>
+        <item> Gaur </item>
+        <item> Caspian Seal </item>
+        <item> Iriomote Cat </item>
+        <item> Anoa </item>
+        <item> Hutia </item>
+        <item> Ibex </item>
+        <item> Ocelot </item>
+        <item> Rhebok </item>
+        <item> Fishing Cat </item>
+        <item> Markhor </item>
+        <item> Kinkajou </item>
+        <item> Paca </item>
+        <item> Caracal </item>
+        <item> Bearded Seal </item>
+        <item> Tayra </item>
+        <item> Pudu </item>
+        <item> Pampas Cat </item>
+        <item> Guanaco </item>
+        <item> Anteater </item>
+        <item> Wallaroo </item>
+        <item> Taruca </item>
+        <item> Lesser Grison </item>
+        <item> Chiru </item>
+        <item> Sable </item>
+        <item> Zebra </item>
+        <item> Pygmy Anteater </item>
+        <item> Cuscus </item>
+        <item> Common Seal </item>
+        <item> Saola </item>
+        <item> Oncilla </item>
+        <item> Snow Leopard </item>
+        <item> Suni </item>
+        <item> Lynx </item>
+        <item> Antelope </item>
+        <item> King Penguin </item>
+        <item> Muskrat </item>
+        <item> Mouse Lemur </item>
+        <item> Greater Bilby </item>
+        <item> Mink </item>
+        <item> Black Squirrel </item>
+        <item> Ribbon Seal </item>
+        <item> Gibbon </item>
+        <item> Zorilla </item>
+        <item> Agouti </item>
+        <item> Springbok </item>
+        <item> Andean Bear </item>
+        <item> Fiordland Penguin </item>
+        <item> Platypus </item>
+        <item> Patgonian Cavy </item>
+        <item> Giant Otter </item>
+        <item> Macaroni Penguin </item>
+        <item> Woodchuck </item>
+        <item> Aardwolf </item>
+        <item> Bush Dog </item>
+        <item> Margay </item>
+        <item> Kob </item>
+        <item> Dhole </item>
+        <item> Crabeater Seal </item>
+        <item> Saiga </item>
+        <item> Ringed Seal </item>
+        <item> Lechwe </item>
+        <item> Beira </item>
+        <item> Tasmanian Devil </item>
+        <item> Elk </item>
+        <item> Humboldt Penguin </item>
+        <item> Puku </item>
+        <item> Galago </item>
+        <item> Gazelle </item>
+        <item> Magellanic Penguin </item>
+        <item> African Buffalo </item>
+        <item> Eurasian Otter </item>
+        <item> Raccoon Dog </item>
+        <item> Tarsier </item>
+        <item> Kowari </item>
+        <item> Fallow Deer </item>
+        <item> Royal Penguin </item>
+        <item> Agile Mangabey </item>
+        <item> Snow Leopard </item>
+        <item> Suslik </item>
+        <item> Blue Monkey </item>
+        <item> Beaver </item>
+        <item> Solenodon </item>
+        <item> Potto </item>
+        <item> Jerboa </item>
+        <item> Pine Marten </item>
+        <item> Chevrotain </item>
+        <item> Arctic Fox </item>
+        <item> Sun Bear </item>
+        <item> Pocket Gopher </item>
+        <item> Fisher </item>
+        <item> Orangutan </item>
+        <item> Stoat </item>
+        <item> Patagonian Opossum </item>
+        <item> Chickadee </item>
+        <item> Langur </item>
+        <item> Gelada Baboon </item>
+        <item> Emperor Penguin </item>
+        <item> Leopard Seal </item>
+        <item> Domestic Sheep </item>
+        <item> Wildcat </item>
+        <item> Tree Hyrax </item>
+        <item> Pygmy Marmoset </item>
+        <item> Kodkod </item>
+        <item> Gundi </item>
+        <item> Zokor </item>
+        <item> Titi </item>
+        <item> Grivet </item>
+        <item> Bearded Saki </item>
+        <item> Pygmy Hog </item>
+        <item> Gelada Monkey </item>
+        <item> Phascogale </item>
+        <item> Pika </item>
+        <item> Mandrill </item>
+        <item> Squirrel Monkey </item>
+        <item> Culpeo </item>
+        <item> Vervet </item>
+        <item> Pygmy Hippopotamus </item>
+        <item> Gerbil </item>
+        <item> Coati </item>
+        <item> Tur </item>
+        <item> Black Stork </item>
+        <item> Giraffe </item>
+        <item> Surili </item>
+        <item> Guenon </item>
+        <item> Honey Badger </item>
+        <item> Tree Squirrel </item>
+        <item> Hedgehog </item>
+        <item> Canary </item>
+        <item> Flying Squirrel </item>
+        <item> Hamster </item>
+        <item> Drill </item>
+        <item> Eastern Cottontail </item>
+        <item> Bonobo </item>
+        <item> Wombat </item>
+        <item> Saki Monkey </item>
+        <item> Jackrabbit </item>
+        <item> Malbrouck </item>
+        <item> Dwarf Mongoose </item>
+        <item> Chipmunk </item>
+        <item> Snowshoe Hare </item>
+        <item> Serval </item>
+        <item> Deer </item>
+        <item> Hummingbird </item>
+        <item> Rabbit </item>
+        <item> Quokka </item>
+        <item> Dwarf Rabbit </item>
+        <item> Aye Aye </item>
+        <item> Gray Seal </item>
+        <item> Chinchilla </item>
+        <item> Duiker </item>
+        <item> Mouse </item>
+        <item> Kangaroo </item>
+        <item> Puffin </item>
+        <item> Bush Baby </item>
+        <item> Sand Cat </item>
+        <item> Kultarr </item>
+        <item> Beluga Whale </item>
+        <item> Monkey </item>
+        <item> Koala </item>
+        <item> Slow Loris </item>
+        <item> Kiwi </item>
+        <item> Bottlenose Dolphin </item>
+        <item> Civet Cat </item>
+        <item> Degu </item>
+        <item> Oribi </item>
+        <item> Lutung </item>
+        <item> Chinstrap Penguin </item>
+        <item> Siamang </item>
+        <item> False Antechinus </item>
+        <item> Elephant Seal </item>
+        <item> Talapoin </item>
+        <item> Gymnure </item>
+        <item> Kipunji </item>
+        <item> Douc </item>
+        <item> Desman </item>
+        <item> Chimpanzee </item>
+        <item> Guinea Pig </item>
+        <item> Colubus </item>
+        <item> Blue Penguin </item>
+        <item> Gentoo Penguin </item>
+        <item> Common Planigale </item>
+        <item> Sugar Glider </item>
+        <item> Mulgara </item>
+        <item> Dormouse </item>
+        <item> Wallaby </item>
+        <item> Clown Fish </item>
+        <item> Clouded Leopard </item>
+        <item> Prairie Dog </item>
+        <item> Antechinus </item>
+        <item> Capybara </item>
+        <item> Macaque </item>
+        <item> Adelie Penguin </item>
+        <item> Harp Seal </item>
+        <item> Binturong </item>
+        <item> Meerkat </item>
+        <item> Dunnart </item>
+        <item> Red Panda </item>
+        <item> Rock Hyrax </item>
+        <item> Dog </item>
+        <item> Fennec Fox </item>
+        <item> Giant Panda </item>
+        <item> Cat </item>
+        <item> Sea Otter </item>
+    </string-array>
+</resources>

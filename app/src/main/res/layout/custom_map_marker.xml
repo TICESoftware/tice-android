@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customMakerLayoutTop"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customMakerLayout"
+        android:layout_width="@dimen/marker_size"
+        android:layout_height="@dimen/marker_size"
+        android:background="@drawable/marker_shape"
+        android:rotation="45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/customMarkerText"
+            android:layout_width="@dimen/marker_size"
+            android:layout_height="@dimen/marker_size"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/marker_padding"
+            android:rotation="-45"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:autoSizeMaxTextSize="28sp"
+            app:autoSizeMinTextSize="14sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Si"
+            tools:ignore="SelectableText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

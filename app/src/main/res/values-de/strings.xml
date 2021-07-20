@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <!-- Toolbar Menu -->
+    <string name="settings_title">"Einstellungen"</string>
+    <string name="groupSettings_participation_leave">"Gruppe verlassen"</string>
+    <string name="groupSettings_participation_delete">"Gruppe löschen"</string>
+    <string name="groupSettings_title">"Gruppeninfo"</string>
+    <!-- CreateUser -->
+    <string name="register_title">"TICE"</string>
+    <string name="register_register">"Los geht’s"</string>
+    <string name="register_name_placeholder">"Dein Name"</string>
+    <string name="register_welcome">"Willkommen zu"</string>
+    <string name="register_name_title">"Dein Name, wie er anderen angezeigt wird:"</string>
+    <string name="register_sign_in">"Du musst erst registriert sein, um TICE zu nutzen."</string>
+    <!-- ShowGroups -->
+    <string name="teams_title">"Gruppen"</string>
+    <string name="teams_owner_name">"%1$ss Gruppe"</string>
+    <string name="teams_owner_name_endsWith_s">"%1$s' Gruppe"</string>
+    <string name="teams_empty_body">"TICE ist alles, was du brauchst, um Treffen mit deinen Liebsten zu organisieren"</string>
+    <string name="teams_empty_title">"Erstelle deine erste TICE-Gruppe"</string>
+    <string name="teams_memberNames_you">"Du"</string>
+    <!-- CreateGroup -->
+    <string name="createGroup_title">"Gruppe hinzufügen"</string>
+    <string name="createGroup_startMeetingUp_title">"Treffen sofort starten"</string>
+    <string name="createGroup_basic_name">"Gruppenname"</string>
+    <string name="createGroup_done">"Weiter"</string>
+    <!-- CreateGroup Invite -->
+    <string name="createTeamInvite_share">"Teilen"</string>
+    <string name="createTeamInvite_description">"Lade Personen zur Gruppe ein, indem du diesen Link teilst."</string>
+    <string name="createTeamInvite_copied">"URL kopiert"</string>
+    <string name="createTeamInvite_emailSubject">"Einladung zur TICE Gruppe"</string>
+    <string name="createTeamInvite_chooserTitle">"Einladung senden via"</string>
+    <string name="createTeamInvite_invitation_text">"Tritt %1$s bei und triff dich mit der sicheren TICE-App oder direkt im Browser. Drücke hier: "</string>
+    <!-- Map -->
+    <string name="map_title">"Karte"</string>
+    <string name="map_location_meetingPoint">"Treffpunkt"</string>
+    <string name="map_location_permission_later">"Jetzt nicht"</string>
+    <string name="map_location_permission_enable">"Erlauben"</string>
+    <string name="map_location_permission_info">"Durch das Verbieten des Standortzugriffs wird TICE deinen Standort weder auf der Karte anzeigen, noch ihn mit anderen während eines Treffens teilen.
+
+Möchtest du TICE Zugriff auf deinen Standort erlauben?"</string>
+    <string name="map_location_info_okay">"Okay"</string>
+    <string name="map_location_string">"%1$s, %2$s"</string>
+    <!-- MapBottomSheet -->
+    <string name="map_location_pin">"Markierter Ort"</string>
+    <string name="map_location_unknown">"Unbekannter Ort"</string>
+    <string name="map_location_lastSeen">Zuletzt gesehen um %1$s.</string>
+    <string name="map_createMeetingPoint">"Als Treffpunkt setzen"</string>
+    <!-- MeetupButton -->
+    <string name="alert_cancel">"Abbrechen"</string>
+    <string name="meetup_snackbar_started">"Treffen wurde gestartet"</string>
+    <string name="meetup_snackbar_locationDisabled">"Um deine Person zu sehen, musst du TICE Zugriff auf deinen Standort gewähren."</string>
+    <string name="meetup_manageParticipation_locationSharingOff">"Standort versteckt"</string>
+    <!-- Settings Preferences -->
+    <string name="settings_name_header">"Nutzereinstellungen"</string>
+    <string name="settings_name_title">"Dein Name"</string>
+    <string name="settings_privacy_header">"Privatsphäre"</string>
+    <string name="settings_privacy_readPolicy">"Datenschutzerklärung lesen"</string>
+    <string name="settings_account_header">"Deine Daten"</string>
+    <string name="settings_feedback_header">"Feedback"</string>
+    <string name="settings_feedback_give">Feedback geben.</string>
+    <string name="settings_account_delete">"Alle meine Daten löschen"</string>
+    <string name="settings_account_confirmDeletion_title">"Gruppe löschen?"</string>
+    <string name="settings_account_confirmDeletion_message">"Löschen all deiner Nutzerdaten wird deinen Nutzer in TICE und alle Gruppen, in denen du der einzige Admin bist, löschen. Möchtest du alle deine Daten löschen?"</string>
+    <string name="settings_account_confirmDeletion_delete">"Löschen"</string>
+    <string name="settings_account_confirmDeletion_cancel">"Abbrechen"</string>
+    <string name="settings_about_header">"Über TICE"</string>
+    <string name="settings_about_footer">"Made with ♥ in Berlin von
+TICE Software UG (haftungsbeschränkt)"</string>
+    <string name="settings_feedback_email">"feedback@ticeapp.com"</string>
+    <string name="settings_feedback_subject">"TICE: Feedback"</string>
+    <string name="settings_feedback_chooserText">"Wähle ein E-Mail-Programm"</string>
+    <string name="settings_privacy_url">"https://ticeapp.com/de/datenschutz/"</string>
+    <string name="settings_version_title">"Version"</string>
+    <string name="settings_third_party_licenses">Lizenzen der Bibliotheken Dritter ansehen.</string>
+    <!-- GroupInfo -->
+    <string name="groupInfo_groupName">"Name"</string>
+    <string name="groupInfo_members_header">"Mitglieder"</string>
+    <string name="groupInfo_members_add">"Weitere Personen einladen"</string>
+    <string name="groupInfo_start_location_sharing">"Standort freigeben"</string>
+    <string name="groupInfo_stop_location_sharing">"Standortfreigabe beenden"</string>
+    <string name="groupInfo_participation_header">"Teilnahme"</string>
+    <string name="groupInfo_admin">"Admin"</string>
+    <string name="groupInfo_member">"Mitglied"</string>
+    <string name="groupInfo_manage_location_sharing">"Standortfreigabe verwalten"</string>
+    <string name="groupInfo_delete_group_text">"Soll die Gruppe wirklich gelöscht werden?"</string>
+    <string name="groupInfo_delete_group_confirm">"Löschen"</string>
+    <string name="groupInfo_leave_group_text">"Möchtest du wirklich die Gruppe verlassen?"</string>
+    <string name="groupInfo_leave_group_confirm">"Verlassen"</string>
+    <!-- JoinGroup -->
+    <string name="joinGroup_title">"Gruppe beitreten"</string>
+    <string name="joinGroup_participation_join">"Beitreten"</string>
+    <string name="joinGroup_info_text">"Du hast eine Einladung zu der Gruppe \"%1$s\" erhalten. Möchtest du dieser Gruppe jetzt beitreten?"</string>
+    <string name="joinGroup_already_member">"Du bist bereits ein Mitglied dieser Gruppe."</string>
+    <!-- MeetupInfo -->
+    <string name="meetupSettings_title">"Treffen verwalten"</string>
+    <string name="meetupSettings_participants_header">"Teilnehmer"</string>
+    <string name="meetupSettings_nonParticipants_header">"Ausstehend"</string>
+    <string name="meetupSettings_participation_delete_title">"Du bist Admin dieses Treffens"</string>
+    <string name="meetupSettings_participation_leave_title">"Du nimmst an diesem Treffen teil"</string>
+    <string name="meetupSettings_participation_join_title">"Du bist zu diesem Treffen eingeladen"</string>
+    <string name="meetupSettings_locationSharing_on">"Du teilst deinen Standtort mit allen Mitgliedern"</string>
+    <string name="meetupSettings_participation_join_join">"Teilnehmen"</string>
+    <string name="meetupSettings_participation_leave_leave">"Treffen verlassen"</string>
+    <string name="meetupSettings_participation_delete_delete">"Treffen beenden"</string>
+    <string name="meetupSettings_stopSharing_notAuthorized_message">"TICE ist nicht autorisiert deinen Standort zu benutzen. Gehe in die Einstellungen, um die nötigen Berechtigungen freizugeben."</string>
+    <!-- Notification + ForegroundService -->
+    <string name="notification_locationService_title">TICE erfasst deinen Standort.</string>
+    <string name="notification_locationService_body">"TICE greift auf deinen Standort zu, um ihn mit anderen Teilnehmern des Treffens zu teilen, auch, wenn die App geschlossen oder nicht in Benutzung ist."</string>
+    <string name="notification_group_deleted_title">"Gruppe gelöscht"</string>
+    <string name="notification_group_memberAdded_title_unknown">"Mitglied beigetreten"</string>
+    <string name="notification_group_memberDeleted_title_unknown">"Mitglied ausgetreten"</string>
+    <string name="notification_group_memberUpdated_title_unknown">"Mitglied aktualisiert"</string>
+    <string name="notification_meetup_deleted_title">"Treffen beendet"</string>
+    <string name="notification_meetup_created_title">"Eingeladen zum Treffen"</string>
+    <string name="notification_group_updated_title">"Gruppe aktualisiert"</string>
+    <string name="notification_group_message_title_unknown">"Neue Nachricht"</string>
+    <string name="notification_channel_name">"TICE Benachrichtigung"</string>
+    <!-- Migration Screen -->
+    <string name="migration_info_text">Daten aktualisieren …</string>
+    <string name="migration_button_retry">"Erneut probieren"</string>
+    <string name="migration_button_error">"Bericht senden"</string>
+    <string name="migration_dialog_text">Das Migrieren der Daten von einer früheren App-Version ist fehlgeschlagen. Bitte erneut probieren. Wenn du möchtest, kannst du uns einen Fehlerbericht senden, damit wir das Problem beheben können.</string>
+    <!-- Error -->
+    <string name="error_message">"Fehler! Bitte versuche es später noch einmal."</string>
+    <string name="error_create_group">"Gruppe konnte nicht erstellt werden."</string>
+    <string name="error_process_group">"Bearbeiten der URL fehlgeschlagen."</string>
+    <string name="error_marker_update">"Aktualisieren der Marker fehlgeschlagen."</string>
+    <string name="error_meetup">"Standortfreigabe fehlgeschlagen."</string>
+    <string name="error_meetup_interaction">"Treffen fehlgeschlagen."</string>
+    <string name="error_no_deviceid">"Keine Device-ID."</string>
+    <string name="error_verification">"Verifizierung fehlgeschlagen."</string>
+    <string name="error_create_user">"Erstellen des Nutzers fehlgeschlagen."</string>
+    <string name="error_change_name">"Username konnte nicht geändert werden."</string>
+    <string name="error_delete_user">"Löschen des Nutzers fehlgeschlagen."</string>
+    <string name="error_user_in_group">"Dieser Nutzer befindet sich noch in Gruppen."</string>
+    <string name="error_update_settings">"Aktualisieren der Einstellungen fehlgeschlagen."</string>
+    <string name="error_delete_group">"Löschen der Gruppe fehlgeschlagen."</string>
+    <string name="error_leave_group">"Verlassen der Gruppe fehlgeschlagen."</string>
+    <string name="error_not_found">"Gruppe konnte nicht gefunden werden."</string>
+    <!-- ChatScreen -->
+    <string name="chat_title">"Chat – "</string>
+    <string name="chat_bar_placeholder">"Neue Nachricht…"</string>
+    <!-- Chat MetaInfo Other -->
+    <string name="chat_metaInfo_other_group_memberAdded_title_unknown">"Jemand ist der Gruppe beigetreten"</string>
+    <string name="chat_metaInfo_other_group_memberDeleted_title_unknown">"Jemand hat die Gruppe verlassen"</string>
+    <string name="chat_metaInfo_other_group_updated_title">"Gruppe aktualisiert"</string>
+    <string name="chat_metaInfo_other_meetup_deleted_title">"Treffen gelöscht"</string>
+    <string name="chat_metaInfo_other_meetup_created_title">"Treffen gestartet"</string>
+    <string name="chat_metaInfo_other_meetup_info_text">"%1$s - %2$s"</string>
+    <!-- Chat MetaInfo Self -->
+    <string name="chat_metaInfo_self_group_created_title">"Du hast die Gruppe erstellt"</string>
+    <string name="chat_metaInfo_self_group_joined_title">"Du bist der Gruppe beigetreten"</string>
+    <string name="chat_metaInfo_self_group_updated_title">"Du hast die Gruppe aktualisiert"</string>
+    <string name="chat_metaInfo_self_meetup_deleted_title">"Du hast das Treffen beendet"</string>
+    <string name="chat_metaInfo_self_meetup_created_title">"Du hast das Treffen gestartet"</string>
+    <string name="chat_metaInfo_self_meetup_joined_title">"Du bist dem Treffen beigetreten"</string>
+    <string name="chat_metaInfo_self_meetup_deleteGroupMember_title_unknown">"Du hast jemanden aus dem Treffen entfernt"</string>
+    <string name="chat_metaInfo_self_meetup_left_title">"Du hast das Treffen verlassen"</string>
+    <string name="notification_placeholder_title">Neue Nachricht</string>
+    <string name="notification_placeholder_body">Etwas ist bei TICE passiert.</string>
+    <string name="team_locationSharing_start_title">Standort teilen</string>
+    <string name="team_locationSharing_active_title">Standort wird geteilt</string>
+    <string name="team_startLocationSharing_message">Dein Standort wird mit allen Mitgliedern der Gruppe geteilt.</string>
+    <string name="force_update_title">Update verfügbar</string>
+    <string name="force_update_text">Es ist ein Update für Version %1$s verfügbar, bitte updaten.</string>
+    <string name="team_locationSharing_active_subtitle">Teilen beenden</string>
+    <string name="team_locationSharing_othersActive_subtitle">Andere teilen ihn</string>
+    <string name="team_locationSharing_otherActive_subtitle">%1$s teilt ihn</string>
+    <string name="team_startLocationSharing_title">Standort teilen\?</string>
+    <string name="team_stopLocationSharing_title">Standort nicht mehr teilen\?</string>
+    <string name="team_stopLocationSharing_message">Andere Mitglieder können deinen Standort dann nicht mehr sehen.</string>
+    <string name="team_locationSharing_confirm">Standort teilen</string>
+    <string name="force_update_button_text">Erneut versuchen</string>
+    <string name="force_update_title_error">Fehler!</string>
+    <string name="force_update_text_error">Prozess aufgrund von %1$s fehlgeschlagen.</string>
+</resources>

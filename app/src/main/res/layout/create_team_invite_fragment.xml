@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/teamInvite_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="@string/createTeamInvite_description"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/teamInvite_borderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/quantum_grey100"
+        app:layout_constraintCircleRadius="30dp"
+        android:paddingStart="14dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/teamInvite_info_text"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/teamInvite_joinText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/primaryTextColor"
+            tools:text="@string/createTeamInvite_invitation_text"
+            tools:ignore="SelectableText" />
+
+        <TextView
+            android:id="@+id/teamInvite_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textIsSelectable="true" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/teamInvite_copy"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:drawableRightCompat="?attr/actionModeCopyDrawable"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0"
+            app:tint="@color/primaryTextColor"
+            tools:ignore="SelectableText" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/teamInvite_Share_Button"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="?attr/actionModeShareDrawable"
+        app:drawableTint="@color/colorCards"
+        android:text="@string/createTeamInvite_share"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamInvite_borderLayout" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/teamInvite_Continue_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/primaryColor"
+        android:text="@string/createGroup_done"
+        android:textAlignment="center"
+        android:textColor="@color/colorCards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

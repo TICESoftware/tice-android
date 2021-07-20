@@ -1,0 +1,7 @@
+Dieses Update bringt neue Funktionen und behebt ein paar Fehler:
+- In der Team-Liste zeigen die neuen Indikatoren, ob in einem Team ein Treffen läuft oder ob es ungelesene Chat-Nachrichten gibt.
+- Registrierung funktioniert wieder problemlos.
+- Neues Design beim Betrachten einer Team-Einladung.
+- Markierungen der anderen Mitglieder werden entfernt, sobald das Treffen beendet ist.
+- Fortschrittsanzeigen wurden hinzugefügt.
+- Einige missverständliche Fehleranzeigen wurden korrigiert.

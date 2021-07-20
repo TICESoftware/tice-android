@@ -1,0 +1,6 @@
+In dieser Version haben wir wieder ein paar Verbesserungen eingepflegt:
+- Ein Problem wurde behoben, dass dazu führte, dass beim ersten Start der App manchmal ein Fehler angezeigt wurde, z. B. wenn die Internetverbindung schlecht war.
+- Wenn zu einem Ort keine bestimmte Adresse existiert, werden nun die entsprechenden Koordinaten angezeigt.
+- Viele kleine weitere Probleme wurden behoben.
+
+Wenn ihr Fehler findet oder uns eure Meinung zu TICE mitteilen möchtet, kontaktiert uns gern.

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/teamImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/ic_baseline_account_blue"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/teamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textIsSelectable="false"
+            tools:text="GroupName" />
+
+        <TextView
+            android:id="@+id/teamInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fadingEdge="horizontal"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textIsSelectable="false"
+            tools:text="Group member names" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical|end">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+
+            <ImageView
+                android:id="@+id/chatImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="2dp"
+                android:paddingTop="2dp"
+                android:paddingStart="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_chat_indicator"
+                tools:ignore="ContentDescription,RtlSymmetry,VectorDrawableCompat"
+                app:tint="@color/primaryColor" />
+
+            <ImageView
+                android:id="@+id/meetup_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                app:srcCompat="@drawable/ic_location"
+                tools:ignore="ContentDescription,VectorDrawableCompat"
+                app:tint="@color/primaryColor" />
+
+        </LinearLayout>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        tools:text="@tools:sample/date/ddmmyy"
+        android:textIsSelectable="false"
+        android:layout_gravity="end"/>
+
+    </LinearLayout>
+</LinearLayout>

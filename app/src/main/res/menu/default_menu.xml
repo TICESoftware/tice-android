@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/defaultMenu_GroupInfoMenu"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/groupSettings_title"
+        android:visible="false"
+        android:iconTint="@color/colorCards"
+        app:showAsAction="ifRoom"
+        tools:ignore="UnusedAttribute" />
+    <item
+        android:id="@+id/defaultMenu_SettingsMenu"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="@string/settings_title"
+        android:iconTint="@color/colorCards"
+        app:showAsAction="never"
+        tools:ignore="UnusedAttribute" />
+    <item
+        android:id="@+id/defaultMenu_leave_group"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="@string/groupSettings_participation_leave"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/defaultMenu_delete_group"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="@string/groupSettings_participation_delete"
+        android:visible="false"
+        app:showAsAction="never" />
+</menu>

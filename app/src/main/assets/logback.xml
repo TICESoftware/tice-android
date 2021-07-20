@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration debug='true'>
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <tagEncoder>
+            <pattern>TICELog</pattern>
+        </tagEncoder>
+        <encoder>
+            <pattern>%-5level %file @ %method:%line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <property name="LOG_DIR" value="${DATA_DIR}/logs" />
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- active log file -->
+        <file>${LOG_DIR}/log.txt</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %file @ %method:%line - %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover period -->
+            <fileNamePattern>${LOG_DIR}/log.%d.txt</fileNamePattern>
+
+            <!-- keep 1 day worth of history -->
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="TRACE">
+        <appender-ref ref="logcat" />
+        <appender-ref ref="file" />
+    </root>
+</configuration>

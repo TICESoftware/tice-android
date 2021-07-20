@@ -1,0 +1,167 @@
+default_platform(:android)
+
+platform :android do
+  desc "Run tests"
+  lane :tests do |options|
+    skip_docs
+    gradle(tasks: ["clean", "testDevelopmentDebugUnitTest"])
+    gradle(tasks: ["connectedInstrumentationDebugAndroidTest", "--info"])
+  end
+
+  desc "Run linter"
+  lane :lint do |options|
+    skip_docs
+    lint_result = gradle(tasks: ["clean", "lintDevelopmentDebug", "lintKotlinMain"])
+
+
+    if options[:strict] && (lint_result.include? "report") then
+      UI.user_error!("The linter reported one or more issues.")
+    end
+  end
+
+  desc "Prepare pull request"
+  lane :pr do
+    skip_docs
+    ensure_git_status_clean
+    sh("git", "push", "--dry-run")
+    lint(strict: true)
+    rocket
+    sh("BRANCH=`git rev-parse --abbrev-ref HEAD | sed -e \"s~/~%2F~g\"` && open \"https://github.com/TICESoftware/tice-android/compare/develop...${BRANCH}\"")
+    sh("open \"https://tenor.com\"")
+  end
+
+  desc "Submit build for internal testing"
+  lane :testing do |options|
+    skip_docs
+
+    buildAndSubmit(
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_increment_version_code: options[:skip_increment_version_code],
+      version_name: options[:version_name],
+      flavor: "adhoc",
+      track: "internal",
+      package_name: "app.tice.TICE.testing"
+    )
+  end
+
+  desc "Submit build for public beta testing"
+  lane :preview do |options|
+    skip_docs
+
+    buildAndSubmit(
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_increment_version_code: options[:skip_increment_version_code],
+      version_name: options[:version_name],
+      flavor: "preview",
+      track: "alpha",
+      package_name: "app.tice.TICE.preview"
+    )
+  end
+
+  desc "Submit build for production to release track immediately"
+  lane :releaseProduction do |options|
+    skip_docs
+
+    buildAndSubmit(
+      skip_upload_metadata: false,
+      skip_upload_images: options[:skip_uploading_screenshots],
+      skip_upload_screenshots: options[:skip_uploading_screenshots],
+      skip_increment_version_code: options[:skip_increment_version_code],
+      version_name: options[:version_name],
+      flavor: "production",
+      track: "production",
+      package_name: "app.tice.TICE.production"
+    )
+  end
+
+  desc "Submit build for production to internal test lane"
+  lane :releaseInternal do |options|
+    skip_docs
+
+    buildAndSubmit(
+      skip_upload_metadata: false,
+      skip_upload_images: options[:skip_uploading_screenshots],
+      skip_upload_screenshots: options[:skip_uploading_screenshots],
+      skip_increment_version_code: options[:skip_increment_version_code],
+      version_name: options[:version_name],
+      flavor: "production",
+      track: "internal",
+      package_name: "app.tice.TICE.production"
+    )
+  end
+
+  desc "Submit new build to Google Play Store"
+  lane :buildAndSubmit do |options|
+    skip_docs
+    ensure_git_status_clean
+
+    if !options[:skip_increment_version_code]
+      increment_version_code(gradle_file_path: "app/build.gradle")
+    end
+
+    if options[:version_name]
+      android_set_version_name(version_name: options[:version_name])
+    end
+
+    version_name = android_get_version_name
+    version_code = android_get_version_code
+
+    gradle(
+      task: 'bundle',
+      flavor: options[:flavor],
+      build_type: 'release',
+      properties: {
+        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => "upload",
+        "android.injected.signing.key.password" => ENV["UPLOAD_KEY_PASSWORD"]
+      }
+    )
+
+    if !options[:skip_increment_version_code] || options[:version_name]
+      git_commit(path: "app/build.gradle", message: "Bump version code to #{version_code}")
+      add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:flavor]}")
+      push_to_git_remote
+    end
+
+    supply(
+      track: options[:track],
+      package_name: options[:package_name],
+      json_key: ENV["JSON_KEY_PATH"],
+      skip_upload_metadata: options[:skip_upload_metadata],
+      skip_upload_images: options[:skip_upload_images],
+      skip_upload_screenshots: options[:skip_upload_screenshots],
+      skip_upload_apk: true
+    )
+  end
+
+  desc "Bump version code"
+  lane :bumpVersionCode do
+    skip_docs
+    ensure_git_status_clean
+
+    increment_version_code(gradle_file_path: "app/build.gradle")
+
+    version_name = android_get_version_name
+    version_code = android_get_version_code
+
+    git_commit(path: "app/build.gradle", message: "Bump version code to #{version_code}")
+    add_git_tag(tag: "#{version_name}-#{version_code}")
+  end
+
+  desc "Update translations"
+  lane :translations do |options|
+    skip_docs
+    sh 'cd .. && poeditor pull --config poeditor.yml'
+
+    commit = options[:commit]
+    if commit
+      git_add(path: "app/src/main/res/values*/strings.xml")
+      git_commit(path: [], message: "Update translations") unless git_status(path: "TICE/Resources/").empty?
+    end
+  end
+end

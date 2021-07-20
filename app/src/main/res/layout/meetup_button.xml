@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/primaryColor"
+    android:minWidth="120dp"
+    android:minHeight="50dp"
+    app:cardCornerRadius="25dp"
+    app:elevation="8dp">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorCards"
+        android:visibility="invisible"
+        tools:ignore="UnusedAttribute" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:paddingStart="25dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="25dp"
+        android:paddingBottom="5dp"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorCards"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textIsSelectable="false"
+            tools:text="@string/meetup_meetingUp"
+            />
+
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorCards"
+            android:textSize="14sp"
+            android:textIsSelectable="false"
+            tools:text="@string/meetup_manageParticipation" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

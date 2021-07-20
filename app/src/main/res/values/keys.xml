@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <string name="usernameKey" translatable="false">USERNAME</string>
+    <string name="versionKey" translatable="false">VERSION</string>
+    <string name="lastCameraPositionKeyLat" translatable="false">LAST_CAMERA_POSITION_KEY_LAT</string>
+    <string name="lastCameraPositionKeyLng" translatable="false">LAST_CAMERA_POSITION_KEY_LNG</string>
+    <string name="lastCameraPositionKeyZoom" translatable="false">LAST_CAMERA_POSITION_KEY_ZOOM</string>
+    <string name="lastCameraPositionKeyTilt" translatable="false">LAST_CAMERA_POSITION_KEY_TILT</string>
+    <string name="lastCameraPositionKeyBearing" translatable="false">LAST_CAMERA_POSITION_KEY_BEARING</string>
+    <string name="deleteAllData">DELETE_ALL_DATA</string>
+    <string name="giveFeedback">GIVE_FEEDBACK</string>
+    <string name="privacyPolicy">PRIVACY_POLICY</string>
+    <string name="thirdPartyLicenses">THIRD_PARTY_LICENSES</string>
+    <string name="worker_backend">teamId</string>
+    <string name="worker_membership_renewal">MembershipRenewal</string>
+    <string name="worker_messageKey">MessageKeyCache</string>
+</resources>

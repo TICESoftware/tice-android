@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="primaryColor">#0277BD</color>
+    <color name="primaryLightColor">#2980b9</color>
+    <color name="primaryDarkColor">#0277BD</color>
+    <color name="primaryTextColor">#000000</color>
+
+    <color name="colorBackground2">#E9E9E9</color>
+    <color name="colorCards">#FFFFFF</color>
+    <color name="colorDelete">#E60E0E</color>
+    <color name="colorButtonDisabled">#A9A9A9</color>
+
+    <color name="outgoingMessagecolor">#2980b9</color>
+</resources>
