@@ -14,22 +14,17 @@ class MigrationViewModel @Inject constructor(
 ) : ViewModel() {
     val logger by getLogger()
 
-    private val migrationManager = MigrationManager(application)
+    private val versionCodeStorageManager = VersionCodeStorageManager(application.baseContext)
+    private val migrationManager = MigrationManager(application, versionCodeStorageManager)
 
     private val _state = MutableLiveData<MigrationState>(MigrationState.InitialState)
     val state: LiveData<MigrationState>
         get() = _state
 
     fun initializeMigration() {
-        val versionCodeStorageManager = VersionCodeStorageManager(application.baseContext)
-
         try {
-            if (versionCodeStorageManager.migrationRequired()) {
-                _state.postValue(MigrationState.Migrating)
-                migrationManager.executeMigrationsBlocking(application.applicationContext)
-                versionCodeStorageManager.updateStoredVersionCode()
-            }
-
+            _state.postValue(MigrationState.Migrating)
+            migrationManager.executeMigrationsBlocking(application.applicationContext)
             _state.postValue(MigrationState.Finished)
         } catch (e: Exception) {
             logger.error(e.message)

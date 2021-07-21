@@ -5,12 +5,10 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.ticeapp.TICE.BuildConfig
 import net.sqlcipher.database.SupportFactory
 import tice.exceptions.DatabaseManagerException
-import tice.managers.storageManagers.AppDatabase
-import tice.managers.storageManagers.DatabaseManager
-import tice.managers.storageManagers.StorageLocker
-import tice.managers.storageManagers.StorageLockerType
+import tice.managers.storageManagers.*
 import tice.models.SecretKey
 import tice.utility.dataFromBase64
 import tice.utility.getLogger
@@ -18,7 +16,7 @@ import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 
-class MigrationManager constructor(context: Context) {
+class MigrationManager constructor(context: Context, private val versionCodeStorageManager: VersionCodeStorageManagerType) {
     private val logger by getLogger()
 
     private val keyStore: KeyStore = KeyStore.getInstance(DatabaseManager.KEYSTORE_PROVIDER)
@@ -59,6 +57,20 @@ class MigrationManager constructor(context: Context) {
     }
 
     fun executeMigrationsBlocking(context: Context) {
+        if (!versionCodeStorageManager.outdatedVersion) {
+            logger.debug("Version up-to-date. Migration not necessary.")
+            return
+        }
+
+        logger.debug("Stored version number is outdated. Check for migrations.")
+
+        executeDatabaseMigrations(context)
+        executeAppMigrations(context)
+
+        versionCodeStorageManager.storeVersionCode(BuildConfig.VERSION_CODE)
+    }
+
+    private fun executeDatabaseMigrations(context: Context) {
         val databaseKey = loadDatabaseKey()
 
         if (databaseKey == null) {
@@ -69,7 +81,7 @@ class MigrationManager constructor(context: Context) {
         val factory = SupportFactory(databaseKey)
         Room.databaseBuilder(context, AppDatabase::class.java, "db")
             .openHelperFactory(factory)
-            .addMigrations(*allMigrations())
+            .addMigrations(*allDatabaseMigrations())
             .build()
             .openHelper.readableDatabase
             .close()
@@ -77,8 +89,22 @@ class MigrationManager constructor(context: Context) {
         logger.debug("Migrating database done.")
     }
 
+    private fun executeAppMigrations(context: Context) {
+        val previousVersion = versionCodeStorageManager.getStoredVersionCode()
+        val appMigrations = allAppMigrations.filter { it.versionCode > previousVersion }
+
+        for (migration in appMigrations) {
+            logger.debug("Executing migration to version code ${migration.versionCode}.")
+            migration.migrate(context)
+            versionCodeStorageManager.storeVersionCode(migration.versionCode)
+            logger.debug("Migration to version code ${migration.versionCode} done.")
+        }
+    }
+
     companion object {
-        fun allMigrations(): Array<Migration> = arrayOf(
+        val allAppMigrations: Array<AppMigration> = arrayOf(MigrationTo31())
+
+        fun allDatabaseMigrations(): Array<Migration> = arrayOf(
             migration1To2,
             migration2To3
         )

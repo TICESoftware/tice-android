@@ -48,7 +48,7 @@ class FirebaseReceiverService : FirebaseMessagingService() {
         val versionCodeStorageManager = VersionCodeStorageManager(baseContext)
 
         try {
-            if (versionCodeStorageManager.migrationRequired()) {
+            if (versionCodeStorageManager.outdatedVersion) {
                 migrationNecessary = true
                 return
             }

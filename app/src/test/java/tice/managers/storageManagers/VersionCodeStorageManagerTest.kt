@@ -45,7 +45,7 @@ internal class VersionCodeStorageManagerTest {
 
             every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns BuildConfig.VERSION_CODE
 
-            val result = versionCodeStorageManager.migrationRequired()
+            val result = versionCodeStorageManager.outdatedVersion()
 
             Assertions.assertEquals(false, result)
         }
@@ -58,7 +58,7 @@ internal class VersionCodeStorageManagerTest {
             every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
             every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns true
 
-            val result = versionCodeStorageManager.migrationRequired()
+            val result = versionCodeStorageManager.outdatedVersion()
 
             Assertions.assertEquals(true, result)
         }
@@ -71,7 +71,7 @@ internal class VersionCodeStorageManagerTest {
             every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns BuildConfig.VERSION_CODE - 1
             every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns true
 
-            val result = versionCodeStorageManager.migrationRequired()
+            val result = versionCodeStorageManager.outdatedVersion()
 
             Assertions.assertEquals(true, result)
         }
@@ -84,7 +84,7 @@ internal class VersionCodeStorageManagerTest {
             every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
             every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns false
 
-            val result = versionCodeStorageManager.migrationRequired()
+            val result = versionCodeStorageManager.outdatedVersion()
 
             Assertions.assertEquals(false, result)
         }
@@ -98,7 +98,7 @@ internal class VersionCodeStorageManagerTest {
         every { mockMigrationPrefs.edit() } returns mockMigrationPrefsEdit
         every { mockMigrationPrefsEdit.putInt(MIGRATION_VERSION_KEY, BuildConfig.VERSION_CODE) } returns mockMigrationPrefsEdit
 
-        versionCodeStorageManager.updateStoredVersionCode()
+        versionCodeStorageManager.storeVersionCode()
 
         verify(exactly = 1) { mockMigrationPrefsEdit.putInt(MIGRATION_VERSION_KEY, BuildConfig.VERSION_CODE) }
         verify(exactly = 1) { mockMigrationPrefsEdit.apply() }

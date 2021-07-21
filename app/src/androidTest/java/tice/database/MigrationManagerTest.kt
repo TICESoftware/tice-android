@@ -1,6 +1,9 @@
 package tice.database
 
 import android.content.ContentValues
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL
 import androidx.core.database.getStringOrNull
 import androidx.room.Room
@@ -8,12 +11,18 @@ import androidx.room.migration.Migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
+import tice.backend.Backend
+import tice.exceptions.CryptoStorageManagerException
 import tice.managers.storageManagers.AppDatabase
+import tice.managers.storageManagers.VersionCodeStorageManagerType
 import tice.managers.storageManagers.migration.MigrationManager
+import tice.managers.storageManagers.migration.MigrationTo31
 import tice.models.*
 import tice.utility.uuidString
 import java.net.URL
@@ -21,6 +30,23 @@ import java.util.*
 
 internal class MigrationManagerTest {
     private val TEST_DB = "migration-test"
+
+    private val context: Context = mockk()
+    private val sharedPrefs: SharedPreferences = mockk()
+    private val migrationSharedPrefs: SharedPreferences = mockk()
+    private val versionStorageManager: VersionCodeStorageManagerType = mockk()
+
+    private lateinit var migrationManager: MigrationManager
+
+    @Before
+    fun before() {
+        clearAllMocks()
+
+        every { context.getSharedPreferences("tice", Context.MODE_PRIVATE) } returns sharedPrefs
+        every { context.getSharedPreferences("migration", Context.MODE_PRIVATE) } returns migrationSharedPrefs
+
+        migrationManager = MigrationManager(context, versionStorageManager)
+    }
 
     @Rule
     @JvmField
@@ -193,11 +219,37 @@ internal class MigrationManagerTest {
     }
 
     @Test
-    fun allMigrations() {
+    fun allDatabaseMigrations() {
         helper.createDatabase(TEST_DB, 1).apply {
             close()
         }
 
-        getAppDatabase(MigrationManager.allMigrations())
+        getAppDatabase(MigrationManager.allDatabaseMigrations())
+    }
+
+    @Test
+    fun migrationTo31() {
+        val migration = MigrationTo31()
+        val versionCode = 30
+
+        val sharedPrefsEditor: SharedPreferences.Editor = mockk(relaxUnitFun = true)
+
+        every { migrationSharedPrefs.getInt("version", -1) } returns versionCode
+        every { sharedPrefs.edit() } returns sharedPrefsEditor
+        every { sharedPrefsEditor.putInt("versionCode", versionCode) } returns sharedPrefsEditor
+
+        migration.migrate(context)
+
+        verify { sharedPrefsEditor.putInt("versionCode", versionCode) }
+        verify { sharedPrefsEditor.apply() }
+    }
+
+    @Test
+    fun executeMigrationsUpToDate() {
+        every { versionStorageManager.outdatedVersion } returns false
+
+        migrationManager.executeMigrationsBlocking(context)
+
+        verify(inverse = true) { versionStorageManager.storeVersionCode(any()) }
     }
 }
