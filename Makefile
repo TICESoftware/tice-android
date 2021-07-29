@@ -12,7 +12,10 @@ brew: Brewfile
 gems: Gemfile Gemfile.lock
 	bundle install
 
-lint: ruby gems brew .FORCE
+app/google-services.json:
+	cp "${GOOGLE_SERVICES_JSON}" app/google-services.json
+
+lint: ruby gems brew app/google-services.json .FORCE
 	bundle exec fastlane lint strict:true
 
 start_server: submodules stop_server .FORCE
@@ -27,7 +30,7 @@ setup_emulator: submodules teardown_emulator .FORCE
 teardown_emulator: .FORCE
 	$(SHELL) Scripts/teardownEmulator.sh
 
-tests: submodules ruby gems brew start_server setup_emulator .FORCE
+tests: submodules ruby gems brew start_server setup_emulator app/google-services.json .FORCE
 	$(SHELL) Scripts/runTests.sh
 	$(MAKE) teardown_emulator
 	$(MAKE) stop_server
