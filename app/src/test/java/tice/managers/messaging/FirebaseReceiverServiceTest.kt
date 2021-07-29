@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tice.managers.messaging.notificationHandler.VerifyDeviceHandlerType
+import tice.managers.storageManagers.DeviceIdStorageManagerType
 import tice.models.messaging.Envelope
 import tice.models.messaging.Payload
 import tice.models.messaging.PayloadContainer
@@ -19,6 +20,7 @@ internal class FirebaseReceiverServiceTest {
 
     private val mockPostOffice: PostOfficeType = mockk(relaxUnitFun = true)
     private val mockVerifyDeviceHandler: VerifyDeviceHandlerType = mockk(relaxUnitFun = true)
+    private val mockDeviceIdStorageManager: DeviceIdStorageManagerType = mockk(relaxUnitFun = true)
 
     @BeforeEach
     fun setUp() {
@@ -27,6 +29,7 @@ internal class FirebaseReceiverServiceTest {
         firebaseReceiverService = FirebaseReceiverService().apply {
             postOffice = mockPostOffice
             verifyDeviceHandler = mockVerifyDeviceHandler
+            deviceIdStorageManager = mockDeviceIdStorageManager
         }
     }
 
@@ -37,6 +40,7 @@ internal class FirebaseReceiverServiceTest {
         firebaseReceiverService.onNewToken(TEST_NEW_TOKEN)
 
         verify(exactly = 1) { mockVerifyDeviceHandler.startUpdatingDeviceId(TEST_NEW_TOKEN) }
+        verify(exactly = 1) { mockDeviceIdStorageManager.storeDeviceId(TEST_NEW_TOKEN) }
     }
 
     @Test

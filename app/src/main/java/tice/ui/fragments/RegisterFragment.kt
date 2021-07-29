@@ -54,7 +54,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun onButtonClicked() {
-        viewModel.createUserProcess(binding.name.text.toString())
+        viewModel.registerUser(binding.name.text.toString(), requireContext())
         hideKeyboard()
     }
 

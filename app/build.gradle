@@ -67,7 +67,8 @@ android {
     def placeholders = [
             "googleMapsAPIKey"              : configVar("GOOGLE_MAPS_API_KEY"),
             "developmentVerificationCode"   : configVar("DEVELOPMENT_VERIFICATION_CODE"),
-            "cncBaseURL"                    : configVar("CNC_SERVER_ADDRESS")
+            "cncBaseURL"                    : configVar("CNC_SERVER_ADDRESS"),
+            "hcaptchaSiteKey"               : configVar("HCAPTCHA_SITE_KEY")
     ]
 
     productFlavors {
@@ -161,7 +162,6 @@ android {
                 "TypographyEllipsis",
                 "VectorPath",
                 "DuplicateIncludedIds",
-                "IidCompatibilityCheckFailure",
                 "Typos"
     }
 
@@ -245,7 +245,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-plus:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
@@ -266,6 +266,9 @@ dependencies {
     runtimeOnly('io.jsonwebtoken:jjwt-orgjson:0.11.1') {
         exclude group: 'org.json', module: 'json' //provided by Android natively
     }
+
+    //hCAPTCHA
+    implementation 'com.github.hcaptcha:hcaptcha-android-sdk:1.1.0'
 
     //logback
     implementation 'org.slf4j:slf4j-api:1.7.25'

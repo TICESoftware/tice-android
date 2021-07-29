@@ -64,17 +64,33 @@ class Backend @Inject constructor(
         )
     }
 
-    override suspend fun createUser(
+    override suspend fun createUserUsingPush(
         publicKeys: UserPublicKeys,
         platform: Platform,
-        deviceId: String,
+        deviceId: String?,
         verificationCode: VerificationCode,
         publicName: String?
     ): CreateUserResponse {
-        val body = CreateUserRequest(publicKeys, platform, deviceId, verificationCode, publicName)
+        val body = CreateUserPushRequest(publicKeys, platform, deviceId, verificationCode, publicName)
 
         return httpRequester.request(
-            "$BASE_URL/user",
+            "$BASE_URL/user/push",
+            HTTPRequesterType.HTTPMethod.POST,
+            standardHeaders,
+            body
+        )
+    }
+
+    override suspend fun createUserUsingCaptcha(
+        publicKeys: UserPublicKeys,
+        platform: Platform,
+        verificationCode: VerificationCode,
+        publicName: String?
+    ): CreateUserResponse {
+        val body = CreateUserCaptchaRequest(publicKeys, platform, verificationCode, publicName)
+
+        return httpRequester.request(
+            "$BASE_URL/user/captcha",
             HTTPRequesterType.HTTPMethod.POST,
             standardHeaders,
             body

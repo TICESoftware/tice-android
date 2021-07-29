@@ -17,6 +17,7 @@ import kotlinx.serialization.json.Json
 import tice.AppFlow
 import tice.TICEApplication
 import tice.managers.messaging.notificationHandler.VerifyDeviceHandlerType
+import tice.managers.storageManagers.DeviceIdStorageManagerType
 import tice.managers.storageManagers.VersionCodeStorageManager
 import tice.models.LocalizationId
 import tice.models.messaging.Envelope
@@ -35,6 +36,9 @@ class FirebaseReceiverService : FirebaseMessagingService() {
 
     @Inject
     lateinit var verifyDeviceHandler: VerifyDeviceHandlerType
+
+    @Inject
+    lateinit var deviceIdStorageManager: DeviceIdStorageManagerType
 
     @Inject
     lateinit var appContext: Context
@@ -66,6 +70,7 @@ class FirebaseReceiverService : FirebaseMessagingService() {
         super.onNewToken(newToken)
 
         logger.debug("Received new DeviceId: [$newToken]")
+        deviceIdStorageManager.storeDeviceId(newToken)
         verifyDeviceHandler.startUpdatingDeviceId(newToken)
     }
 

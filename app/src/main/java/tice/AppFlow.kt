@@ -9,7 +9,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import dagger.Lazy
@@ -172,10 +172,8 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {
                 withTimeoutOrNull(2000) {
                     suspendCoroutine<String> { continuation ->
-                        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
-                            continuation.resume(
-                                result.token
-                            )
+                        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                            continuation.resume(token)
                         }
                     }
                 }?.let { verifyDeviceHandler.get().startUpdatingDeviceId(it) }

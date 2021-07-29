@@ -112,24 +112,47 @@ internal class BackendTest {
     }
 
     @Test
-    fun createUser() = runBlockingTest {
-        val urlString = "$TEST_BASE_URL/user"
+    fun createUserUsingPush() = runBlockingTest {
+        val urlString = "$TEST_BASE_URL/user/push"
         val createUserResponse = CreateUserResponse(TEST_USER_UUID)
         val userPublicKeys = UserPublicKeys(TEST_SIGNINGKEY, TEST_IDENTITYKEY, TEST_SIGNINGPREKEY, TEST_PREKEYSIGNATURE, TEST_ONETIMEPREKEY)
-        val body = CreateUserRequest(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+        val body = CreateUserPushRequest(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
 
         coEvery {
             mockHTTPRequester.executeRequest(
                 urlString,
                 HTTPRequesterType.HTTPMethod.POST,
                 TEST_STANDARD_HEADERS,
-                Pair(body, CreateUserRequest.serializer())
+                Pair(body, CreateUserPushRequest.serializer())
             )
         } returns mockResponse
 
         coEvery { mockHTTPRequester.extractResponse(mockResponse, CreateUserResponse.serializer()) } returns createUserResponse
 
-        val response = backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+        val response = backend.createUserUsingPush(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+
+        Assert.assertEquals(response, createUserResponse)
+    }
+
+    @Test
+    fun createUserUsingCaptcha() = runBlockingTest {
+        val urlString = "$TEST_BASE_URL/user/captcha"
+        val createUserResponse = CreateUserResponse(TEST_USER_UUID)
+        val userPublicKeys = UserPublicKeys(TEST_SIGNINGKEY, TEST_IDENTITYKEY, TEST_SIGNINGPREKEY, TEST_PREKEYSIGNATURE, TEST_ONETIMEPREKEY)
+        val body = CreateUserCaptchaRequest(userPublicKeys, Platform.Android, TEST_VERIFICATIONCODE, TEST_USERNAME)
+
+        coEvery {
+            mockHTTPRequester.executeRequest(
+                urlString,
+                HTTPRequesterType.HTTPMethod.POST,
+                TEST_STANDARD_HEADERS,
+                Pair(body, CreateUserCaptchaRequest.serializer())
+            )
+        } returns mockResponse
+
+        coEvery { mockHTTPRequester.extractResponse(mockResponse, CreateUserResponse.serializer()) } returns createUserResponse
+
+        val response = backend.createUserUsingCaptcha(userPublicKeys, Platform.Android, TEST_VERIFICATIONCODE, TEST_USERNAME)
 
         Assert.assertEquals(response, createUserResponse)
     }

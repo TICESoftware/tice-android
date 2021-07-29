@@ -47,6 +47,8 @@ class ConfigModule {
         const val PUBLIC_SERVER_KEY = "PUBLIC_SERVER_KEY"
         const val CRYPTO_PARAMS = "CRYPTO_PARAMS"
 
+        const val HCAPTCHA_SITE_KEY = "HCAPTCHA_SITE_KEY"
+
         const val BEEKEEPER_PRODUCT = "BEEKEEPER_PRODUCT"
         const val BEEKEEPER_BASE_URL = "BEEKEEPER_BASE_URL"
         const val BEEKEEPER_DISPATCH_INTERVAL = "BEEKEEPER_DISPATCH_INTERVAL"
@@ -235,6 +237,14 @@ class ConfigModule {
             context.packageName,
             PackageManager.GET_META_DATA
         ).metaData.getString("beekeeper_secret")!!
+
+    @Provides
+    @Named(HCAPTCHA_SITE_KEY)
+    fun provideHCaptchaSiteKey(context: Context): String =
+        context.packageManager.getApplicationInfo(
+            context.packageName,
+            PackageManager.GET_META_DATA
+        ).metaData.getString("hcaptcha_site_key")!!
 
     @Provides
     @Named(DEVELOPMENT_VERIFICATION_CODE)

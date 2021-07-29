@@ -10,8 +10,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import tice.crypto.CryptoManager
@@ -203,7 +202,7 @@ internal class AppFlowTest {
         val TEST_ID = "testId"
 
 
-        mockkStatic(FirebaseInstanceId::class)
+        mockkStatic(FirebaseMessaging::class)
         mockkStatic(ProcessLifecycleOwner::class)
         mockkStatic(WorkManager::class)
         mockkConstructor(NotificationCompat.Builder::class)
@@ -214,12 +213,12 @@ internal class AppFlowTest {
         every { WorkManager.getInstance(any()) } returns mockWorkManager
         every { mockWorkManager.enqueueUniquePeriodicWork(any(), any(), any()) } returns mockk()
 
-        val temp = slot<OnSuccessListener<InstanceIdResult>>()
+        val temp = slot<OnSuccessListener<String>>()
 
-        every { FirebaseInstanceId.getInstance() } returns mockk {
-            every { instanceId } returns mockk {
+        every { FirebaseMessaging.getInstance() } returns mockk {
+            every { token } returns mockk {
                 every { addOnSuccessListener(capture(temp)) } answers {
-                    temp.captured.onSuccess(mockk { every { token } returns TEST_ID })
+                    temp.captured.onSuccess(TEST_ID)
                     mockk()
                 }
             }

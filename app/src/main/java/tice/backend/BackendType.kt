@@ -11,10 +11,17 @@ interface BackendType {
 
     suspend fun verify(deviceId: DeviceId, platform: Platform)
 
-    suspend fun createUser(
+    suspend fun createUserUsingPush(
         publicKeys: UserPublicKeys,
         platform: Platform,
-        deviceId: String,
+        deviceId: String?,
+        verificationCode: VerificationCode,
+        publicName: String?
+    ): CreateUserResponse
+
+    suspend fun createUserUsingCaptcha(
+        publicKeys: UserPublicKeys,
+        platform: Platform,
         verificationCode: VerificationCode,
         publicName: String?
     ): CreateUserResponse

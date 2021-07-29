@@ -38,7 +38,6 @@ internal class BackendTestIntegration {
     private val cryptoParams = ConfigModule.CryptoParams(100, 100, "TICE", 100, "SHA512withECDSA", 100, 5)
     private val cryptoManager = CryptoManager(sodium)
     private val doubleRatchetProvider: DoubleRatchetProviderType = mockk()
-    private val conversationCryptoMiddleware = ConversationCryptoMiddleware(cryptoManager, mockCryptoStorageManager, doubleRatchetProvider, sodium, cryptoParams)
     private val authManager: AuthManagerType = AuthManager(sodium, cryptoParams)
 
     private val TEST_DEVICEID: String = "deviceId"
@@ -77,7 +76,7 @@ internal class BackendTestIntegration {
     }
 
     @Test
-    fun createUser() = runBlockingTest {
+    fun createUserUsingPush() = runBlockingTest {
         val keyPairSlot = slot<KeyPair>()
 
         coEvery { mockCryptoStorageManager.saveIdentityKeyPair(capture(keyPairSlot)) } answers {
@@ -97,7 +96,35 @@ internal class BackendTestIntegration {
 
         Assertions.assertDoesNotThrow {
             runBlockingTest {
-                backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
+                backend.createUserUsingPush(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
+            }
+        }
+    }
+
+    @Test
+    fun createUserUsingCaptcha() = runBlockingTest {
+        val keyPairSlot = slot<KeyPair>()
+
+        coEvery { mockCryptoStorageManager.saveIdentityKeyPair(capture(keyPairSlot)) } answers {
+            coEvery { mockCryptoStorageManager.loadIdentityKeyPair() } returns keyPairSlot.captured
+            Unit
+        }
+
+        val signingKeyPair = cryptoManager.generateSigningKeyPair()
+
+        val userPublicKeys = UserPublicKeys(
+            signingKeyPair.publicKey,
+            "identityKey".encodeToByteArray(),
+            "signedPrekey".encodeToByteArray(),
+            "prekeySignature".encodeToByteArray(),
+            listOf("oneTimePrekey".encodeToByteArray())
+        )
+
+        val hcaptchaResponse = "10000000-aaaa-bbbb-cccc-000000000001"
+
+        Assertions.assertDoesNotThrow {
+            runBlockingTest {
+                backend.createUserUsingCaptcha(userPublicKeys, Platform.Android, hcaptchaResponse, TEST_USERNAME)
             }
         }
     }
@@ -345,7 +372,7 @@ internal class BackendTestIntegration {
             listOf("oneTimePrekey".encodeToByteArray())
         )
 
-        val createUserResponse = backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
+        val createUserResponse = backend.createUserUsingPush(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
 
         return SignedInUser(
             createUserResponse.userId,
@@ -355,7 +382,7 @@ internal class BackendTestIntegration {
         )
     }
 
-    private suspend fun createSelfSigned(signedInUser: SignedInUser): Certificate {
+    private fun createSelfSigned(signedInUser: SignedInUser): Certificate {
         return authManager.createUserSignedMembershipCertificate(
             signedInUser.userId,
             TEST_GROUP_ID,

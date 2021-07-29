@@ -67,6 +67,9 @@
             android:name="beekeeper_secret"
             android:value="${beekeeperSecret}" />
         <meta-data
+            android:name="hcaptcha_site_key"
+            android:value="${hcaptchaSiteKey}" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleMapsAPIKey}" />
         <meta-data
