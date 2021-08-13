@@ -41,14 +41,29 @@ android {
 
     ext.configVar = { name ->
         Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        def value = properties.getProperty(name) ?: System.getenv(name)
-        if (value == null) {
-            logger.error("Value for variable {} not defined via local configuration or environment variable. Falling back to empty string.", name)
-            value = ""
+        def envValue = System.getenv(name)
+        if (envValue != null) {
+            logger.error("Using environment variable as value for {}.", name)
+            return envValue
         }
-        return value
+
+        def file = project.rootProject.file('local.properties')
+        if (file.exists()) {
+            properties.load(file.newDataInputStream())
+            def value = properties.getProperty(name)
+            if (value != null) {
+                logger.error("Using value from local configuration for {}.", name)
+                return value
+            } else {
+                logger.error("Value for variable {} not defined via local configuration or environment variable. Falling back to empty string.", name)
+                return ""
+            }
+        } else {
+            logger.error("Local configuration file not found and environment variable not set. Falling back to empty string for variable {}.", name)
+            return ""
+        }
     }
+
     def placeholders = [
             "googleMapsAPIKey"              : configVar("GOOGLE_MAPS_API_KEY"),
             "developmentVerificationCode"   : configVar("DEVELOPMENT_VERIFICATION_CODE"),
@@ -59,61 +74,61 @@ android {
         development {
             applicationIdSuffix = ".development"
             versionNameSuffix = "-development"
-            manifestPlaceholders = placeholders.plus([
+            manifestPlaceholders = placeholders + [
                     baseURL         : "https://development.api.tice.app",
                     websocketURL    : "wss://development.api.tice.app",
                     deepLinkHost    : "develop.tice.app",
                     displayName     : "TICE Develop",
                     beekeeperProduct: "TICE-development",
                     beekeeperSecret : configVar("BEEKEEPER_SECRET_DEVELOPMENT")
-            ])
+            ]
         }
         instrumentation {
             minSdkVersion 26
             applicationIdSuffix = ".development"
-            manifestPlaceholders = placeholders.plus([
+            manifestPlaceholders = placeholders + [
                     baseURL         : configVar("SERVER_ADDRESS"),
                     websocketURL    : configVar("WS_SERVER_ADDRESS"),
                     deepLinkHost    : "develop.tice.app",
                     displayName     : "TICE Instrumentation",
                     beekeeperProduct: "TICE-development",
                     beekeeperSecret : configVar("BEEKEEPER_SECRET_DEVELOPMENT")
-            ])
+            ]
         }
         adhoc {
             applicationIdSuffix = ".testing"
             versionNameSuffix = "-testing"
-            manifestPlaceholders = placeholders.plus([
+            manifestPlaceholders = placeholders + [
                     baseURL         : "https://testing.api.tice.app",
                     websocketURL    : "wss://testing.api.tice.app",
                     deepLinkHost    : "testing.tice.app",
                     displayName     : "TICE Testing",
                     beekeeperProduct: "TICE-testing",
                     beekeeperSecret : configVar("BEEKEEPER_SECRET_TESTING")
-            ])
+            ]
         }
         preview {
             applicationIdSuffix = ".preview"
             versionNameSuffix = "-preview"
-            manifestPlaceholders = placeholders.plus([
+            manifestPlaceholders = placeholders + [
                     baseURL         : "https://preview.api.tice.app",
                     websocketURL    : "wss://preview.api.tice.app",
                     deepLinkHost    : "preview.tice.app",
                     displayName     : "TICE Preview",
                     beekeeperProduct: "TICE-preview",
                     beekeeperSecret : configVar("BEEKEEPER_SECRET_PREVIEW")
-            ])
+            ]
         }
         production {
             applicationIdSuffix = ".production"
-            manifestPlaceholders = placeholders.plus([
+            manifestPlaceholders = placeholders + [
                     baseURL         : "https://api.tice.app",
                     websocketURL    : "wss://api.tice.app",
                     deepLinkHost    : "tice.app",
                     displayName     : "TICE",
                     beekeeperProduct: "TICE-production",
                     beekeeperSecret : configVar("BEEKEEPER_SECRET_PRODUCTION")
-            ])
+            ]
         }
     }
 
