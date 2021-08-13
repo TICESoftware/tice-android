@@ -44,7 +44,7 @@ internal class BackendTestIntegration {
     private val TEST_DEVICEID: String = "deviceId"
     private lateinit var TEST_BASE_URL: String
 
-    private val TEST_VERIFICATIONCODE = "429-228"
+    private lateinit var TEST_VERIFICATION_CODE: String
     private val TEST_USERNAME = "UserName"
 
     private val TEST_GROUP_ID = UUID.randomUUID()
@@ -58,6 +58,7 @@ internal class BackendTestIntegration {
 
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         TEST_BASE_URL = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA).metaData.getString("base_url")!!
+        TEST_VERIFICATION_CODE = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA).metaData.getString("development_verification_code")!!
 
         backend = Backend(TEST_BASE_URL, "2.0", "120", "android", hTTPRequester, mockSignedInUserManager, authManager)
 
@@ -96,7 +97,7 @@ internal class BackendTestIntegration {
 
         Assertions.assertDoesNotThrow {
             runBlockingTest {
-                backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+                backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
             }
         }
     }
@@ -109,7 +110,7 @@ internal class BackendTestIntegration {
 
         Assertions.assertDoesNotThrow {
             runBlockingTest {
-                backend.updateUser(signedInUser.userId, null, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+                backend.updateUser(signedInUser.userId, null, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
             }
         }
     }
@@ -344,7 +345,7 @@ internal class BackendTestIntegration {
             listOf("oneTimePrekey".encodeToByteArray())
         )
 
-        val createUserResponse = backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATIONCODE, TEST_USERNAME)
+        val createUserResponse = backend.createUser(userPublicKeys, Platform.Android, TEST_DEVICEID, TEST_VERIFICATION_CODE, TEST_USERNAME)
 
         return SignedInUser(
             createUserResponse.userId,
