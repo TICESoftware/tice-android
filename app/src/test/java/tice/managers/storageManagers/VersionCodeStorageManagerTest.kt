@@ -2,15 +2,12 @@ package tice.managers.storageManagers
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.ticeapp.TICE.BuildConfig
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class VersionCodeStorageManagerTest {
@@ -22,7 +19,8 @@ internal class VersionCodeStorageManagerTest {
     private val mockTicePrefs: SharedPreferences = mockk(relaxUnitFun = true)
 
     private val MIGRATION_PREFS_KEY = "migration"
-    private val MIGRATION_VERSION_KEY = "version"
+    private val VERSION_CODE_KEY = "versionCode"
+    private val DEPRECATED_MIGRATION_VERSION_KEY = "version"
 
     private val TICE_SHARED_PREFS_KEY = "tice"
     private val SIGNED_IN_USER_KEY = "signedInUser"
@@ -36,71 +34,53 @@ internal class VersionCodeStorageManagerTest {
         versionCodeStorageManager = VersionCodeStorageManager(mockContext)
     }
 
-    @Nested
-    inner class MigrationRequired {
+    @Test
+    fun updateStoredVersionCode() {
+        val versionCode = 42
+        val mockTicePrefsEdit: SharedPreferences.Editor = mockk(relaxUnitFun = true)
 
-        @Test
-        fun `not required`() = runBlockingTest {
-            every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
+        every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
+        every { mockTicePrefs.edit() } returns mockTicePrefsEdit
+        every { mockTicePrefsEdit.putInt(VERSION_CODE_KEY, versionCode) } returns mockTicePrefsEdit
 
-            every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns BuildConfig.VERSION_CODE
+        versionCodeStorageManager.storeVersionCode(versionCode)
 
-            val result = versionCodeStorageManager.outdatedVersion()
-
-            Assertions.assertEquals(false, result)
-        }
-
-        @Test
-        fun `required from minimum version`() = runBlockingTest {
-            every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
-            every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
-
-            every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
-            every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns true
-
-            val result = versionCodeStorageManager.outdatedVersion()
-
-            Assertions.assertEquals(true, result)
-        }
-
-        @Test
-        fun `required from one version below`() = runBlockingTest {
-            every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
-            every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
-
-            every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns BuildConfig.VERSION_CODE - 1
-            every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns true
-
-            val result = versionCodeStorageManager.outdatedVersion()
-
-            Assertions.assertEquals(true, result)
-        }
-
-        @Test
-        fun `not required because of first startup`() = runBlockingTest {
-            every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
-            every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
-
-            every { mockMigrationPrefs.getInt(MIGRATION_VERSION_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
-            every { mockTicePrefs.contains(SIGNED_IN_USER_KEY) } returns false
-
-            val result = versionCodeStorageManager.outdatedVersion()
-
-            Assertions.assertEquals(false, result)
-        }
+        verify(exactly = 1) { mockTicePrefsEdit.putInt(VERSION_CODE_KEY, versionCode) }
+        verify(exactly = 1) { mockTicePrefsEdit.apply() }
     }
 
     @Test
-    fun updateStoredVersionCode() = runBlockingTest {
-        val mockMigrationPrefsEdit: SharedPreferences.Editor = mockk(relaxUnitFun = true)
+    fun getStoredVersionCode() {
+        val versionCode = 42
 
+        every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
+        every { mockTicePrefs.getInt(VERSION_CODE_KEY, NO_VERSION_CODE) } returns versionCode
+
+        val storedVersionCode = versionCodeStorageManager.getStoredVersionCode()
+        Assertions.assertEquals(versionCode, storedVersionCode)
+    }
+
+    @Test
+    fun getStoredVersionCodeDeprecatedSharedPrefs() {
+        val versionCode = 42
+
+        every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
+        every { mockTicePrefs.getInt(VERSION_CODE_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
         every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
-        every { mockMigrationPrefs.edit() } returns mockMigrationPrefsEdit
-        every { mockMigrationPrefsEdit.putInt(MIGRATION_VERSION_KEY, BuildConfig.VERSION_CODE) } returns mockMigrationPrefsEdit
+        every { mockMigrationPrefs.getInt("version", NO_VERSION_CODE) } returns versionCode
 
-        versionCodeStorageManager.storeVersionCode()
+        val storedVersionCode = versionCodeStorageManager.getStoredVersionCode()
+        Assertions.assertEquals(versionCode, storedVersionCode)
+    }
 
-        verify(exactly = 1) { mockMigrationPrefsEdit.putInt(MIGRATION_VERSION_KEY, BuildConfig.VERSION_CODE) }
-        verify(exactly = 1) { mockMigrationPrefsEdit.apply() }
+    @Test
+    fun getStoredVersionCodeNothingStored() {
+        every { mockContext.getSharedPreferences(TICE_SHARED_PREFS_KEY, Context.MODE_PRIVATE) } returns mockTicePrefs
+        every { mockTicePrefs.getInt(VERSION_CODE_KEY, NO_VERSION_CODE) } returns NO_VERSION_CODE
+        every { mockContext.getSharedPreferences(MIGRATION_PREFS_KEY, Context.MODE_PRIVATE) } returns mockMigrationPrefs
+        every { mockMigrationPrefs.getInt("version", NO_VERSION_CODE) } returns NO_VERSION_CODE
+
+        val storedVersionCode = versionCodeStorageManager.getStoredVersionCode()
+        Assertions.assertEquals(30, storedVersionCode)
     }
 }

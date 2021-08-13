@@ -7,7 +7,7 @@ import javax.inject.Inject
 class VersionCodeStorageManager @Inject constructor(private val context: Context) : VersionCodeStorageManagerType {
 
     private val migrationPrefsName = "migration"
-    private val migrationVersionKey = "versionCode"
+    private val versionCodeKey = "versionCode"
 
     private val sharedPrefsName = "tice"
 
@@ -16,13 +16,13 @@ class VersionCodeStorageManager @Inject constructor(private val context: Context
 
     override fun storeVersionCode(versionCode: Int) {
         val prefs = context.getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE)
-        prefs.edit().putInt(migrationVersionKey, versionCode).apply()
+        prefs.edit().putInt(versionCodeKey, versionCode).apply()
     }
 
     override fun getStoredVersionCode(): Int {
         val prefs = context.getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE)
         val noVersionCode = -1
-        var storedVersion = prefs.getInt(migrationVersionKey, noVersionCode)
+        var storedVersion = prefs.getInt(versionCodeKey, noVersionCode)
 
         if (storedVersion != noVersionCode) {
             return storedVersion
