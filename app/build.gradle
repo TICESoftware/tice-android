@@ -162,7 +162,8 @@ android {
                 "TypographyEllipsis",
                 "VectorPath",
                 "DuplicateIncludedIds",
-                "Typos"
+                "Typos",
+                "NotifyDataSetChanged"
     }
 
     testOptions {
