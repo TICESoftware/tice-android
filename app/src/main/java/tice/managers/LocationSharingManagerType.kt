@@ -7,11 +7,13 @@ import java.util.*
 
 interface LocationSharingManagerType {
 
+    val memberLocationFlow: SharedFlow<UserLocation>
+
     suspend fun getAllLocationSharingStatesOfGroup(groupId: GroupId): List<LocationSharingState>
     fun getFlowOfAllLocationSharingStatesOfGroup(groupId: GroupId): Flow<List<LocationSharingState>>
     suspend fun checkOutdatedLocationSharingStates()
     fun startOutdatedLocationSharingStateCheck()
 
-    suspend fun getLocationUpdateFlow(userIds: Collection<UserId>, groupId: GroupId): SharedFlow<UserLocation>
+//    suspend fun getLocationUpdateFlow(userIds: Collection<UserId>, groupId: GroupId): SharedFlow<UserLocation>
     fun lastLocation(userGroupIds: UserGroupIds): Location?
 }

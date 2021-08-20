@@ -1,7 +1,6 @@
 package tice.managers.group
 
 import androidx.lifecycle.LiveData
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
 import kotlinx.serialization.json.Json
 import tice.backend.BackendType
@@ -349,7 +348,7 @@ class TeamManager @Inject constructor(
         chatStorageManager.store(listOf(metaChatInfo))
     }
 
-    override suspend fun setMeetingPoint(meetingPoint: LatLng, team: Team) {
+    override suspend fun setMeetingPoint(meetingPoint: Coordinates, team: Team) {
         val membership = groupStorageManager.loadMembership(signedInUserManager.signedInUser.userId, team.groupId)
 
         val location = Location(meetingPoint.latitude, meetingPoint.longitude, 0.0, 0.0f, 0.0f, Date())

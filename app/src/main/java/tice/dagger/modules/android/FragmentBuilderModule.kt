@@ -20,7 +20,13 @@ abstract class FragmentBuilderModule {
     abstract fun contributeCreateTeamInviteFragment(): CreateTeamInviteFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeMapFragment(): MapFragment
+    abstract fun contributeMapFragment(): GroupMapFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeGoogleMapsContainerFragment(): GoogleMapsContainerFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMapboxMapContainerFragment(): MapboxMapContainerFragment
 
     @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment

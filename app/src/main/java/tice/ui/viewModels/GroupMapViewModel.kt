@@ -1,8 +1,12 @@
 package tice.ui.viewModels
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.mapbox.maps.MapboxMap
+import com.mapbox.maps.ResourceOptionsManager
+import com.mapbox.maps.plugin.Plugin
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
@@ -24,9 +28,10 @@ import tice.utility.provider.NameProviderType
 import tice.utility.provider.UserDataGeneratorType
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
 import kotlin.math.cos
 
-class MapViewModel @Inject constructor(
+class GroupMapViewModel @Inject constructor(
     private val locationManager: LocationManagerType,
     private val groupStorageManager: GroupStorageManagerType,
     private val teamManager: TeamManagerType,
@@ -35,9 +40,9 @@ class MapViewModel @Inject constructor(
     private val coroutineContextProvider: CoroutineContextProviderType,
     private val nameProvider: NameProviderType,
     private val userDataGenerator: UserDataGeneratorType,
-    private val settingsManager: SettingsManagerType,
     private val chatStorageManager: ChatStorageManagerType,
-    private val signedInUserManager: SignedInUserManagerType
+    private val signedInUserManager: SignedInUserManagerType,
+    @Named("MAPBOX_SECRET_TOKEN") private val mapboxSecretToken: String
 ) : ViewModel() {
     private val logger by getLogger()
 
@@ -47,14 +52,6 @@ class MapViewModel @Inject constructor(
     val teamName: LiveData<GroupNameData>
         get() = _teamName
 
-    private val _userLocationUpdate = MutableLiveData<UserLocationUpdate>()
-    val userLocationUpdate: LiveData<UserLocationUpdate>
-        get() = _userLocationUpdate
-
-    private val _meetingPoint = MediatorLiveData<Location?>()
-    val meetingPoint: LiveData<Location?>
-        get() = _meetingPoint
-
     private val _meetUpButtonState = MediatorLiveData<MeetUpButtonState>()
     val meetUpButtonState: LiveData<MeetUpButtonState>
         get() = _meetUpButtonState
@@ -63,21 +60,6 @@ class MapViewModel @Inject constructor(
     val event: SharedFlow<MapEvent>
         get() = _event
 
-    val ownLocationUpdateFlow
-        get() = locationManager.getOwnLocationUpdateFlow()
-
-    var cameraLocation: CameraSettings
-        get() = settingsManager.cameraSettings
-        set(value) {
-            settingsManager.cameraSettings = value
-        }
-
-    var currentUserId: UserId? = null
-
-    private val _userInfo = MutableLiveData<UserInfoUpdate>()
-    val userInfo: LiveData<UserInfoUpdate>
-        get() = _userInfo
-
     private val _usersInMeetup = MutableLiveData<Set<UserId>>()
     val usersInMeetup: LiveData<Set<UserId>>
         get() = _usersInMeetup
@@ -85,11 +67,11 @@ class MapViewModel @Inject constructor(
     val unreadCount: LiveData<Int>
         get() = chatStorageManager.unreadMessageCountLiveData(teamId)
 
-    private val _rectFittingEnabled = MutableLiveData(false)
-    val rectFittingEnabled: LiveData<Boolean>
-        get() = _rectFittingEnabled
-
     var setup = false
+
+    fun initMapbox(context: Context) {
+        ResourceOptionsManager.getDefault(context, mapboxSecretToken)
+    }
 
     fun setupData(teamId: GroupId) {
         if (setup) return
@@ -101,14 +83,6 @@ class MapViewModel @Inject constructor(
                 groupStorageManager.loadTeam(teamId)?.let { teamManager.reload(it) }
             } catch (e: Exception) {
                 logger.error("Reloading team failed", e)
-            }
-        }
-
-        _meetingPoint.addSource(groupStorageManager.getTeamObservable(teamId)) { team ->
-            viewModelScope.launch(coroutineContextProvider.IO) {
-                team?.let {
-                    _meetingPoint.postValue(team.meetingPoint)
-                }
             }
         }
 
@@ -143,44 +117,6 @@ class MapViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(coroutineContextProvider.Default) {
-            val userIds = groupStorageManager.loadMembershipsOfGroup(teamId).map { it.userId }.toSet()
-
-            locationSharingManager.getLocationUpdateFlow(userIds, teamId).collect { userLocation ->
-                logger.debug("Process userLocation update for user ${userLocation.userId}")
-                if (!userIds.contains(userLocation.userId)) return@collect
-                logger.debug("Updating userLocation for user ${userLocation.userId}")
-
-                userManager.getUser(userLocation.userId)?.let {
-                    val displayName = nameProvider.getUserName(it)
-                    val shortName = nameProvider.getShortName(displayName)
-                    val color = userDataGenerator.generateColor(it.userId)
-                    _userLocationUpdate.postValue(
-                        UserLocationUpdate(
-                            it.userId,
-                            displayName,
-                            shortName,
-                            color,
-                            userLocation.location.latitude,
-                            userLocation.location.longitude
-                        )
-                    )
-
-                    if (currentUserId == userLocation.userId) {
-                        _userInfo.postValue(
-                            UserInfoUpdate(
-                                it.userId,
-                                displayName,
-                                userLocation.location.latitude,
-                                userLocation.location.longitude,
-                                userLocation.location.timestamp
-                            )
-                        )
-                    }
-                }
-            }
-        }
-
         viewModelScope.launch(coroutineContextProvider.IO) {
             chatStorageManager.getLastUnreadMessagesFlow(teamId).drop(1).collect { message ->
                 message ?: return@collect
@@ -206,19 +142,6 @@ class MapViewModel @Inject constructor(
             }
         }
         setup = true
-    }
-
-    fun setMeetingPoint(position: LatLng) {
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                val team = groupStorageManager.loadTeam(teamId) ?: throw Exception("No running Meetup")
-                teamManager.setMeetingPoint(position, team)
-                _meetingPoint.postValue(_meetingPoint.value)
-            } catch (e: Exception) {
-                logger.error(e.message, e)
-                _event.emit(MapEvent.ErrorEvent.MarkerError)
-            }
-        }
     }
 
     fun triggerMeetupAction() {
@@ -257,53 +180,6 @@ class MapViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun initUserData(id: UserId) {
-        currentUserId = id
-
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            val lastLocation = locationSharingManager.lastLocation(UserGroupIds(id, teamId))
-
-            lastLocation?.let {
-                userManager.getUser(id)?.let {
-                    val displayName = nameProvider.getUserName(it)
-                    _userInfo.postValue(
-                        UserInfoUpdate(
-                            it.userId,
-                            displayName,
-                            lastLocation.latitude,
-                            lastLocation.longitude,
-                            lastLocation.timestamp
-                        )
-                    )
-                }
-            }
-        }
-    }
-
-    fun onRectFittingClicked() {
-        val rectFittingEnabled = rectFittingEnabled.value?.let { !it } ?: false
-        _rectFittingEnabled.postValue(rectFittingEnabled)
-    }
-
-    fun disableRectFitting() {
-        _rectFittingEnabled.postValue(false)
-    }
-
-    fun getCoordinate(location: Location): LatLngBounds {
-        val latRadian = Math.toRadians(location.latitude)
-        val degLatKm = 110.574235
-        val degLongKm = 110.572833 * cos(latRadian)
-        val deltaLat: Double = 5000 / 1000.0 / degLatKm
-        val deltaLong: Double = 5000 / 1000.0 / degLongKm
-
-        val minLat: Double = location.latitude - deltaLat
-        val minLong: Double = location.longitude - deltaLong
-        val maxLat: Double = location.latitude + deltaLat
-        val maxLong: Double = location.longitude + deltaLong
-
-        return LatLngBounds(LatLng(minLat, minLong), LatLng(maxLat, maxLong))
     }
 
     private suspend fun teamLocationSharingState(locationSharingStateList: List<LocationSharingState>): TeamLocationSharingState {

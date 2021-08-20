@@ -32,8 +32,23 @@ abstract class TICEViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MapViewModel::class)
-    abstract fun bindMapViewModel(myViewModel: MapViewModel): ViewModel
+    @ViewModelKey(GroupMapViewModel::class)
+    abstract fun bindMapViewModel(myViewModel: GroupMapViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GoogleMapsContainerViewModel::class)
+    abstract fun bindGoogleMapContainerViewModel(myViewModel: GoogleMapsContainerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MapboxContainerViewModel::class)
+    abstract fun bindMapboxContainerViewModel(myViewModel: MapboxContainerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MapboxMapContainerViewModel::class)
+    abstract fun bindMapboxMapContainerViewModel(myViewModel: MapboxMapContainerViewModel): ViewModel
 
     @Binds
     @IntoMap

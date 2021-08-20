@@ -22,7 +22,7 @@ class UserDataGenerator @Inject constructor(val context: Context) : UserDataGene
     }
 
     override fun generateColor(userId: UserId): Int {
-        val userIdInt = userId.toString().toUpperCase(Locale.getDefault()).hashCode()
+        val userIdInt = userId.toString().uppercase(Locale.getDefault()).hashCode()
         val index = (Math.abs(userIdInt)).rem(19)
 
         return Color.parseColor(colorPalette[index])

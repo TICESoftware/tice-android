@@ -36,7 +36,10 @@ class LocationSharingManager @Inject constructor(
     private val logger by getLogger()
 
     private var lastLocations: MutableMap<UserGroupIds, Location> = mutableMapOf()
-    private val userLocationFlow = MutableSharedFlow<UserLocation>()
+
+    private val _memberLocationFlow = MutableSharedFlow<UserLocation>()
+    override val memberLocationFlow: SharedFlow<UserLocation>
+        get() = _memberLocationFlow
 
     private var outdatedLocationSharingTimer: Timer? = null
 
@@ -114,11 +117,11 @@ class LocationSharingManager @Inject constructor(
         postOffice.registerEnvelopeReceiver(Payload.PayloadType.LocationUpdateV2, this)
     }
 
-    override suspend fun getLocationUpdateFlow(userIds: Collection<UserId>, groupId: GroupId): SharedFlow<UserLocation> = userLocationFlow.onSubscription {
-        userIds.forEach { userId ->
-            lastLocations[UserGroupIds(userId, groupId)]?.let { emit(UserLocation(userId, it)) }
-        }
-    }
+//    override suspend fun getLocationUpdateFlow(userIds: Collection<UserId>, groupId: GroupId): SharedFlow<UserLocation> = _memberLocationFlow.onSubscription {
+//        userIds.forEach { userId ->
+//            lastLocations[UserGroupIds(userId, groupId)]?.let { emit(UserLocation(userId, it)) }
+//        }
+//    }
 
     override fun lastLocation(userGroupIds: UserGroupIds): Location? = lastLocations[userGroupIds]
 
@@ -158,6 +161,6 @@ class LocationSharingManager @Inject constructor(
             }
         }
 
-        userLocationFlow.emit(UserLocation(user.userId, location))
+        _memberLocationFlow.emit(UserLocation(user.userId, location))
     }
 }

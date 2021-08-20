@@ -74,6 +74,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleMapsAPIKey}" />
         <meta-data
+            android:name="mapbox_public_token"
+            android:value="${mapboxPublicToken}" />
+        <meta-data
+            android:name="mapbox_secret_token"
+            android:value="${mapboxSecretToken}" />
+        <meta-data
             android:name="development_verification_code"
             android:value="${developmentVerificationCode}" />
         <meta-data

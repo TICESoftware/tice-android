@@ -2,6 +2,8 @@ package tice.managers.storageManagers
 
 import androidx.lifecycle.LiveData
 import androidx.room.withTransaction
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import tice.dagger.scopes.AppScope
 import tice.managers.storageManagers.MembershipsDiff.*
 import tice.models.*
@@ -34,6 +36,18 @@ class GroupStorageManager @Inject constructor(private val db: AppDatabase) : Gro
 
     override fun getTeamObservable(groupId: GroupId): LiveData<Team?> {
         return groupInterface.getTeamObservable(groupId)
+    }
+
+    override fun getTeamFlow(groupId: GroupId): Flow<Team?> {
+        return groupInterface.getTeamFlow(groupId)
+    }
+
+    override fun getTeamsFlow(): Flow<List<Team>> {
+        return groupInterface.getTeamsFlow()
+    }
+
+    override fun getMeetingPointFlow(groupId: GroupId): Flow<Location?> {
+        return groupInterface.getMeetingPointFlow(groupId)
     }
 
     override suspend fun loadTeams(): Set<Team> {
@@ -119,6 +133,10 @@ class GroupStorageManager @Inject constructor(private val db: AppDatabase) : Gro
 
     override suspend fun loadMembershipsOfGroup(groupId: GroupId): Set<Membership> {
         return groupInterface.getMembershipsOfGroup(groupId).map(MembershipEntity::membership).toSet()
+    }
+
+    override fun getMembershipUserIdFlowOfGroup(groupId: GroupId): Flow<List<UserId>> {
+        return groupInterface.getMembershipUserIdFlowOfGroup(groupId)
     }
 
     override suspend fun loadMembershipsOfUser(userId: UserId): Set<Membership> {

@@ -8,6 +8,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
@@ -170,13 +172,17 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
 
         if (signedInUserManager.get().signedIn()) {
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {
-                withTimeoutOrNull(2000) {
-                    suspendCoroutine<String> { continuation ->
-                        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                            continuation.resume(token)
+                if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(application.applicationContext) == ConnectionResult.SUCCESS) {
+                    withTimeoutOrNull(2000) {
+                        suspendCoroutine<String> { continuation ->
+                            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                                continuation.resume(token)
+                            }
                         }
-                    }
-                }?.let { verifyDeviceHandler.get().startUpdatingDeviceId(it) }
+                    }?.let { verifyDeviceHandler.get().startUpdatingDeviceId(it) }
+                } else {
+                    logger.info("Skip device token retrieval because Google Play Services are missing.")
+                }
 
                 try {
                     postOffice.get().fetchMessages()

@@ -51,8 +51,8 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/mapFragment"
-        android:name="tice.ui.fragments.MapFragment"
+        android:id="@+id/groupMapFragment"
+        android:name="tice.ui.fragments.GroupMapFragment"
         android:label="@string/map_title">
         <argument
             android:name="teamId"
@@ -106,7 +106,7 @@
     </dialog>
     <action
         android:id="@+id/action_global_mapFragment"
-        app:destination="@id/mapFragment"
+        app:destination="@id/groupMapFragment"
         app:popUpTo="@id/teamListFragment" />
     <fragment
         android:id="@+id/meetupInfoFragment"
@@ -132,7 +132,7 @@
     <action
         android:id="@+id/action_global_chatFragment"
         app:destination="@id/chatFragment"
-        app:popUpTo="@id/mapFragment" />
+        app:popUpTo="@id/groupMapFragment" />
     <fragment
         android:id="@+id/migrationFragment"
         android:name="tice.ui.fragments.MigrationFragment"

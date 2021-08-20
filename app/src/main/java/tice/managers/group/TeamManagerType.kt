@@ -1,7 +1,6 @@
 package tice.managers.group
 
 import androidx.lifecycle.LiveData
-import com.google.android.gms.maps.model.LatLng
 import tice.models.*
 
 interface TeamManagerType {
@@ -24,6 +23,6 @@ interface TeamManagerType {
     suspend fun reload(team: Team): Team
     suspend fun reloadAllTeams()
     fun registerForDelegate()
-    suspend fun setMeetingPoint(meetingPoint: LatLng, team: Team)
+    suspend fun setMeetingPoint(meetingPoint: Coordinates, team: Team)
     suspend fun setLocationSharing(team: Team, enabled: Boolean)
 }

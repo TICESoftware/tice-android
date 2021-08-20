@@ -49,6 +49,10 @@ class ConfigModule {
 
         const val HCAPTCHA_SITE_KEY = "HCAPTCHA_SITE_KEY"
 
+        const val MAPBOX_SECRET_TOKEN = "MAPBOX_SECRET_TOKEN"
+
+        const val PLACES_SEARCH_REQUEST_CODE = "PLACES_SEARCH_REQUEST_CODE"
+
         const val BEEKEEPER_PRODUCT = "BEEKEEPER_PRODUCT"
         const val BEEKEEPER_BASE_URL = "BEEKEEPER_BASE_URL"
         const val BEEKEEPER_DISPATCH_INTERVAL = "BEEKEEPER_DISPATCH_INTERVAL"
@@ -245,6 +249,18 @@ class ConfigModule {
             context.packageName,
             PackageManager.GET_META_DATA
         ).metaData.getString("hcaptcha_site_key")!!
+
+    @Provides
+    @Named(MAPBOX_SECRET_TOKEN)
+    fun provideMapboxSecretToken(context: Context): String =
+        context.packageManager.getApplicationInfo(
+            context.packageName,
+            PackageManager.GET_META_DATA
+        ).metaData.getString("mapbox_secret_token")!!
+
+    @Provides
+    @Named(PLACES_SEARCH_REQUEST_CODE)
+    fun providePlacesSearchRequestCode(): String = "1"
 
     @Provides
     @Named(DEVELOPMENT_VERIFICATION_CODE)

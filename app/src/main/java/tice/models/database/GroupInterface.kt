@@ -3,6 +3,8 @@ package tice.models.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import tice.models.*
 
 @Dao
@@ -15,11 +17,20 @@ interface GroupInterface {
     @Query("SELECT * FROM team")
     fun getTeamsObservable(): LiveData<List<Team>>
 
+    @Query("SELECT * FROM team")
+    fun getTeamsFlow(): Flow<List<Team>>
+
     @Query("SELECT * FROM team WHERE groupId=:groupId")
     suspend fun getTeam(groupId: GroupId): Team?
 
     @Query("SELECT * FROM team WHERE groupId=:groupId")
     fun getTeamObservable(groupId: GroupId): LiveData<Team?>
+
+    @Query("SELECT * FROM team WHERE groupId=:groupId")
+    fun getTeamFlow(groupId: GroupId): Flow<Team?>
+
+    @Query("SELECT meetingPoint FROM team WHERE groupId=:groupId")
+    fun getMeetingPointFlow(groupId: GroupId): Flow<Location?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: Team)
@@ -85,6 +96,9 @@ interface GroupInterface {
 
     @Query("SELECT * FROM membershipEntity WHERE groupId=:groupId")
     suspend fun getMembershipsOfGroup(groupId: GroupId): List<MembershipEntity>
+
+    @Query("SELECT userId FROM membershipEntity WHERE groupId=:groupId")
+    fun getMembershipUserIdFlowOfGroup(groupId: GroupId): Flow<List<UserId>>
 
     @Query("SELECT * FROM membershipEntity WHERE userId=:userId")
     suspend fun getMembershipsOfUser(userId: UserId): List<MembershipEntity>
