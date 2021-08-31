@@ -6,8 +6,8 @@ The secure app for meeting up, sharing locations and locating friends and family
 
 ## Screenshots
 
-![Register](Material/screenshot_register.png)
-![Meeting up in a group](Material/screenshot_meeting_up.png) ![Join several groups](Material/screenshot_groups.png) ![Settings](Material/screenshot_settings.png)
+![Register](Material/screenshot_register.png) | ![Meeting up in a group](Material/screenshot_meeting_up.png) | ![Join several groups](Material/screenshot_groups.png) | ![Settings](Material/screenshot_settings.png)
+:-:|:-:|:-:|:-:
 
 ## Download
 
