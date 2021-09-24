@@ -30,4 +30,9 @@
         android:title="@string/groupSettings_participation_delete"
         android:visible="false"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/defaultMenu_joinGroup"
+        android:title="Join (dev)"
+        android:visible="false"
+        tools:ignore="HardcodedText" />
 </menu>

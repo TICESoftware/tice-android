@@ -1,5 +1,6 @@
 package tice.ui.viewModels
 
+import android.util.Base64
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -134,6 +135,15 @@ class TeamListViewModel @Inject constructor(
                 logger.error("Leaving group failed", e)
                 _event.emit(TeamListEvent.ErrorEvent.LeaveError)
             }
+        }
+    }
+
+    // For development purposes only
+    fun joinTeam(joinString: String) {
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            val url = joinString.split("/").last().split("#")
+            val team = teamManager.getOrFetchTeam(GroupId.fromString(url[0]), Base64.decode(url[1], Base64.URL_SAFE))
+            teamManager.join(team)
         }
     }
 

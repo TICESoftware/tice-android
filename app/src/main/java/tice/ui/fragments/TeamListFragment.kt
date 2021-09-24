@@ -2,9 +2,8 @@ package tice.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.EditText
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
@@ -13,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.TeamListFragmentBinding
 import dagger.Module
@@ -38,6 +39,12 @@ class TeamListFragment : Fragment() {
 
     private var _binding: TeamListFragmentBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +78,24 @@ class TeamListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.event.collect { handleEvent(it) }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (BuildConfig.APPLICATION_ID == "app.tice.TICE.development") {
+            val joinGroup = menu.findItem(R.id.defaultMenu_joinGroup)
+            joinGroup.isVisible = true
+            joinGroup.setOnMenuItemClickListener {
+                val textField = EditText(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Group link (dev)")
+                    .setView(textField)
+                    .setPositiveButton("Join") { _, _ -> viewModel.joinTeam(textField.text.toString()) }
+                    .setOnCancelListener(null)
+                    .show()
+
+                true
+            }
         }
     }
 
