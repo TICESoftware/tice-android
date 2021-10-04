@@ -26,6 +26,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.mapbox.search.ui.view.SearchBottomSheetView
+        android:id="@+id/mapbox_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:elevation="8dp"
+        android:visibility="visible" />
+
     <include
         android:id="@+id/bottom_sheet"
         layout="@layout/bottomsheet_map" />

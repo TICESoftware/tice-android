@@ -53,7 +53,6 @@ class GroupMapFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initMapbox(requireContext())
 
         mapContainerFragment = if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) GoogleMapsContainerFragment() else MapboxMapContainerFragment()
         mapViewModel = mapContainerFragment.getViewModel()

@@ -22,5 +22,5 @@ interface MapContainerFragmentInterface {
     fun moveCamera(includingPoints: Set<Coordinates>)
 
     fun markCustomPosition(coordinates: Coordinates)
-    fun locationString(coordinates: Coordinates): String
+    suspend fun locationString(coordinates: Coordinates): String
 }

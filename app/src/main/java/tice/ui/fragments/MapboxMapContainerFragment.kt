@@ -26,10 +26,22 @@ import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.scalebar.scalebar
+import com.mapbox.search.*
+import com.mapbox.search.location.DefaultLocationProvider
+import com.mapbox.search.result.SearchAddress
+import com.mapbox.search.result.SearchResult
+import com.mapbox.search.ui.view.SearchBottomSheetView
 import com.ticeapp.TICE.databinding.MapboxContainerFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tice.models.*
 import tice.ui.viewModels.MapboxMapContainerViewModel
 import tice.utility.ui.getViewModel
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
 
 class MapboxMapContainerFragment : MapContainerFragment() {
@@ -46,6 +58,15 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
     override val currentMarkedPosition: Coordinates?
         get() = markedLocationAnnotationManager.annotations.firstOrNull()?.point?.pointCoordinates()
+
+    private lateinit var reverseGeocoding: ReverseGeocodingSearchEngine
+    private var reverseGeocodingSearchRequestTask: SearchRequestTask? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initMapboxSdk(requireActivity())
+        reverseGeocoding = MapboxSearchSdk.createReverseGeocodingSearchEngine()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,6 +91,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
         // Disable search for now as Mapbox search is not implemented yet
         _mapButtons!!.searchButton.visibility = View.GONE
+        binding.mapboxSearchView.visibility = View.GONE
 
         map.location.addOnIndicatorPositionChangedListener {
             if (currentLocation != it.pointCoordinates()) {
@@ -87,12 +109,19 @@ class MapboxMapContainerFragment : MapContainerFragment() {
         map.getMapboxMap().addOnMapClickListener(this::handleClickOnMap)
         map.getMapboxMap().addOnMapLongClickListener(this::handleLongClickOnMap)
 
+        binding.mapboxSearchView.initializeSearch(savedInstanceState, SearchBottomSheetView.Configuration())
+
         mapSetupFinished()
+    }
+
+    override fun onDestroy() {
+        reverseGeocodingSearchRequestTask?.cancel()
+        super.onDestroy()
     }
 
     private fun handleClickOnUserAnnotation(annotation: PointAnnotation): Boolean {
         val tag = Gson().fromJson(annotation.getData()!!, MarkerType.UserMarker::class.java)
-        showMemberLocationInBottomSheet(tag.userId, tag.name, annotation.point.pointCoordinates(), tag.timestamp)
+        CoroutineScope(Dispatchers.Main).launch { showMemberLocationInBottomSheet(tag.userId, tag.name, annotation.point.pointCoordinates(), tag.timestamp) }
         return true
     }
 
@@ -118,7 +147,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
     }
 
     override fun handleSearchButtonTap(view: View) {
-        TODO("Not yet implemented")
+        binding.mapboxSearchView.visibility = View.VISIBLE
     }
 
     override suspend fun handleMemberLocationUpdate(update: UserLocation) {
@@ -252,7 +281,18 @@ class MapboxMapContainerFragment : MapContainerFragment() {
         map.camera.flyTo(cameraOptions)
     }
 
-    override fun locationString(coordinates: Coordinates): String {
-        return ""
+    override suspend fun locationString(coordinates: Coordinates): String {
+        val fallbackString = "${coordinates.latitude}, ${coordinates.longitude}"
+
+        val options = ReverseGeoOptions(coordinates.point, limit = 1)
+
+        return suspendCoroutine { continuation ->
+            reverseGeocodingSearchRequestTask =
+                reverseGeocoding.search(options, object : SearchCallback {
+                    override fun onError(e: Exception) = continuation.resumeWith(Result.failure(e))
+                    override fun onResults(results: List<SearchResult>, responseInfo: ResponseInfo) =
+                        continuation.resume(results.firstOrNull()?.address?.formattedAddress(SearchAddress.FormatStyle.Medium) ?: fallbackString)
+                })
+        }
     }
 }

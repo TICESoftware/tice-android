@@ -26,17 +26,25 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.GoogleMapsContainerFragmentBinding
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import tice.models.Coordinates
 import tice.models.UserId
 import tice.models.UserLocation
 import tice.models.coordinates
 import tice.ui.viewModels.GoogleMapsContainerViewModel
+import tice.ui.viewModels.MapContainerViewModel
+import tice.utility.getLogger
+import tice.utility.provider.CoroutineContextProvider
 import tice.utility.ui.getViewModel
 import java.io.IOException
 import java.lang.Math.cos
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.NoSuchElementException
+import kotlin.collections.HashMap
+import kotlin.coroutines.coroutineContext
 
 sealed class MarkerType {
     data class UserMarker(val userId: UserId, val timestamp: Date, val name: String) : MarkerType()
@@ -117,12 +125,7 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
         locationProvider.removeLocationUpdates(locationCallback)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-        if (googleMap == null) {
-            logger.error("onMapReady called without map parameter.")
-            return
-        }
-
+    override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.uiSettings.isMyLocationButtonEnabled = false
         map.uiSettings.isMapToolbarEnabled = false
@@ -143,14 +146,17 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
     private fun handleClickOnMarker(marker: Marker): Boolean {
         marker.showInfoWindow()
 
+		CoroutineScope(Dispatchers.Main).launch {
         when (val tag = marker.tag) {
-            is MarkerType.UserMarker -> showMemberLocationInBottomSheet(
-                tag.userId,
-                tag.name,
-                Coordinates(marker.position.latitude, marker.position.longitude),
-                tag.timestamp
-            )
-            is MarkerType.CustomPositionMarker -> showMarkedLocationInBottomSheet(marker.position.coordinates())
+            is MarkerType.UserMarker -> 
+                showMemberLocationInBottomSheet(
+                    tag.userId,
+                    tag.name,
+                    Coordinates(marker.position.latitude, marker.position.longitude),
+                    tag.timestamp
+                )
+			is MarkerType.CustomPositionMarker -> showMarkedLocationInBottomSheet(marker.position.coordinates())
+            }
         }
 
         return true
@@ -165,11 +171,9 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
     }
 
     override fun markCustomPosition(coordinates: Coordinates) {
-        val locationString = locationString(coordinates)
         val marker = map.addMarker(
             MarkerOptions()
                 .position(coordinates.latLng)
-                .title(locationString)
         )
         marker.tag = MarkerType.CustomPositionMarker
         markedLocationMarker = marker
@@ -349,7 +353,7 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
         return RectangularBounds.newInstance(bounds)
     }
 
-    override fun locationString(coordinates: Coordinates): String {
+    override suspend fun locationString(coordinates: Coordinates): String {
         val fallbackString = getString(R.string.map_location_string, coordinates.latitude.toString(), coordinates.longitude.toString())
 
         return try {

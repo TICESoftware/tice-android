@@ -12,6 +12,8 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mapbox.search.MapboxSearchSdk
+import com.mapbox.search.location.DefaultLocationProvider
 import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import dagger.Lazy
@@ -43,6 +45,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Named
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -116,6 +119,10 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
     @Inject
     lateinit var userManager: Lazy<UserManager>
 
+    @Inject
+    @Named("MAPBOX_SECRET_TOKEN")
+    lateinit var mapboxSecretToken: Lazy<String>
+
     private var _isInForeground: AppStatusProvider.Status = AppStatusProvider.Status.BACKGROUND
     override val status: AppStatusProvider.Status
         get() = _isInForeground
@@ -169,6 +176,10 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
 
         FirebaseApp.initializeApp(application.applicationContext)
         workManager = WorkManager.getInstance(application)
+
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(application) != ConnectionResult.SUCCESS) {
+            MapboxSearchSdk.initialize(application, mapboxSecretToken.get(), DefaultLocationProvider(application))
+        }
 
         if (signedInUserManager.get().signedIn()) {
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {

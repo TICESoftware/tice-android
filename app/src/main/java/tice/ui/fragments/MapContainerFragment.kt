@@ -21,15 +21,22 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.mapbox.search.MapboxSearchSdk
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.BottomsheetMapBinding
 import com.ticeapp.TICE.databinding.CustomMapMarkerBinding
 import com.ticeapp.TICE.databinding.MapButtonsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tice.models.*
 import tice.utility.getLogger
+import tice.utility.provider.CoroutineContextProvider
+import tice.utility.provider.CoroutineContextProviderType
 import java.util.*
+import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface {
     val logger by getLogger()
@@ -149,7 +156,7 @@ abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface 
 
         markCustomPosition(location)
 
-        showMarkedLocationInBottomSheet(location)
+        CoroutineScope(Dispatchers.Main).launch { showMarkedLocationInBottomSheet(location) }
     }
 
     fun handleNewDeviceLocation(latitude: Double, longitude: Double) {
@@ -193,7 +200,7 @@ abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface 
         )
     }
 
-    fun showMarkedLocationInBottomSheet(coordinates: Coordinates) {
+    suspend fun showMarkedLocationInBottomSheet(coordinates: Coordinates) {
         bottomSheet.sheetTitle.text = getString(R.string.map_location_pin)
         bottomSheet.address.text = locationString(coordinates)
         bottomSheet.setMeetingPointButton.visibility = View.VISIBLE
@@ -202,7 +209,7 @@ abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface 
         mapBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun showMemberLocationInBottomSheet(
+    suspend fun showMemberLocationInBottomSheet(
         userId: UserId,
         displayName: String,
         location: Coordinates,

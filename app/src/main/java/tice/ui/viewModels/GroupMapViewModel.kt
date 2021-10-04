@@ -36,8 +36,7 @@ class GroupMapViewModel @Inject constructor(
     private val nameProvider: NameProviderType,
     private val userDataGenerator: UserDataGeneratorType,
     private val chatStorageManager: ChatStorageManagerType,
-    private val signedInUserManager: SignedInUserManagerType,
-    @Named("MAPBOX_SECRET_TOKEN") private val mapboxSecretToken: String
+    private val signedInUserManager: SignedInUserManagerType
 ) : ViewModel() {
     private val logger by getLogger()
 
@@ -63,10 +62,6 @@ class GroupMapViewModel @Inject constructor(
         get() = chatStorageManager.unreadMessageCountLiveData(teamId)
 
     var setup = false
-
-    fun initMapbox(context: Context) {
-        ResourceOptionsManager.getDefault(context, mapboxSecretToken)
-    }
 
     fun setupData(teamId: GroupId) {
         if (setup) return

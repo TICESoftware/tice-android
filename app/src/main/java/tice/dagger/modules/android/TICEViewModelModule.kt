@@ -42,11 +42,6 @@ abstract class TICEViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MapboxContainerViewModel::class)
-    abstract fun bindMapboxContainerViewModel(myViewModel: MapboxContainerViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(MapboxMapContainerViewModel::class)
     abstract fun bindMapboxMapContainerViewModel(myViewModel: MapboxMapContainerViewModel): ViewModel
 
