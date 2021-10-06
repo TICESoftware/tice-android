@@ -1,6 +1,5 @@
 package tice.backend
 
-import tice.models.UserPublicKeys
 import tice.models.*
 import tice.models.messaging.MessagePriority
 import tice.models.messaging.Recipient

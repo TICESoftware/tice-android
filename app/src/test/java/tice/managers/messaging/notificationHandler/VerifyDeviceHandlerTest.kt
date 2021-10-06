@@ -18,7 +18,6 @@ import tice.models.SignedInUser
 import tice.models.VerificationCode
 import tice.models.messaging.Payload
 import tice.models.messaging.PayloadContainerBundle
-import tice.models.messaging.ResetConversation
 import tice.models.messaging.VerificationMessage
 import tice.utility.provider.CoroutineContextProviderType
 import java.util.*

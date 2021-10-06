@@ -3,7 +3,6 @@ package tice.managers.services
 import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
 import com.goterl.lazysodium.interfaces.AEAD
-import com.goterl.lazysodium.interfaces.SecretStream
 import com.ticeapp.androiddoubleratchet.Base64Coder
 import okio.ByteString.Companion.decodeHex
 import org.junit.Before

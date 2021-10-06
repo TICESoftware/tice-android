@@ -11,7 +11,6 @@ import com.ticeapp.androidx3dh.X3DH
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.serialization.json.Json
-import okio.ByteString.Companion.encode
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions

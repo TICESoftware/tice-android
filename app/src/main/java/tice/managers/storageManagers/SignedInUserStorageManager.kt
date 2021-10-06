@@ -1,8 +1,8 @@
 package tice.managers.storageManagers
 
-import tice.models.KeyPair
 import tice.dagger.scopes.AppScope
 import tice.exceptions.SignedInUserStorageManagerException
+import tice.models.KeyPair
 import tice.models.SignedInUser
 import tice.models.User
 import java.util.*

@@ -110,20 +110,12 @@ class DatabaseManager @Inject constructor(
         logger.debug("Generate new database key.")
         val databaseKey = cryptoManager.generateDatabaseKey(databaseKeyLength)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            logger.debug("Encrypting database key and store it.")
-            val databaseKeyCiphertext = encryptWithMasterKey(databaseKey)
-            storageLocker.store(
-                StorageLockerType.StorageKey.ENCRYPTED_DATABASE_KEY,
-                Base64.encodeToString(databaseKeyCiphertext, Base64.NO_WRAP)
-            )
-        } else {
-            logger.debug("Storing plaintext database key because the app is running on Android < 6 (M).")
-            storageLocker.store(
-                StorageLockerType.StorageKey.PLAINTEXT_DATABASE_KEY,
-                Base64.encodeToString(databaseKey, Base64.NO_WRAP)
-            )
-        }
+        logger.debug("Encrypting database key and store it.")
+        val databaseKeyCiphertext = encryptWithMasterKey(databaseKey)
+        storageLocker.store(
+            StorageLockerType.StorageKey.ENCRYPTED_DATABASE_KEY,
+            Base64.encodeToString(databaseKeyCiphertext, Base64.NO_WRAP)
+        )
 
         return databaseKey
     }

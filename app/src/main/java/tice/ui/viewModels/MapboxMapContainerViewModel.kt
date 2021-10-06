@@ -1,6 +1,5 @@
 package tice.ui.viewModels
 
-import androidx.lifecycle.ViewModel
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
@@ -18,12 +17,12 @@ class MapboxMapContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType
-): MapContainerViewModel(
+) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
     locationSharingManager,
     userManager,
     nameProvider,
     userDataGenerator,
-    coroutineContextProvider) {
-}
+    coroutineContextProvider
+)

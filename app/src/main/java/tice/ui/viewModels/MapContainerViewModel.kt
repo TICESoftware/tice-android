@@ -25,7 +25,7 @@ open class MapContainerViewModel(
     private val nameProvider: NameProviderType,
     private val userDataGenerator: UserDataGeneratorType,
     private val coroutineContextProvider: CoroutineContextProviderType,
-): ViewModel() {
+) : ViewModel() {
     private val logger by getLogger()
 
     lateinit var teamId: GroupId

@@ -10,20 +10,17 @@ import tice.backend.BackendType
 import tice.crypto.AuthManagerType
 import tice.crypto.CryptoManagerType
 import tice.exceptions.BackendException
-import tice.exceptions.SignedInUserManagerException
 import tice.managers.SignedInUserManagerType
 import tice.managers.storageManagers.GroupStorageManagerType
 import tice.managers.storageManagers.MembershipsDiff
 import tice.models.*
 import tice.models.messaging.MessagePriority
-import tice.models.requests.CertificateBlacklistedRequest
 import tice.models.requests.RenewCertificateResponse
 import tice.models.responses.UpdatedETagResponse
 import tice.utility.beekeeper.BeekeeperEvent
 import tice.utility.beekeeper.BeekeeperType
 import tice.utility.beekeeper.track
 import tice.utility.toBase64String
-import tice.utility.toBase64URLSafeString
 import java.util.*
 
 internal class MembershipRenewalTaskTest {

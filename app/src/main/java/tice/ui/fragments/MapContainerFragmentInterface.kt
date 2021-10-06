@@ -1,7 +1,6 @@
 package tice.ui.fragments
 
 import android.view.View
-import com.google.android.gms.maps.model.LatLng
 import tice.models.Coordinates
 import tice.models.Location
 import tice.models.UserId

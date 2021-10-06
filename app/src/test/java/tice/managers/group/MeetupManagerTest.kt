@@ -2,8 +2,6 @@ package tice.managers.group
 
 import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
-import tice.crypto.CryptoManagerType
-import tice.models.Membership
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
@@ -14,9 +12,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tice.backend.BackendType
 import tice.crypto.AuthManagerType
+import tice.crypto.CryptoManagerType
 import tice.exceptions.BackendException
 import tice.exceptions.MeetupManagerException
-import tice.managers.LocationManagerType
 import tice.managers.SignedInUserManagerType
 import tice.managers.storageManagers.ChatStorageManagerType
 import tice.managers.storageManagers.GroupStorageManagerType
@@ -24,7 +22,8 @@ import tice.managers.storageManagers.MembershipsDiff.*
 import tice.models.*
 import tice.models.chat.Message
 import tice.models.chat.MessageStatus
-import tice.models.messaging.*
+import tice.models.messaging.GroupUpdate
+import tice.models.messaging.MessagePriority
 import tice.models.responses.CreateGroupResponse
 import tice.models.responses.GroupInternalsResponse
 import tice.models.responses.JoinGroupResponse

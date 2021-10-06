@@ -5,21 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
-import com.mapbox.maps.*
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.EdgeInsets
+import com.mapbox.maps.MapView
 import com.mapbox.maps.Style.Companion.MAPBOX_STREETS
-import com.mapbox.maps.plugin.animation.Cancelable
+import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.*
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
-import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadedListener
-import com.mapbox.maps.plugin.delegates.listeners.eventdata.MapLoadErrorType
-import com.mapbox.maps.plugin.gestures.*
+import com.mapbox.maps.plugin.gestures.OnMoveListener
+import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.scalebar.scalebar
 import com.ticeapp.TICE.databinding.MapboxContainerFragmentBinding
@@ -73,11 +77,13 @@ class MapboxMapContainerFragment : MapContainerFragment() {
                 handleNewDeviceLocation(it.latitude(), it.longitude())
             }
         }
-        map.getMapboxMap().addOnMoveListener(object : OnMoveListener {
-            override fun onMove(detector: MoveGestureDetector): Boolean = false
-            override fun onMoveBegin(detector: MoveGestureDetector) = disableRectFitting()
-            override fun onMoveEnd(detector: MoveGestureDetector) {}
-        })
+        map.getMapboxMap().addOnMoveListener(
+            object : OnMoveListener {
+                override fun onMove(detector: MoveGestureDetector): Boolean = false
+                override fun onMoveBegin(detector: MoveGestureDetector) = disableRectFitting()
+                override fun onMoveEnd(detector: MoveGestureDetector) {}
+            }
+        )
         map.getMapboxMap().addOnMapClickListener(this::handleClickOnMap)
         map.getMapboxMap().addOnMapLongClickListener(this::handleLongClickOnMap)
 
@@ -192,7 +198,8 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
     override fun enableUserLocationIndicator() {
         logger.debug("Mapbox: enableUserLocationIndicator called.")
-        map.getMapboxMap().loadStyleUri(MAPBOX_STREETS,
+        map.getMapboxMap().loadStyleUri(
+            MAPBOX_STREETS,
             {
                 map.location.updateSettings {
                     enabled = true
@@ -201,10 +208,11 @@ class MapboxMapContainerFragment : MapContainerFragment() {
                 map.scalebar.enabled = false
             },
             object : OnMapLoadErrorListener {
-                override fun onMapLoadError(mapLoadErrorType: MapLoadErrorType, message: String) {
-                    logger.error("Error loading mapbox map.")
+                override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
+                    logger.error("Error loading mapbox map: ${eventData.message}")
                 }
-            })
+            }
+        )
     }
 
     override fun rectFitMap() {
@@ -221,7 +229,6 @@ class MapboxMapContainerFragment : MapContainerFragment() {
     }
 
     override fun moveCamera(includingPoints: Set<Coordinates>) {
-
 //        The cameraForCoordinates functions produces incorrect results in certain conditions.
 //        We should check for bugfixes regularly and calculate the rect manually as a workaround.
 //        val cameraOptions = map.getMapboxMap().cameraForCoordinates(includingPoints.map(Coordinates::point))

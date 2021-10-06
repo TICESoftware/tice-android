@@ -1,7 +1,9 @@
 package tice.managers.messaging.notificationHandler
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import tice.backend.BackendType
 import tice.dagger.scopes.AppScope
 import tice.exceptions.VerifyDeviceHandlerException

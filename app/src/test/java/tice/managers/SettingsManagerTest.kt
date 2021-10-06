@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R.string
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

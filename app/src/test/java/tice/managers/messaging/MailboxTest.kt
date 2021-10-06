@@ -1,7 +1,5 @@
 package tice.managers.messaging
 
-import tice.crypto.CryptoManagerType
-import tice.models.Membership
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.serialization.json.Json
@@ -10,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tice.backend.BackendType
+import tice.crypto.CryptoManagerType
 import tice.managers.ConversationManagerType
 import tice.managers.SignedInUserManagerType
+import tice.models.Membership
 import tice.models.SignedInUser
 import tice.models.UserId
 import tice.models.messaging.*

@@ -1,7 +1,10 @@
 package tice.managers
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import tice.dagger.scopes.AppScope
 import tice.exceptions.LocationManagerException
@@ -116,12 +119,6 @@ class LocationSharingManager @Inject constructor(
     override fun registerEnvelopeReceiver() {
         postOffice.registerEnvelopeReceiver(Payload.PayloadType.LocationUpdateV2, this)
     }
-
-//    override suspend fun getLocationUpdateFlow(userIds: Collection<UserId>, groupId: GroupId): SharedFlow<UserLocation> = _memberLocationFlow.onSubscription {
-//        userIds.forEach { userId ->
-//            lastLocations[UserGroupIds(userId, groupId)]?.let { emit(UserLocation(userId, it)) }
-//        }
-//    }
 
     override fun lastLocation(userGroupIds: UserGroupIds): Location? = lastLocations[userGroupIds]
 

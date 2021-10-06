@@ -1,7 +1,5 @@
 package tice.managers.messaging
 
-import tice.models.messaging.conversation.ConversationInvitation
-import tice.crypto.CryptoManagerType
 import io.mockk.*
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -23,6 +21,7 @@ import tice.models.messaging.Envelope
 import tice.models.messaging.Payload
 import tice.models.messaging.PayloadContainer
 import tice.models.messaging.ResetConversation
+import tice.models.messaging.conversation.ConversationInvitation
 import tice.utility.dataFromBase64
 import tice.utility.provider.CoroutineContextProviderType
 import tice.utility.toBase64String

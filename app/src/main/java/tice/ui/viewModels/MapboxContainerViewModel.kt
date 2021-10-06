@@ -17,13 +17,12 @@ class MapboxContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType
-): MapContainerViewModel(
+) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
     locationSharingManager,
     userManager,
     nameProvider,
     userDataGenerator,
-    coroutineContextProvider) {
-
-}
+    coroutineContextProvider
+)

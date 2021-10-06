@@ -4,10 +4,10 @@
 
 package tice.models.requests
 
-import tice.models.UserPublicKeys
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import tice.models.DeviceId
+import tice.models.UserPublicKeys
 import tice.models.VerificationCode
 import tice.utility.serializer.UserPublicKeysSerializer
 

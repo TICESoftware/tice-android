@@ -4,7 +4,6 @@ import com.ticeapp.androiddoubleratchet.MessageKeyCache
 import tice.exceptions.CryptoStorageManagerException
 import tice.models.*
 import tice.models.messaging.conversation.ConversationState
-import kotlin.jvm.Throws
 
 interface CryptoStorageManagerType {
     suspend fun saveIdentityKeyPair(keyPair: KeyPair)

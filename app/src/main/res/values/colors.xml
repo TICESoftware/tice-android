@@ -10,7 +10,6 @@
     <color name="colorBackground2">#E9E9E9</color>
     <color name="colorCards">#FFFFFF</color>
     <color name="colorDelete">#E60E0E</color>
-    <color name="colorButtonDisabled">#A9A9A9</color>
 
     <color name="outgoingMessagecolor">#2980b9</color>
 </resources>

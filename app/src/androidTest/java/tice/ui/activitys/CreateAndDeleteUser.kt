@@ -29,7 +29,7 @@ class CreateAndDeleteUser {
         waitForView(allOf(withId(R.id.register_button), isDisplayed())).perform(click())
 
         waitForView(allOf(withContentDescription("More options"), isDisplayed())).perform(click())
-        waitForView(allOf(withId(R.id.title), isDisplayed())).perform(click())
+        waitForView(allOf(withText("Settings"), isDisplayed())).perform(click())
         waitForView(allOf(withId(R.id.recycler_view), childAtPosition(withId(android.R.id.list_container), 0))).perform(
             actionOnItemAtPosition<RecyclerView.ViewHolder>(6, click())
         )

@@ -3,7 +3,6 @@ package tice.database
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL
 import androidx.core.database.getStringOrNull
 import androidx.room.Room
@@ -11,14 +10,15 @@ import androidx.room.migration.Migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
-import tice.backend.Backend
-import tice.exceptions.CryptoStorageManagerException
 import tice.managers.storageManagers.AppDatabase
 import tice.managers.storageManagers.VersionCodeStorageManagerType
 import tice.managers.storageManagers.migration.MigrationManager

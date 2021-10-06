@@ -1,6 +1,5 @@
 package tice.managers.group
 
-import tice.models.Membership
 import tice.models.*
 import tice.models.messaging.GroupUpdate
 import tice.models.messaging.MessagePriority

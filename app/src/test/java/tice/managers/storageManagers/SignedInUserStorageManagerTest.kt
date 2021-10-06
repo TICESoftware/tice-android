@@ -1,6 +1,5 @@
 package tice.managers.storageManagers
 
-import tice.models.KeyPair
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tice.exceptions.SignedInUserStorageManagerException
+import tice.models.KeyPair
 import tice.models.SignedInUser
 import tice.models.User
 import java.util.*

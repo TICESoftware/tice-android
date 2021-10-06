@@ -1,32 +1,18 @@
 package tice.ui.fragments
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
 import android.location.Geocoder
-import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getDrawable
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE
@@ -37,31 +23,20 @@ import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ticeapp.TICE.R
-import com.ticeapp.TICE.databinding.CustomMapMarkerBinding
 import com.ticeapp.TICE.databinding.GoogleMapsContainerFragmentBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import tice.models.Coordinates
 import tice.models.UserId
 import tice.models.UserLocation
 import tice.models.coordinates
 import tice.ui.viewModels.GoogleMapsContainerViewModel
-import tice.ui.viewModels.MapContainerViewModel
-import tice.utility.getLogger
 import tice.utility.ui.getViewModel
 import java.io.IOException
 import java.lang.Math.cos
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.NoSuchElementException
-import kotlin.collections.HashMap
 
 sealed class MarkerType {
     data class UserMarker(val userId: UserId, val timestamp: Date, val name: String) : MarkerType()
@@ -375,7 +350,7 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
     }
 
     override fun locationString(coordinates: Coordinates): String {
-        val fallbackString = "${coordinates.latitude}, ${coordinates.longitude}"
+        val fallbackString = getString(R.string.map_location_string, coordinates.latitude.toString(), coordinates.longitude.toString())
 
         return try {
             Geocoder(requireContext()).getFromLocation(coordinates.latitude, coordinates.longitude, 1)

@@ -24,9 +24,7 @@ class StartSharingTest {
     @Test
     fun startSharingAndCreateMeetingPoint() {
         finishOnboarding()
-
-        waitForView(allOf(withId(R.id.meetupButton), isDisplayed())).perform(click())
-        waitForView(withId(android.R.id.button1)).perform(scrollTo(), click())
+        
         waitForView(allOf(withContentDescription("Google Map"), isDisplayed())).perform(longClick())
         waitForView(allOf(withId(R.id.bottom_sheet), isDisplayed()))
         waitForView(allOf(withId(R.id.set_meeting_point_button), isDisplayed())).perform(click())

@@ -1,6 +1,5 @@
 package tice.backend
 
-import com.ticeapp.TICE.BuildConfig
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import tice.crypto.AuthManagerType
-import tice.crypto.CryptoManagerType
 import tice.exceptions.BackendException
 import tice.managers.SignedInUserManagerType
 import tice.models.*

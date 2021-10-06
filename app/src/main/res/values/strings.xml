@@ -35,11 +35,6 @@
     <!-- Map -->
     <string name="map_title">"Map"</string>
     <string name="map_location_meetingPoint">"Meeting Point"</string>
-    <string name="map_location_permission_later">"Not now"</string>
-    <string name="map_location_permission_enable">"Allow"</string>
-    <string name="map_location_permission_info">"By denying access to your location, TICE will not show your position on the map and will not be able to share your location with others while you are meeting up.
-
-Do you want to allow TICE to access your location?"</string>
     <string name="map_location_info_okay">"Okay"</string>
     <string name="map_location_string">"%1$s, %2$s"</string>
     <!-- MapBottomSheet -->
@@ -59,8 +54,6 @@ Do you want to allow TICE to access your location?"</string>
     <string name="team_locationSharing_confirm">"Share location"</string>
     <!-- MeetupButton -->
     <string name="meetup_snackbar_started">"Meetup was started"</string>
-    <string name="meetup_snackbar_locationDisabled">"To retrieve your position, you have to allow TICE to access your location."</string>
-    <string name="meetup_manageParticipation_locationSharingOff">"Location hidden"</string>
     <string name="alert_cancel">"Cancel"</string>
     <!-- Settings Preferences -->
     <string name="settings_name_header">"User Settings"</string>

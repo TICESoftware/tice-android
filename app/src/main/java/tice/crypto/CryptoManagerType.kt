@@ -1,6 +1,9 @@
 package tice.crypto
 
-import tice.models.*
+import tice.models.Ciphertext
+import tice.models.KeyPair
+import tice.models.SecretKey
+import tice.models.UserType
 
 typealias Data = ByteArray
 

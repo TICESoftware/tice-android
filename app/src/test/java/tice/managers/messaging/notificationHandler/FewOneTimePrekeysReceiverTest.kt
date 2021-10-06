@@ -1,7 +1,5 @@
 package tice.managers.messaging.notificationHandler
 
-import tice.crypto.CryptoManagerType
-import tice.models.UserPublicKeys
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
@@ -11,6 +9,7 @@ import tice.crypto.ConversationCryptoMiddlewareType
 import tice.managers.SignedInUserManagerType
 import tice.managers.messaging.PostOfficeType
 import tice.models.SignedInUser
+import tice.models.UserPublicKeys
 import tice.models.messaging.PayloadContainerBundle
 import java.util.*
 

@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Assertions
 import tice.backend.Backend
 import tice.backend.HTTPRequester
 import tice.backend.HTTPRequesterType
-import tice.crypto.*
+import tice.crypto.AuthManager
+import tice.crypto.AuthManagerType
+import tice.crypto.CryptoManager
 import tice.dagger.provides.ConfigModule
 import tice.exceptions.BackendException
 import tice.exceptions.CryptoStorageManagerException

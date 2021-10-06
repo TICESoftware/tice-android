@@ -1,10 +1,9 @@
 package tice.managers.group
 
-import tice.crypto.CryptoManagerType
-import tice.models.Membership
 import kotlinx.serialization.json.Json
 import tice.backend.BackendType
 import tice.crypto.AuthManagerType
+import tice.crypto.CryptoManagerType
 import tice.dagger.scopes.AppScope
 import tice.exceptions.GroupManagerException
 import tice.managers.SignedInUserManagerType

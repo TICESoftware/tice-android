@@ -106,11 +106,7 @@ class FirebaseReceiverService : FirebaseMessagingService() {
 
         val notificationIntent = Intent(baseContext, MainActivity::class.java)
 
-        var intentFlags = PendingIntent.FLAG_ONE_SHOT
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            intentFlags = intentFlags or PendingIntent.FLAG_IMMUTABLE
-        }
+        val intentFlags = PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
 
         val pendingIntent = PendingIntent.getActivities(
             baseContext,

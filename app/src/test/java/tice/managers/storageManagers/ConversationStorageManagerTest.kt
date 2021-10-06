@@ -1,6 +1,5 @@
 package tice.managers.storageManagers
 
-import tice.models.messaging.conversation.ConversationInvitation
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tice.models.database.ConversationInterface
 import tice.models.database.ReceivedReset
+import tice.models.messaging.conversation.ConversationInvitation
 import tice.models.messaging.conversation.InboundConversationInvitation
 import tice.models.messaging.conversation.InvalidConversation
 import tice.models.messaging.conversation.OutboundConversationInvitation

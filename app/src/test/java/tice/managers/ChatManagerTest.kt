@@ -3,7 +3,10 @@ package tice.managers
 import com.ticeapp.TICE.R
 import io.mockk.*
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import tice.exceptions.BackendException
 import tice.managers.group.GroupManagerType
 import tice.managers.messaging.PostOfficeType

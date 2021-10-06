@@ -3,14 +3,10 @@ package tice.managers
 import io.mockk.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.*
-import tice.exceptions.LocationManagerException
-import tice.exceptions.LocationSharingException
-import tice.exceptions.UnexpectedPayloadTypeException
 import tice.managers.messaging.PostOfficeType
 import tice.managers.storageManagers.GroupStorageManagerType
 import tice.managers.storageManagers.LocationSharingStorageManagerType
@@ -244,36 +240,6 @@ internal class LocationSharingManagerTest {
         }
 
         @Test
-        fun receivePayloadContainerBundle_FlowEmittedOnce_FirstLocation() = runBlockingTest {
-            val mockMetaInfo = mockk<PayloadMetaInfo>()
-            val mockLocation = mockk<Location>()
-            val payloadBundle =
-                PayloadContainerBundle(Payload.PayloadType.LocationUpdateV2, LocationUpdateV2(mockLocation, TEST_GROUP_ID), mockMetaInfo)
-            val timestampOld = Date(Date().time - 10000L)
-
-            every { mockMetaInfo.senderId } returns TEST_USER_ID
-            every { mockLocation.timestamp } returns timestampOld
-
-            coEvery { mockUserManager.getUser(TEST_USER_ID) } returns mockTestUser
-
-            coEvery { mockLocationSharingStorageManager.getStateOfUserInGroup(TEST_USER_ID, TEST_GROUP_ID) } returns LocationSharingState(TEST_USER_ID, TEST_GROUP_ID, true, Date(Date().time - 20000L))
-
-            locationSharingManager.handlePayloadContainerBundle(payloadBundle)
-
-            val results = locationSharingManager.getLocationUpdateFlow(listOf(TEST_USER_ID), TEST_GROUP_ID).onSubscription {
-                TestCoroutineScope(TestCoroutineDispatcher()).launch {
-                    locationSharingManager.handlePayloadContainerBundle(payloadBundle)
-                }
-            }.take(1).toList()
-
-            val firstResult = locationSharingManager.lastLocation(UserGroupIds(TEST_USER_ID, TEST_GROUP_ID))
-
-            Assertions.assertEquals(1, results.size)
-            Assertions.assertEquals(UserLocation(TEST_USER_ID, mockLocation), results[0])
-            Assertions.assertEquals(mockLocation, firstResult)
-        }
-
-        @Test
         fun receivePayloadContainerBundle_FlowEmittedOnce_DontUpdateOlderTimeStamp() = runBlockingTest {
             val mockMetaInfo = mockk<PayloadMetaInfo>()
             val mockLocation = mockk<Location>()
@@ -297,7 +263,7 @@ internal class LocationSharingManagerTest {
 
             coEvery { mockLocationSharingStorageManager.getStateOfUserInGroup(TEST_USER_ID, TEST_GROUP_ID) } returns LocationSharingState(TEST_USER_ID, TEST_GROUP_ID, true, Date(Date().time - 20000L))
 
-            val results = locationSharingManager.getLocationUpdateFlow(listOf(TEST_USER_ID), TEST_GROUP_ID).onSubscription {
+            val results = locationSharingManager.memberLocationFlow.onSubscription {
                 TestCoroutineScope(TestCoroutineDispatcher()).launch {
                     locationSharingManager.handlePayloadContainerBundle(payloadBundle2)
                     locationSharingManager.handlePayloadContainerBundle(payloadBundle)
@@ -334,7 +300,7 @@ internal class LocationSharingManagerTest {
 
             coEvery { mockLocationSharingStorageManager.getStateOfUserInGroup(TEST_USER_ID, TEST_GROUP_ID) } returns LocationSharingState(TEST_USER_ID, TEST_GROUP_ID, true, Date(Date().time - 20000L))
 
-            val results = locationSharingManager.getLocationUpdateFlow(listOf(TEST_USER_ID), TEST_GROUP_ID).onSubscription {
+            val results = locationSharingManager.memberLocationFlow.onSubscription {
                 TestCoroutineScope(TestCoroutineDispatcher()).launch {
                     locationSharingManager.handlePayloadContainerBundle(payloadBundle)
                     locationSharingManager.handlePayloadContainerBundle(payloadBundle2)

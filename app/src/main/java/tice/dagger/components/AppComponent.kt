@@ -8,8 +8,8 @@ import tice.dagger.modules.android.FragmentBuilderModule
 import tice.dagger.modules.android.ServiceBuilderModule
 import tice.dagger.modules.android.TICEViewModelModule
 import tice.dagger.modules.android.ViewModelFactoryModule
-import tice.dagger.provides.DatabaseModule
 import tice.dagger.provides.ConfigModule
+import tice.dagger.provides.DatabaseModule
 import tice.dagger.scopes.AppScope
 import tice.dagger.setup.ViewModelFactory
 import tice.managers.messaging.FirebaseReceiverService

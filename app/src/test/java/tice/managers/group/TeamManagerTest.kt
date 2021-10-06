@@ -3,8 +3,6 @@ package tice.managers.group
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
-import tice.crypto.CryptoManagerType
-import tice.models.Membership
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
@@ -16,6 +14,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tice.backend.BackendType
 import tice.crypto.AuthManagerType
+import tice.crypto.CryptoManagerType
 import tice.exceptions.BackendException
 import tice.exceptions.TeamManagerException
 import tice.managers.LocationManagerType
@@ -955,7 +954,7 @@ internal class TeamManagerTest {
     fun setMeetingPoint_Success() = runBlockingTest {
         val TEST_LAT = Random().nextDouble()
         val TEST_LNG = Random().nextDouble()
-        val mockLatLng = LatLng(TEST_LAT, TEST_LNG)
+        val mockCoords = Coordinates(TEST_LAT, TEST_LNG)
 
         val cipherSlot = slot<Ciphertext>()
 
@@ -973,7 +972,7 @@ internal class TeamManagerTest {
             )
         }.returns(UpdatedETagResponse(TEST_GROUP_TAG2))
 
-        teamManager.setMeetingPoint(mockLatLng, mockTeam)
+        teamManager.setMeetingPoint(mockCoords, mockTeam)
 
         val internalSettings = Json.decodeFromString(Team.InternalTeamSettings.serializer(), String(cipherSlot.captured))
         Assertions.assertEquals(TEST_LAT, internalSettings.meetingPoint?.latitude)

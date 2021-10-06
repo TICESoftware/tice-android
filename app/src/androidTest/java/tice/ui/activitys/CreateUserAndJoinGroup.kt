@@ -1,7 +1,9 @@
 package tice.ui.activitys
 
 import android.Manifest
+import android.content.Context
 import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -61,12 +63,12 @@ class CreateUserAndJoinGroup {
         runBlocking { cncAPI.joinGroup(response.userId, groupId, groupKey) }
 
         waitForView(allOf(withId(R.id.teamInvite_Continue_Button), isDisplayed())).perform(click())
-        waitForView(allOf(withId(android.R.id.button1), isDisplayed())).perform(scrollTo(), click())
 
-        val command = java.lang.String.format("pm grant %s %s", InstrumentationRegistry.getTargetContext().packageName, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val context: Context = ApplicationProvider.getApplicationContext()
+        val command = java.lang.String.format("pm grant %s %s", context.packageName, Manifest.permission.ACCESS_COARSE_LOCATION)
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command)
 
-        val command2 = java.lang.String.format("pm grant %s %s", InstrumentationRegistry.getTargetContext().packageName, Manifest.permission.ACCESS_FINE_LOCATION)
+        val command2 = java.lang.String.format("pm grant %s %s", context.packageName, Manifest.permission.ACCESS_FINE_LOCATION)
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command2)
 
         swipeToHideNotification()

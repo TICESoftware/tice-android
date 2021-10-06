@@ -1,10 +1,12 @@
 package tice.ui.activitys.utility
 
 import android.Manifest
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -79,12 +81,12 @@ fun finishOnboarding() {
 
     waitForView(allOf(withId(R.id.createTeam_continue_button), isDisplayed())).perform(click())
     waitForView(allOf(withId(R.id.teamInvite_Continue_Button), isDisplayed())).perform(click())
-    waitForView(allOf(withId(android.R.id.button1), isDisplayed())).perform(scrollTo(), click())
 
-    val command = java.lang.String.format("pm grant %s %s", InstrumentationRegistry.getTargetContext().packageName, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val context: Context = ApplicationProvider.getApplicationContext()
+    val command = java.lang.String.format("pm grant %s %s", context.packageName, Manifest.permission.ACCESS_COARSE_LOCATION)
     androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command)
 
-    val command2 = java.lang.String.format("pm grant %s %s", InstrumentationRegistry.getTargetContext().packageName, Manifest.permission.ACCESS_FINE_LOCATION)
+    val command2 = java.lang.String.format("pm grant %s %s", context.packageName, Manifest.permission.ACCESS_FINE_LOCATION)
     androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command2)
 }
 

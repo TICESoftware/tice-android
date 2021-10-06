@@ -8,12 +8,13 @@ import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.WorkManager
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
-import tice.crypto.CryptoManager
 import dagger.Lazy
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.anyInt
+import tice.crypto.CryptoManager
 import tice.dagger.components.AppComponent
 import tice.helper.InstantExecutorExtension
 import tice.managers.*
@@ -201,7 +203,7 @@ internal class AppFlowTest {
     fun verifyInitProcess_SignedIn() = runBlockingTest {
         val TEST_ID = "testId"
 
-
+        mockkStatic(GoogleApiAvailability::class)
         mockkStatic(FirebaseMessaging::class)
         mockkStatic(ProcessLifecycleOwner::class)
         mockkStatic(WorkManager::class)
@@ -214,6 +216,10 @@ internal class AppFlowTest {
         every { mockWorkManager.enqueueUniquePeriodicWork(any(), any(), any()) } returns mockk()
 
         val temp = slot<OnSuccessListener<String>>()
+
+        every { GoogleApiAvailability.getInstance() } returns mockk {
+            every { isGooglePlayServicesAvailable(any()) } returns ConnectionResult.SUCCESS
+        }
 
         every { FirebaseMessaging.getInstance() } returns mockk {
             every { token } returns mockk {

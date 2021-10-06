@@ -35,11 +35,6 @@
     <!-- Map -->
     <string name="map_title">"Karte"</string>
     <string name="map_location_meetingPoint">"Treffpunkt"</string>
-    <string name="map_location_permission_later">"Jetzt nicht"</string>
-    <string name="map_location_permission_enable">"Erlauben"</string>
-    <string name="map_location_permission_info">"Durch das Verbieten des Standortzugriffs wird TICE deinen Standort weder auf der Karte anzeigen, noch ihn mit anderen während eines Treffens teilen.
-
-Möchtest du TICE Zugriff auf deinen Standort erlauben?"</string>
     <string name="map_location_info_okay">"Okay"</string>
     <string name="map_location_string">"%1$s, %2$s"</string>
     <!-- MapBottomSheet -->
@@ -50,8 +45,6 @@ Möchtest du TICE Zugriff auf deinen Standort erlauben?"</string>
     <!-- MeetupButton -->
     <string name="alert_cancel">"Abbrechen"</string>
     <string name="meetup_snackbar_started">"Treffen wurde gestartet"</string>
-    <string name="meetup_snackbar_locationDisabled">"Um deine Person zu sehen, musst du TICE Zugriff auf deinen Standort gewähren."</string>
-    <string name="meetup_manageParticipation_locationSharingOff">"Standort versteckt"</string>
     <!-- Settings Preferences -->
     <string name="settings_name_header">"Nutzereinstellungen"</string>
     <string name="settings_name_title">"Dein Name"</string>
