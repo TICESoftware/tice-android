@@ -38,4 +38,8 @@ while [ "`$ADB shell getprop sys.boot_completed | tr -d '\r' `" != "1" ]; do
 done
 
 echo "Emulator has finished booting."
+echo "Disable animations."
+$ADB shell settings put global window_animation_scale 0
+$ADB shell settings put global transition_animation_scale 0
+
 echo "${GREEN}Emulator $EMULATOR_NAME is ready. PID: $EMULATOR_PID${RESET}"
