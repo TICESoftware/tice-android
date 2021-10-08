@@ -21,7 +21,6 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mapbox.search.MapboxSearchSdk
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.BottomsheetMapBinding
 import com.ticeapp.TICE.databinding.CustomMapMarkerBinding
@@ -32,11 +31,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tice.models.*
 import tice.utility.getLogger
-import tice.utility.provider.CoroutineContextProvider
-import tice.utility.provider.CoroutineContextProviderType
 import java.util.*
-import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface {
     val logger by getLogger()

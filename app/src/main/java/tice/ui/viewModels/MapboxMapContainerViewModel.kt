@@ -1,10 +1,7 @@
 package tice.ui.viewModels
 
 import android.app.Activity
-import androidx.lifecycle.ViewModel
 import com.mapbox.maps.ResourceOptionsManager
-import com.mapbox.search.MapboxSearchSdk
-import com.mapbox.search.location.DefaultLocationProvider
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
@@ -31,7 +28,8 @@ class MapboxMapContainerViewModel @Inject constructor(
     userManager,
     nameProvider,
     userDataGenerator,
-    coroutineContextProvider) {
+    coroutineContextProvider
+) {
 
     fun initMapboxSdk(activity: Activity) {
         ResourceOptionsManager.getDefault(activity, mapboxSecretToken)

@@ -1,8 +1,6 @@
 package tice.ui.viewModels
 
-import android.content.Context
 import androidx.lifecycle.*
-import com.mapbox.maps.ResourceOptionsManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
@@ -24,7 +22,6 @@ import tice.utility.provider.NameProviderType
 import tice.utility.provider.UserDataGeneratorType
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 
 class GroupMapViewModel @Inject constructor(
     private val locationManager: LocationManagerType,

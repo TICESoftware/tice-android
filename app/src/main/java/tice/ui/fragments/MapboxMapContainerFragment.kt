@@ -27,7 +27,6 @@ import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.scalebar.scalebar
 import com.mapbox.search.*
-import com.mapbox.search.location.DefaultLocationProvider
 import com.mapbox.search.result.SearchAddress
 import com.mapbox.search.result.SearchResult
 import com.mapbox.search.ui.view.SearchBottomSheetView
@@ -38,8 +37,6 @@ import kotlinx.coroutines.launch
 import tice.models.*
 import tice.ui.viewModels.MapboxMapContainerViewModel
 import tice.utility.ui.getViewModel
-import javax.inject.Inject
-import javax.inject.Named
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
@@ -288,11 +285,14 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
         return suspendCoroutine { continuation ->
             reverseGeocodingSearchRequestTask =
-                reverseGeocoding.search(options, object : SearchCallback {
-                    override fun onError(e: Exception) = continuation.resumeWith(Result.failure(e))
-                    override fun onResults(results: List<SearchResult>, responseInfo: ResponseInfo) =
-                        continuation.resume(results.firstOrNull()?.address?.formattedAddress(SearchAddress.FormatStyle.Medium) ?: fallbackString)
-                })
+                reverseGeocoding.search(
+                    options,
+                    object : SearchCallback {
+                        override fun onError(e: Exception) = continuation.resumeWith(Result.failure(e))
+                        override fun onResults(results: List<SearchResult>, responseInfo: ResponseInfo) =
+                            continuation.resume(results.firstOrNull()?.address?.formattedAddress(SearchAddress.FormatStyle.Medium) ?: fallbackString)
+                    }
+                )
         }
     }
 }

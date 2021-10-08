@@ -27,24 +27,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.GoogleMapsContainerFragmentBinding
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import tice.models.Coordinates
 import tice.models.UserId
 import tice.models.UserLocation
 import tice.models.coordinates
 import tice.ui.viewModels.GoogleMapsContainerViewModel
-import tice.ui.viewModels.MapContainerViewModel
-import tice.utility.getLogger
-import tice.utility.provider.CoroutineContextProvider
 import tice.utility.ui.getViewModel
 import java.io.IOException
 import java.lang.Math.cos
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.NoSuchElementException
-import kotlin.collections.HashMap
-import kotlin.coroutines.coroutineContext
 
 sealed class MarkerType {
     data class UserMarker(val userId: UserId, val timestamp: Date, val name: String) : MarkerType()
@@ -146,16 +139,16 @@ class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
     private fun handleClickOnMarker(marker: Marker): Boolean {
         marker.showInfoWindow()
 
-		CoroutineScope(Dispatchers.Main).launch {
-        when (val tag = marker.tag) {
-            is MarkerType.UserMarker -> 
-                showMemberLocationInBottomSheet(
-                    tag.userId,
-                    tag.name,
-                    Coordinates(marker.position.latitude, marker.position.longitude),
-                    tag.timestamp
-                )
-			is MarkerType.CustomPositionMarker -> showMarkedLocationInBottomSheet(marker.position.coordinates())
+        CoroutineScope(Dispatchers.Main).launch {
+            when (val tag = marker.tag) {
+                is MarkerType.UserMarker ->
+                    showMemberLocationInBottomSheet(
+                        tag.userId,
+                        tag.name,
+                        Coordinates(marker.position.latitude, marker.position.longitude),
+                        tag.timestamp
+                    )
+                is MarkerType.CustomPositionMarker -> showMarkedLocationInBottomSheet(marker.position.coordinates())
             }
         }
 

@@ -1,7 +1,6 @@
 package tice.managers.group
 
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
