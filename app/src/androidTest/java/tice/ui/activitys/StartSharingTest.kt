@@ -28,6 +28,6 @@ class StartSharingTest {
         
         waitForView(allOf(withContentDescription("Google Map"), isDisplayed())).perform(longClick())
         waitForView(allOf(withId(R.id.bottom_sheet), isDisplayed()))
-        waitForView(allOf(withId(R.id.set_meeting_point_button), isDisplayed())).perform(click())
+        waitForView(allOf(withText("Set as Meeting Point"), isDisplayed())).perform(click())
     }
 }

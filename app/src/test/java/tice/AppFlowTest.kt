@@ -267,11 +267,15 @@ internal class AppFlowTest {
     fun verifyInitProcess_NotSignedIn() = runBlocking {
         mockkStatic(ProcessLifecycleOwner::class)
         mockkStatic(WorkManager::class)
+        mockkStatic(GoogleApiAvailability::class)
 
         every { mockLocationManager.startMonitoringSharingStates(any()) } returns mockk()
         every { mockSignedInUserManager.signedIn() } returns false
         every { WorkManager.initialize(any(), any()) } returns Unit
         every { WorkManager.getInstance(any()) } returns mockWorkManager
+        every { GoogleApiAvailability.getInstance() } returns mockk {
+            every { isGooglePlayServicesAvailable(any()) } returns ConnectionResult.SUCCESS
+        }
 
         appFlow.initApp()
 
