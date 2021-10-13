@@ -1,6 +1,6 @@
 package tice.ui.viewModels
 
-import android.app.Activity
+import android.content.Context
 import com.mapbox.maps.ResourceOptionsManager
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
@@ -12,7 +12,7 @@ import tice.utility.provider.UserDataGeneratorType
 import javax.inject.Inject
 import javax.inject.Named
 
-class MapboxMapContainerViewModel @Inject constructor(
+class MapboxContainerViewModel @Inject constructor(
     groupStorageManager: GroupStorageManagerType,
     teamManager: TeamManagerType,
     locationSharingManager: LocationSharingManagerType,
@@ -20,7 +20,7 @@ class MapboxMapContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType,
-    @Named("MAPBOX_SECRET_TOKEN") val mapboxSecretToken: String
+    @Named("MAPBOX_SECRET_TOKEN") private val mapboxSecretToken: String
 ) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
@@ -30,8 +30,7 @@ class MapboxMapContainerViewModel @Inject constructor(
     userDataGenerator,
     coroutineContextProvider
 ) {
-
-    fun initMapboxSdk(activity: Activity) {
-        ResourceOptionsManager.getDefault(activity, mapboxSecretToken)
+    fun initMapbox(context: Context) {
+        ResourceOptionsManager.getDefault(context, mapboxSecretToken)
     }
 }

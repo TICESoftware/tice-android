@@ -50,10 +50,10 @@ class ConfigModule {
         const val HCAPTCHA_SITE_KEY = "HCAPTCHA_SITE_KEY"
 
         const val MAPBOX_SECRET_TOKEN = "MAPBOX_SECRET_TOKEN"
+        const val MAPBOX_PUBLIC_TOKEN = "MAPBOX_PUBLIC_TOKEN"
 
         const val PLACES_SEARCH_REQUEST_CODE = "PLACES_SEARCH_REQUEST_CODE"
 
-        const val BEEKEEPER_PRODUCT = "BEEKEEPER_PRODUCT"
         const val BEEKEEPER_BASE_URL = "BEEKEEPER_BASE_URL"
         const val BEEKEEPER_DISPATCH_INTERVAL = "BEEKEEPER_DISPATCH_INTERVAL"
         const val BEEKEEPER_MAX_BATCH_SIZE = "BEEKEEPER_MAX_BATCH_SIZE"
@@ -212,14 +212,6 @@ class ConfigModule {
     }
 
     @Provides
-    @Named(BEEKEEPER_PRODUCT)
-    fun provideBeekeeperProduct(context: Context): String =
-        context.packageManager.getApplicationInfo(
-            context.packageName,
-            PackageManager.GET_META_DATA
-        ).metaData.getString("beekeeper_product")!!
-
-    @Provides
     @Named(BEEKEEPER_BASE_URL)
     fun provideBeekeeperBaseURL(): String = "https://beekeeper.tice.app"
 
@@ -257,6 +249,14 @@ class ConfigModule {
             context.packageName,
             PackageManager.GET_META_DATA
         ).metaData.getString("mapbox_secret_token")!!
+
+    @Provides
+    @Named(MAPBOX_PUBLIC_TOKEN)
+    fun provideMapboxPublicToken(context: Context): String =
+        context.packageManager.getApplicationInfo(
+            context.packageName,
+            PackageManager.GET_META_DATA
+        ).metaData.getString("mapbox_public_token")!!
 
     @Provides
     @Named(PLACES_SEARCH_REQUEST_CODE)

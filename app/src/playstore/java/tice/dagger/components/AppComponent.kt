@@ -4,10 +4,7 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 import tice.AppFlow
 import tice.dagger.modules.*
-import tice.dagger.modules.android.FragmentBuilderModule
-import tice.dagger.modules.android.ServiceBuilderModule
-import tice.dagger.modules.android.TICEViewModelModule
-import tice.dagger.modules.android.ViewModelFactoryModule
+import tice.dagger.modules.android.*
 import tice.dagger.provides.ConfigModule
 import tice.dagger.provides.DatabaseModule
 import tice.dagger.scopes.AppScope
@@ -22,7 +19,9 @@ import tice.workers.MessageKeyCacheWorker
 @Subcomponent(
     modules = [
         FragmentBuilderModule::class,
+        GoogleMapsContainerFragmentBuilderModule::class,
         TICEViewModelModule::class,
+        GoogleMapsContainerViewModelModule::class,
         ViewModelFactoryModule::class,
 
         BackendModule::class,
@@ -31,7 +30,8 @@ import tice.workers.MessageKeyCacheWorker
         StorageManagerModule::class,
         MessagingModule::class,
         ConfigModule::class,
-        ServiceBuilderModule::class,
+        FirebaseReceiverServiceBuilderModule::class,
+        LocationServiceBuilderModule::class,
         UtilityModule::class
     ]
 )

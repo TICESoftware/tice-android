@@ -17,7 +17,6 @@ import javax.inject.Named
 
 class Dispatcher @Inject constructor(
     private val okHttpClient: OkHttpClient,
-    @Named("BEEKEEPER_PRODUCT") private val product: String,
     @Named("BEEKEEPER_BASE_URL") private val BASE_URL: String,
     @Named("BEEKEEPER_DISPATCH_INTERVAL") internal val dispatchInterval: Long,
     @Named("BEEKEEPER_MAX_BATCH_SIZE") internal val maxBatchSize: Int,
@@ -30,7 +29,7 @@ class Dispatcher @Inject constructor(
     }
 
     fun dispatch(events: List<Event>): Response {
-        val httpUrl = BASE_URL.toHttpUrl().resolve(product)!!
+        val httpUrl = BASE_URL.toHttpUrl().resolve(events.first().product)!!
         val body: String = Json.encodeToString(events)
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val requestBody = body.toRequestBody(mediaType)

@@ -4,14 +4,14 @@ platform :android do
   desc "Run tests"
   lane :tests do |options|
     skip_docs
-    gradle(tasks: ["clean", "testDevelopmentDebugUnitTest"])
-    gradle(tasks: ["connectedInstrumentationDebugAndroidTest", "--info"])
+    gradle(tasks: ["clean", "testDevelopmentPlaystoreDebugUnitTest"])
+    gradle(tasks: ["connectedInstrumentationPlaystoreDebugAndroidTest", "--info"])
   end
 
   desc "Run linter"
   lane :lint do |options|
     skip_docs
-    lint_result = gradle(tasks: ["clean", "lintDevelopmentDebug", "lintKotlinMain"])
+    lint_result = gradle(tasks: ["clean", "lintDevelopmentPlaystoreDebug", "lintKotlinMain"])
 
 
     if options[:strict] && (lint_result.include? "report") then

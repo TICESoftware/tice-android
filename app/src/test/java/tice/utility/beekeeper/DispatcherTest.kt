@@ -26,7 +26,7 @@ internal class DispatcherTest {
     fun before() {
         clearAllMocks()
 
-        dispatcher = Dispatcher(mockOkHttpClient, "product", "https://example.com", 1000, 10, "1234")
+        dispatcher = Dispatcher(mockOkHttpClient, "https://example.com", 1000, 10, "1234")
     }
 
     @Nested

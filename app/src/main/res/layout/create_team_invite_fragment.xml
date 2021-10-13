@@ -25,37 +25,38 @@
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
         android:layout_marginTop="40dp"
-        android:background="@color/quantum_grey100"
-        app:layout_constraintCircleRadius="30dp"
+        android:background="@color/colorBackground2"
+        android:orientation="horizontal"
         android:paddingStart="14dp"
-        android:paddingEnd="10dp"
         android:paddingTop="20dp"
+        android:paddingEnd="10dp"
         android:paddingBottom="20dp"
+        app:layout_constraintCircleRadius="30dp"
         app:layout_constraintTop_toBottomOf="@id/teamInvite_info_text"
-        android:orientation="horizontal">
+        tools:layout_editor_absoluteX="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/teamInvite_joinText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/primaryTextColor"
-            tools:text="@string/createTeamInvite_invitation_text"
-            tools:ignore="SelectableText" />
+            <TextView
+                android:id="@+id/teamInvite_joinText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:textColor="@color/primaryTextColor"
+                tools:ignore="SelectableText"
+                tools:text="@string/createTeamInvite_invitation_text" />
 
-        <TextView
-            android:id="@+id/teamInvite_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textIsSelectable="true" />
+            <TextView
+                android:id="@+id/teamInvite_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textIsSelectable="true" />
 
         </LinearLayout>
 
@@ -64,9 +65,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:drawableRightCompat="?attr/actionModeCopyDrawable"
             android:layout_marginStart="8dp"
             android:layout_weight="0"
+            app:drawableRightCompat="?attr/actionModeCopyDrawable"
             app:tint="@color/primaryTextColor"
             tools:ignore="SelectableText" />
 

@@ -35,14 +35,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tice.models.*
-import tice.ui.viewModels.MapboxMapContainerViewModel
+import tice.ui.viewModels.MapboxContainerViewModel
 import tice.utility.ui.getViewModel
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
 
 class MapboxMapContainerFragment : MapContainerFragment() {
-    override val viewModel: MapboxMapContainerViewModel by getViewModel()
+    override val viewModel: MapboxContainerViewModel by getViewModel()
 
     private val binding get() = _binding!! as MapboxContainerFragmentBinding
 
@@ -61,7 +61,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initMapboxSdk(requireActivity())
+        viewModel.initMapbox(requireActivity())
         reverseGeocoding = MapboxSearchSdk.createReverseGeocodingSearchEngine()
     }
 

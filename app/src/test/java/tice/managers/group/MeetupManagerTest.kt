@@ -898,7 +898,7 @@ internal class MeetupManagerTest {
         fun success() = runBlockingTest {
             val TEST_LAT = Random().nextDouble()
             val TEST_LNG = Random().nextDouble()
-            val mockLatLng = LatLng(TEST_LAT, TEST_LNG)
+            val mockLatLng = Coordinates(TEST_LAT, TEST_LNG)
 
             val cipherSlot = slot<Ciphertext>()
 
@@ -936,7 +936,7 @@ internal class MeetupManagerTest {
         fun groupOutdated() = runBlockingTest {
             val TEST_LAT = Random().nextDouble()
             val TEST_LNG = Random().nextDouble()
-            val mockLatLng = LatLng(TEST_LAT, TEST_LNG)
+            val mockLatLng = Coordinates(TEST_LAT, TEST_LNG)
 
             val cipherSlot = slot<Ciphertext>()
 

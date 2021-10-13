@@ -22,7 +22,7 @@ internal class BeekeeperTest {
     fun before() {
         clearAllMocks()
 
-        beekeeper = Beekeeper("TestProduct", mockDispatcher, mockMemory, mockCoroutineContextProvider)
+        beekeeper = Beekeeper(mockDispatcher, mockMemory, mockCoroutineContextProvider)
 
         every { mockMemory.optedOut } returns false
         every { mockDispatcher.dispatchInterval } returns 1_000
@@ -68,7 +68,7 @@ internal class BeekeeperTest {
             coVerify(exactly = 1) { mockDispatcher.dispatch(capture(eventsSlot)) }
 
             val result = eventsSlot.captured.first()
-            Assertions.assertEquals("TestProduct", result.product)
+            Assertions.assertEquals("TICE-development", result.product)
             Assertions.assertEquals("TestName", result.name)
             Assertions.assertEquals("TestGroup", result.group)
             Assertions.assertEquals("TestDetail", result.detail)

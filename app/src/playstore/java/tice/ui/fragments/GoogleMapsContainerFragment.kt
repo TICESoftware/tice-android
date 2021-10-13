@@ -28,22 +28,18 @@ import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.GoogleMapsContainerFragmentBinding
 import kotlinx.coroutines.*
 import tice.models.Coordinates
+import tice.models.MarkerType
 import tice.models.UserId
 import tice.models.UserLocation
-import tice.models.coordinates
 import tice.ui.viewModels.GoogleMapsContainerViewModel
+import tice.utility.coordinates
+import tice.utility.latLng
 import tice.utility.ui.getViewModel
 import java.io.IOException
 import java.lang.Math.cos
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
-
-sealed class MarkerType {
-    data class UserMarker(val userId: UserId, val timestamp: Date, val name: String) : MarkerType()
-    object MeetingPointMarker : MarkerType()
-    object CustomPositionMarker : MarkerType()
-}
 
 class GoogleMapsContainerFragment : MapContainerFragment(), OnMapReadyCallback {
     override val viewModel: GoogleMapsContainerViewModel by getViewModel()

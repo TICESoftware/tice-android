@@ -50,20 +50,12 @@
         </activity>
 
         <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
             android:name="base_url"
             android:value="${baseURL}" />
         <meta-data
             android:name="websocket_url"
             android:value="${websocketURL}" />
-        <meta-data
-            android:name="cnc_base_url"
-            android:value="${cncBaseURL}" />
-        <meta-data
-            android:name="beekeeper_product"
-            android:value="${beekeeperProduct}" />
+        <!-- TODO: Remove beekeeper dependency from F-Droid flavor -->
         <meta-data
             android:name="beekeeper_secret"
             android:value="${beekeeperSecret}" />
@@ -71,17 +63,11 @@
             android:name="hcaptcha_site_key"
             android:value="${hcaptchaSiteKey}" />
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapsAPIKey}" />
-        <meta-data
             android:name="mapbox_public_token"
             android:value="${mapboxPublicToken}" />
         <meta-data
             android:name="mapbox_secret_token"
             android:value="${mapboxSecretToken}" />
-        <meta-data
-            android:name="development_verification_code"
-            android:value="${developmentVerificationCode}" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -92,27 +78,6 @@
             android:exported="false"
             android:foregroundServiceType="location"
             android:stopWithTask="true" />
-
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove"
-            android:exported="false" />
-
-        <provider
-            android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="tice.managers.messaging.FirebaseReceiverService"
-            tools:node="remove"
-            android:exported="false" />
-
-        <service
-            android:name="tice.managers.messaging.FirebaseReceiverService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
 
         <uses-library
             android:name="android.test.runner"
@@ -126,6 +91,14 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
+        </provider>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                tools:node="remove" />
         </provider>
     </application>
 

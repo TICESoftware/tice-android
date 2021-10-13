@@ -1,6 +1,5 @@
 package tice.managers.group
 
-import com.google.android.gms.maps.model.LatLng
 import tice.models.*
 import tice.models.messaging.MessagePriority
 import java.lang.ref.WeakReference
@@ -14,7 +13,7 @@ interface MeetupManagerType {
     suspend fun leave(meetup: Meetup)
     suspend fun delete(meetup: Meetup)
     suspend fun deleteGroupMember(membership: Membership, meetup: Meetup)
-    suspend fun setMeetingPoint(meetingPoint: LatLng, meetup: Meetup)
+    suspend fun setMeetingPoint(meetingPoint: Coordinates, meetup: Meetup)
 
     suspend fun reload(meetup: Meetup)
     suspend fun addOrReload(meetupId: GroupId, teamId: GroupId)

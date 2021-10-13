@@ -17,7 +17,6 @@ import android.os.Looper
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.google.android.gms.location.*
 import com.ticeapp.TICE.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -51,16 +50,6 @@ class LocationService @Inject constructor() : Service(), LocationListener {
     private var nextJob: (suspend () -> Unit)? = null
 
     private var androidLocationManager: LocationManager? = null
-
-    private var fusedLocationProviderClient: FusedLocationProviderClient? = null
-    private var locationRequest: LocationRequest? = null
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            super.onLocationResult(locationResult)
-
-            onLocationChanged(locationResult.lastLocation)
-        }
-    }
 
     override fun onLocationChanged(location: android.location.Location) {
         logger.debug("Receive location update from ${location.provider}.")
@@ -113,8 +102,6 @@ class LocationService @Inject constructor() : Service(), LocationListener {
             androidLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         }
 
-        startLocationTracking()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (locationServiceController.isForegroundService) {
                 logger.debug("Start foreground")
@@ -142,30 +129,6 @@ class LocationService @Inject constructor() : Service(), LocationListener {
         return START_NOT_STICKY
     }
 
-    @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
-    fun startLocationTracking() {
-        fusedLocationProviderClient ?: run {
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        }
-
-        fusedLocationProviderClient?.locationAvailability?.addOnSuccessListener {
-            if (it.isLocationAvailable) {
-                logger.debug("Register google fusedLocationProviderClient.")
-
-                locationRequest = LocationRequest()
-                locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                locationRequest?.interval = 3000L
-                locationRequest?.maxWaitTime = 3000L
-                locationRequest?.fastestInterval = 3000L
-
-                fusedLocationProviderClient?.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-            } else {
-                logger.debug("Register android location providers.")
-                registerLocationListener()
-            }
-        }
-    }
-
     override fun onCreate() {
         (application as TICEApplication).appComponent.bind(this)
         super.onCreate()
@@ -174,7 +137,6 @@ class LocationService @Inject constructor() : Service(), LocationListener {
     override fun onDestroy() {
         logger.debug("destroy LocationService")
         androidLocationManager?.removeUpdates(this)
-        fusedLocationProviderClient?.removeLocationUpdates(locationCallback)
         stopSelf(1)
         stopForeground(true)
         super.onDestroy()

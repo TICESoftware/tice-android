@@ -3,10 +3,10 @@ package tice.managers
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
 import tice.dagger.scopes.AppScope
 import tice.models.CameraSettings
+import tice.models.Coordinates
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -33,7 +33,7 @@ class SettingsManager @Inject constructor(
         val tilt = sharedPrefs.getFloat(lastCameraPositionTiltKey, 0F)
         val baering = sharedPrefs.getFloat(lastCameraPositionBearingKey, 0F)
 
-        return CameraSettings(LatLng(firstValue, secondValue), zoom, tilt, baering)
+        return CameraSettings(Coordinates(firstValue, secondValue), zoom, tilt, baering)
     }
 
     private fun setLastCameraLocationObject(settings: CameraSettings) {

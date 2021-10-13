@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tice.models.CameraSettings
+import tice.models.Coordinates
 
 internal class SettingsManagerTest {
 
@@ -66,7 +67,7 @@ internal class SettingsManagerTest {
 
     @Test
     fun `Set locationSharingEnabled with true and false value`() = runBlockingTest {
-        val TEST_SETTINGS = CameraSettings(LatLng(TEST_LAT.toDouble(), TEST_LNG.toDouble()), TEST_ZOOM, TEST_TILT, TEST_BEARING)
+        val TEST_SETTINGS = CameraSettings(Coordinates(TEST_LAT.toDouble(), TEST_LNG.toDouble()), TEST_ZOOM, TEST_TILT, TEST_BEARING)
 
         val mockSharedPreferencesEditor = mockk<SharedPreferences.Editor>(relaxUnitFun = true)
 

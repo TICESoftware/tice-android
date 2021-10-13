@@ -7,6 +7,7 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: "org.jmailen.kotlinter"
 apply plugin: "de.mannodermaus.android-junit5"
 apply plugin: "com.google.android.gms.oss-licenses-plugin"
+apply plugin: 'com.cookpad.android.licensetools'
 
 android {
     compileSdkVersion 31
@@ -37,76 +38,98 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "environment"
 
-    def placeholders = [
-            "googleMapsAPIKey"              : configVar("GOOGLE_MAPS_API_KEY"),
-            "developmentVerificationCode"   : configVar("DEVELOPMENT_VERIFICATION_CODE"),
-            "cncBaseURL"                    : configVar("CNC_SERVER_ADDRESS"),
+    def commonPlaceholders = [
             "hcaptchaSiteKey"               : configVar("HCAPTCHA_SITE_KEY"),
             "mapboxPublicToken"             : configVar("MAPBOX_PUBLIC_TOKEN"),
             "mapboxSecretToken"             : configVar("MAPBOX_SECRET_TOKEN")
     ]
 
+    flavorDimensions "stage", "store"
     productFlavors {
         development {
+            dimension = "stage"
             applicationIdSuffix = ".development"
             versionNameSuffix = "-development"
-            manifestPlaceholders = placeholders + [
+            manifestPlaceholders = commonPlaceholders + [
                     baseURL         : configVar("SERVER_ADDRESS"),
                     websocketURL    : configVar("WS_SERVER_ADDRESS"),
                     deepLinkHost    : "develop.tice.app",
                     displayName     : "TICE Develop",
-                    beekeeperProduct: "TICE-development",
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET_DEVELOPMENT")
+                    developmentVerificationCode   : configVar("DEVELOPMENT_VERIFICATION_CODE")
             ]
         }
         instrumentation {
+            dimension = "stage"
             minSdkVersion 26
             applicationIdSuffix = ".development"
-            manifestPlaceholders = placeholders + [
+            manifestPlaceholders = commonPlaceholders + [
                     baseURL         : configVar("SERVER_ADDRESS"),
                     websocketURL    : configVar("WS_SERVER_ADDRESS"),
+                    cncBaseURL      : configVar("CNC_SERVER_ADDRESS"),
                     deepLinkHost    : "develop.tice.app",
                     displayName     : "TICE Instrumentation",
-                    beekeeperProduct: "TICE-development",
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET_DEVELOPMENT")
+                    developmentVerificationCode   : configVar("DEVELOPMENT_VERIFICATION_CODE")
             ]
         }
         adhoc {
+            dimension = "stage"
             applicationIdSuffix = ".testing"
             versionNameSuffix = "-testing"
-            manifestPlaceholders = placeholders + [
+            manifestPlaceholders = commonPlaceholders + [
                     baseURL         : "https://testing.api.tice.app",
                     websocketURL    : "wss://testing.api.tice.app",
                     deepLinkHost    : "testing.tice.app",
-                    displayName     : "TICE Testing",
-                    beekeeperProduct: "TICE-testing",
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET_TESTING")
+                    displayName     : "TICE Testing"
             ]
         }
         preview {
+            dimension = "stage"
             applicationIdSuffix = ".preview"
             versionNameSuffix = "-preview"
-            manifestPlaceholders = placeholders + [
+            manifestPlaceholders = commonPlaceholders + [
                     baseURL         : "https://preview.api.tice.app",
                     websocketURL    : "wss://preview.api.tice.app",
                     deepLinkHost    : "preview.tice.app",
-                    displayName     : "TICE Preview",
-                    beekeeperProduct: "TICE-preview",
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET_PREVIEW")
+                    displayName     : "TICE Preview"
             ]
         }
         production {
+            dimension = "stage"
             applicationIdSuffix = ".production"
-            manifestPlaceholders = placeholders + [
+            manifestPlaceholders = commonPlaceholders + [
                     baseURL         : "https://api.tice.app",
                     websocketURL    : "wss://api.tice.app",
                     deepLinkHost    : "tice.app",
-                    displayName     : "TICE",
-                    beekeeperProduct: "TICE-production",
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET_PRODUCTION")
+                    displayName     : "TICE"
             ]
+        }
+        playstore {
+            dimension = "store"
+            manifestPlaceholders = manifestPlaceholders + [
+                    googleMapsAPIKey: configVar("GOOGLE_MAPS_API_KEY"),
+                    beekeeperSecret : configVar("BEEKEEPER_SECRET")
+            ]
+        }
+        fdroid {
+            dimension = "store"
+
+            // TODO: Eliminate beekeeper dependency from F-Droid flavor
+            manifestPlaceholders = manifestPlaceholders + [
+                    beekeeperSecret : configVar("BEEKEEPER_SECRET")
+            ]
+        }
+    }
+
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        def buildType = variant.buildType.name
+        if ((flavors.contains("development") || flavors.contains("instrumentation")) && buildType == "release") {
+            setIgnore(true)
+        } else if (!(flavors.contains("development") || flavors.contains("instrumentation")) && buildType == "debug") {
+            setIgnore(true)
+        } else if ((flavors.contains("adhoc") || flavors.contains("instrumentation") || flavors.contains("preview")) && flavors.contains("fdroid")) {
+            setIgnore(true)
         }
     }
 
@@ -160,12 +183,9 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
     sourceSets {
-        main { java.srcDirs = ['src/main/java'] }
-        test { java.srcDirs = ['src/test/java'] }
-        androidTest { java.srcDirs = ['src/androidTest/java'] }
-
-        // Adds exported schema location as test app assets.
-        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+        androidTest {
+            assets.srcDirs += files("$projectDir/schemas".toString()) // Adds exported schema location as test app assets.
+        }
     }
 }
 
@@ -187,6 +207,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-rc01'
+    fdroidImplementation 'androidx.lifecycle:lifecycle-process:2.4.0-rc01'
 
     //android
     implementation "com.google.android.material:material:1.3.0-alpha01"
@@ -194,7 +215,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.paging:paging-runtime:3.0.1'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation "androidx.work:work-runtime-ktx:2.7.0-rc01"
+    implementation "androidx.work:work-runtime-ktx:2.7.0"
 
     //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -218,13 +239,13 @@ dependencies {
     implementation "net.zetetic:android-database-sqlcipher:4.3.0"
 
     //google
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-plus:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.android.libraries.places:places:2.4.0'
-    implementation 'com.google.android.gms:play-services-places:17.0.0'
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-maps:17.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-plus:17.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'
+    playstoreImplementation 'com.google.firebase:firebase-messaging:22.0.0'
+    playstoreImplementation 'com.google.android.libraries.places:places:2.4.0'
+    playstoreImplementation 'com.google.android.gms:play-services-places:17.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     //okHttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
@@ -233,7 +254,7 @@ dependencies {
 
     //Crypto
     implementation 'com.github.TICESoftware:AndroidX3DH:1.2.0'
-    api 'com.github.TICESoftware:AndroidDoubleRatchet:2.1.0'
+    implementation 'com.github.TICESoftware:AndroidDoubleRatchet:2.1.0'
     implementation 'com.github.TICESoftware:AndroidHKDF:1.3.0'
     implementation "com.goterl:lazysodium-android:5.0.2@aar"
     implementation 'net.java.dev.jna:jna:5.8.0@aar'

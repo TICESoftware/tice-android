@@ -30,5 +30,5 @@ interface AndroidComponent : AndroidInjector<TICEApplication> {
     fun appComponent(): AppComponent.Factory
 }
 
-@Component(modules = [ServiceBuilderModule::class])
+@Component(modules = [LocationServiceBuilderModule::class])
 interface FireBaseService

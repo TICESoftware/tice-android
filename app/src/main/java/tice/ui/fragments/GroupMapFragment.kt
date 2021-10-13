@@ -12,8 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ticeapp.TICE.R
@@ -54,7 +52,7 @@ class GroupMapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mapContainerFragment = if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) GoogleMapsContainerFragment() else MapboxMapContainerFragment()
+        mapContainerFragment = createMapFragment(requireContext())
         mapViewModel = mapContainerFragment.getViewModel()
 
         if (savedInstanceState == null) {

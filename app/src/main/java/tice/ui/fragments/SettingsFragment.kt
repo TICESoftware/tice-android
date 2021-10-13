@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ticeapp.TICE.BuildConfig
@@ -93,7 +92,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasAndroidInjector {
         }
 
         findPreference<Preference>(getString(R.string.thirdPartyLicenses))?.setOnPreferenceClickListener {
-            startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+            handleShowLicensesTap()
             true
         }
     }

@@ -4,6 +4,7 @@
 
 package tice.utility.beekeeper
 
+import com.ticeapp.TICE.BuildConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UseSerializers
@@ -13,7 +14,6 @@ import tice.utility.provider.CoroutineContextProviderType
 import tice.utility.serializer.DateSerializer
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.max
 
@@ -59,11 +59,12 @@ interface BeekeeperType {
 
 @AppScope
 class Beekeeper @Inject constructor(
-    @Named("BEEKEEPER_PRODUCT") private val product: String,
     private val dispatcher: Dispatcher,
     private val memory: Memory,
     private val coroutineContextProvider: CoroutineContextProviderType
 ) : BeekeeperType {
+
+    private val product: String = "TICE-" + BuildConfig.FLAVOR_stage
 
     override var isActive: Boolean = false
         private set

@@ -1,6 +1,5 @@
 package tice.managers.group
 
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
 import kotlinx.serialization.json.Json
 import tice.backend.BackendType
@@ -363,7 +362,7 @@ class MeetupManager @Inject constructor(
         groupStorageManager.storeMeetup(meetup, Remove(listOf(membership)))
     }
 
-    override suspend fun setMeetingPoint(meetingPoint: LatLng, meetup: Meetup) {
+    override suspend fun setMeetingPoint(meetingPoint: Coordinates, meetup: Meetup) {
         val membership = groupStorageManager.loadMembership(signedInUserManager.signedInUser.userId, meetup.groupId)
 
         val location = Location(meetingPoint.latitude, meetingPoint.longitude, 0.0, 0.0f, 0.0f, Date())
