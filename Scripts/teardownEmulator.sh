@@ -21,7 +21,7 @@ if [ -z "$ANDROID_SDK_ROOT" ]; then
   echo "ANDROID_SDK_ROOT not set. Using default value: $ANDROID_SDK_ROOT"
 fi
 
-AVDMANAGER=$ANDROID_SDK_ROOT/tools/bin/avdmanager
+AVDMANAGER=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager
 
 $AVDMANAGER delete avd --name $EMULATOR_NAME
 

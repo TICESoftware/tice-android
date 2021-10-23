@@ -12,11 +12,11 @@ if [ -z "$ANDROID_SDK_ROOT" ]; then
   echo "ANDROID_SDK_ROOT not set. Using default value: $ANDROID_SDK_ROOT"
 fi
 
-AVDMANAGER=$ANDROID_SDK_ROOT/tools/bin/avdmanager
+AVDMANAGER=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager
 EMULATOR=$ANDROID_SDK_ROOT/emulator/emulator
 ADB=$ANDROID_SDK_ROOT/platform-tools/adb
 
-if [[ `$AVDMANAGER list avd | rg -q InstrumentationDevice` -ne 0 ]]; then
+if [[ `$AVDMANAGER list avd | rg -q $EMULATOR_NAME` -ne 0 ]]; then
   echo "Emulator with name '$EMULATOR_NAME' already existing. Deleting."
   $AVDMANAGER delete avd --name $EMULATOR_NAME
 fi
