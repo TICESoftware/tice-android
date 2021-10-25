@@ -11,9 +11,7 @@ import tice.managers.storageManagers.GroupStorageManagerType
 import tice.managers.storageManagers.MembershipsDiff
 import tice.models.*
 import tice.models.messaging.MessagePriority
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.utility.TrackerType
 import tice.utility.getLogger
 import tice.utility.serializer.MembershipSerializer
 import java.util.*
@@ -26,17 +24,17 @@ class MembershipRenewalTask @Inject constructor(
     private val cryptoManager: CryptoManagerType,
     private val authManager: AuthManagerType,
     private val backend: BackendType,
-    private val beekeeper: BeekeeperType
+    private val tracker: TrackerType
 ) {
     private val logger by getLogger()
 
     suspend fun doWork(): Result {
         logger.debug("Started backend synchronization work.")
-        beekeeper.track(BeekeeperEvent.membershipRenewalWorkerStarted())
+        tracker.track(TrackerEvent.membershipRenewalWorkerStarted())
 
         if (!signedInUserManager.signedIn()) {
             logger.debug("Cancel membership renewal: not signed in")
-            beekeeper.track(BeekeeperEvent.membershipRenewalWorkerCompleted())
+            tracker.track(TrackerEvent.membershipRenewalWorkerCompleted())
             return Result.failure()
         }
         val signedInUser = signedInUserManager.signedInUser
@@ -113,7 +111,7 @@ class MembershipRenewalTask @Inject constructor(
         }
 
         logger.debug("Completed membership renewal work.")
-        beekeeper.track(BeekeeperEvent.membershipRenewalWorkerCompleted())
+        tracker.track(TrackerEvent.membershipRenewalWorkerCompleted())
         return Result.success()
     }
 }

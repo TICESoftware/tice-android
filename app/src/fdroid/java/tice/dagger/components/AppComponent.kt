@@ -28,6 +28,7 @@ import tice.workers.MessageKeyCacheWorker
         MessagingModule::class,
         ConfigModule::class,
         LocationServiceBuilderModule::class,
+        TrackerModule::class,
         UtilityModule::class
     ]
 )

@@ -8,8 +8,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.mapbox.search.MapboxSearchSdk
 import com.mapbox.search.location.DefaultLocationProvider
 import com.ticeapp.TICE.BuildConfig
@@ -33,11 +31,10 @@ import tice.managers.messaging.notificationHandler.GroupNotificationReceiver
 import tice.managers.messaging.notificationHandler.VerifyDeviceHandler
 import tice.managers.storageManagers.CryptoStorageManagerType
 import tice.managers.storageManagers.GroupStorageManager
+import tice.models.TrackerEvent
 import tice.ui.delegates.AppStatusProvider
 import tice.utility.BuildFlavorStore
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.utility.TrackerType
 import tice.utility.getLogger
 import tice.utility.provider.CoroutineContextProvider
 import tice.workers.BackendSyncWorker
@@ -111,7 +108,7 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
     lateinit var coroutineContextProvider: Lazy<CoroutineContextProvider>
 
     @Inject
-    lateinit var beekeeper: Lazy<BeekeeperType>
+    lateinit var tracker: Lazy<TrackerType>
 
     @Inject
     lateinit var locationSharingManager: Lazy<LocationSharingManager>
@@ -176,12 +173,11 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
 
         if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(application.applicationContext)) {
             initFirebase(application.applicationContext)
-        }
-        workManager = WorkManager.getInstance(application)
-
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(application) != ConnectionResult.SUCCESS) {
+        } else {
             MapboxSearchSdk.initialize(application, mapboxSecretToken.get(), DefaultLocationProvider(application))
         }
+
+        workManager = WorkManager.getInstance(application)
 
         if (signedInUserManager.get().signedIn()) {
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {
@@ -213,10 +209,10 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
         }
 
         val versionCode = BuildConfig.VERSION_CODE
-        beekeeper.get().setProperty(0, "android-$versionCode")
+        tracker.get().setProperty(0, "android-$versionCode")
 
         if (BuildConfig.APPLICATION_ID != "app.tice.TICE.development") {
-            beekeeper.get().start()
+            tracker.get().start()
         }
 
         return initJob
@@ -225,10 +221,10 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
     fun onStop() {
         logger.debug("OnStop called")
         val sessionDuration = Date().time - (sessionStart ?: Date()).time
-        beekeeper.get().track(BeekeeperEvent.sessionEnd(sessionDuration))
+        tracker.get().track(TrackerEvent.sessionEnd(sessionDuration))
 
         CoroutineScope(coroutineContextProvider.get().IO).launch {
-            beekeeper.get().dispatch()
+            tracker.get().dispatch()
         }
 
         webSocketReceiver.get().disconnect()
@@ -240,7 +236,7 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
 
         val lang =
             ConfigurationCompat.getLocales(application.applicationContext.resources.configuration)[0].language
-        beekeeper.get().track(BeekeeperEvent.sessionStart(lang))
+        tracker.get().track(TrackerEvent.sessionStart(lang))
         sessionStart = Date()
     }
 

@@ -17,9 +17,7 @@ import tice.models.*
 import tice.models.messaging.MessagePriority
 import tice.models.requests.RenewCertificateResponse
 import tice.models.responses.UpdatedETagResponse
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.utility.TrackerType
 import tice.utility.toBase64String
 import java.util.*
 
@@ -33,7 +31,7 @@ internal class MembershipRenewalTaskTest {
     private val mockCryptoManager: CryptoManagerType = mockk(relaxUnitFun = true)
     private val mockAuthManager: AuthManagerType = mockk(relaxUnitFun = true)
     private val mockBackend: BackendType = mockk(relaxUnitFun = true)
-    private val mockBeekeeper: BeekeeperType = mockk(relaxUnitFun = true)
+    private val mockTracker: TrackerType = mockk(relaxUnitFun = true)
 
     private val mockSignedInUser: SignedInUser = mockk(relaxUnitFun = true)
     private val TEST_SIGNED_IN_PUBLIC_KEY = "PublicKey".encodeToByteArray()
@@ -178,7 +176,7 @@ internal class MembershipRenewalTaskTest {
             mockCryptoManager,
             mockAuthManager,
             mockBackend,
-            mockBeekeeper
+            mockTracker
         )
 
         every { mockSignedInUserManager.signedInUser } returns mockSignedInUser
@@ -193,12 +191,19 @@ internal class MembershipRenewalTaskTest {
     fun doWork_NotSignedIn() = runBlockingTest {
         every { mockSignedInUserManager.signedIn() } returns false
 
+        val slot = slot<TrackerEvent>()
+        val trackerEvents: MutableList<TrackerEvent> = mutableListOf()
+        every { mockTracker.track(capture(slot), any()) } answers {
+            trackerEvents.add(slot.captured)
+        }
+
         val result = membershipRenewalTask.doWork()
 
         Assertions.assertEquals(ListenableWorker.Result.failure(), result)
         coVerify(exactly = 0) { mockGroupStorageManager.loadMembershipsOfUser(TEST_USER_ID) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerStarted()) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerCompleted()) }
+        verify(exactly = 2) { mockTracker.track(any()) }
+        Assertions.assertEquals(trackerEvents.first().name, "MembershipRenewalStarted")
+        Assertions.assertEquals(trackerEvents.last().name, "MembershipRenewalCompleted")
         coVerify(exactly = 0) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_1) }
         coVerify(exactly = 0) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_2) }
         coVerify(exactly = 0) {
@@ -230,6 +235,12 @@ internal class MembershipRenewalTaskTest {
     @Test
     fun doWork_success() = runBlockingTest {
         every { mockSignedInUserManager.signedIn() } returns true
+
+        val slot = slot<TrackerEvent>()
+        val trackerEvents: MutableList<TrackerEvent> = mutableListOf()
+        every { mockTracker.track(capture(slot), any()) } answers {
+            trackerEvents.add(slot.captured)
+        }
 
         coEvery { mockGroupStorageManager.loadMembershipsOfUser(TEST_USER_ID) }
             .returns(setOf(TEST_MEMBERSHIP_1, TEST_MEMBERSHIP_2, TEST_MEMBERSHIP_3))
@@ -318,8 +329,9 @@ internal class MembershipRenewalTaskTest {
 
         Assertions.assertEquals(ListenableWorker.Result.success(), result)
         coVerify(exactly = 1) { mockGroupStorageManager.loadMembershipsOfUser(TEST_USER_ID) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerStarted()) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerCompleted()) }
+        verify(exactly = 2) { mockTracker.track(any()) }
+        Assertions.assertEquals(trackerEvents.first().name, "MembershipRenewalStarted")
+        Assertions.assertEquals(trackerEvents.last().name, "MembershipRenewalCompleted")
         coVerify(exactly = 1) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_1) }
         coVerify(exactly = 1) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_2) }
         coVerify(exactly = 1) {
@@ -352,6 +364,12 @@ internal class MembershipRenewalTaskTest {
     @Test
     fun doWork_FailedAtSecondMembership() = runBlockingTest {
         every { mockSignedInUserManager.signedIn() } returns true
+
+        val slot = slot<TrackerEvent>()
+        val trackerEvents: MutableList<TrackerEvent> = mutableListOf()
+        every { mockTracker.track(capture(slot), any()) } answers {
+            trackerEvents.add(slot.captured)
+        }
 
         coEvery { mockGroupStorageManager.loadMembershipsOfUser(TEST_USER_ID) }
             .returns(setOf(TEST_MEMBERSHIP_1, TEST_MEMBERSHIP_2, TEST_MEMBERSHIP_3))
@@ -440,8 +458,9 @@ internal class MembershipRenewalTaskTest {
 
         Assertions.assertEquals(ListenableWorker.Result.success(), result)
         coVerify(exactly = 1) { mockGroupStorageManager.loadMembershipsOfUser(TEST_USER_ID) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerStarted()) }
-        coVerify(exactly = 1) { mockBeekeeper.track(BeekeeperEvent.membershipRenewalWorkerCompleted()) }
+        verify(exactly = 2) { mockTracker.track(any()) }
+        Assertions.assertEquals(trackerEvents.first().name, "MembershipRenewalStarted")
+        Assertions.assertEquals(trackerEvents.last().name, "MembershipRenewalCompleted")
         coVerify(exactly = 1) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_1) }
         coVerify(exactly = 1) { mockBackend.renewCertificate(TEST_SERVER_SIGNED_CERT_2) }
         coVerify(exactly = 1) {

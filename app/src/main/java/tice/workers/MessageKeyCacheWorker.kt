@@ -5,9 +5,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import tice.TICEApplication
 import tice.managers.storageManagers.CryptoStorageManagerType
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.models.TrackerEvent
+import tice.utility.TrackerType
 import tice.utility.getLogger
 import java.util.*
 import javax.inject.Inject
@@ -19,18 +18,18 @@ class MessageKeyCacheWorker(val context: Context, params: WorkerParameters) : Co
     lateinit var cryptoStorageManager: CryptoStorageManagerType
 
     @Inject
-    lateinit var beekeeper: BeekeeperType
+    lateinit var tracker: TrackerType
 
     override suspend fun doWork(): Result {
         (context as TICEApplication).appComponent.bind(this)
 
         logger.debug("Started cleaning message key work.")
-        beekeeper.track(BeekeeperEvent.messageKeyWorkStarted())
+        tracker.track(TrackerEvent.messageKeyWorkStarted())
 
         cryptoStorageManager.cleanMessageKeyCacheOlderThanAnHour(Date(Date().time - 60 * 60 * 1000))
 
         logger.debug("Stopped cleaning message key work.")
-        beekeeper.track(BeekeeperEvent.messageKeyWorkCompleted())
+        tracker.track(TrackerEvent.messageKeyWorkCompleted())
 
         return Result.success()
     }

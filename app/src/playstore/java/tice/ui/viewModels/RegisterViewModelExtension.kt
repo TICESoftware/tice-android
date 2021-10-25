@@ -4,8 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
 import kotlinx.coroutines.launch
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.track
+import tice.models.TrackerEvent
 import java.util.*
 
 fun RegisterViewModel.registerViaPush(userName: String?) {
@@ -23,7 +22,7 @@ fun RegisterViewModel.registerViaPush(userName: String?) {
                         logger.error("Verification failed: $e")
                         _event.emit(RegisterViewModel.RegisterEvent.ErrorEvent.VerificationError)
                         _state.postValue(RegisterViewModel.RegisterUserState.Idle)
-                        beekeeper.track(BeekeeperEvent.registerFailed(e, Date().time - startTime.time))
+                        tracker.track(TrackerEvent.registerFailed(e, Date().time - startTime.time))
                         return@launch
                     }
 
@@ -35,6 +34,6 @@ fun RegisterViewModel.registerViaPush(userName: String?) {
             logger.error("Could not retrieve device id. Error: $it")
             viewModelScope.launch(coroutineContextProvider.Default) { _event.emit(RegisterViewModel.RegisterEvent.ErrorEvent.DeviceIDError) }
             _state.postValue(RegisterViewModel.RegisterUserState.Idle)
-            beekeeper.track(BeekeeperEvent.registerFailed(it, Date().time - startTime.time))
+            tracker.track(TrackerEvent.registerFailed(it, Date().time - startTime.time))
         }
 }

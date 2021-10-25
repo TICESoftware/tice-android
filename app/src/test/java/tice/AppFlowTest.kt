@@ -40,11 +40,10 @@ import tice.managers.messaging.notificationHandler.GroupNotificationReceiver
 import tice.managers.messaging.notificationHandler.VerifyDeviceHandler
 import tice.managers.storageManagers.GroupStorageManager
 import tice.models.SignedInUser
+import tice.models.TrackerEvent
 import tice.models.UserId
 import tice.ui.delegates.AppStatusProvider
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.utility.TrackerType
 import tice.utility.provider.CoroutineContextProvider
 import java.lang.ref.WeakReference
 import java.util.*
@@ -72,7 +71,7 @@ internal class AppFlowTest {
     private val mockMeetupManager: MeetupManager = mockk(relaxUnitFun = true)
     private val mockMailBox: Mailbox = mockk(relaxUnitFun = true)
     private val mockCoroutineContextProvider: CoroutineContextProvider = mockk(relaxUnitFun = true)
-    private val mockBeekeeper: BeekeeperType = mockk(relaxUnitFun = true)
+    private val mockTracker: TrackerType = mockk(relaxUnitFun = true)
     private val mockContext: Context = mockk(relaxUnitFun = true)
     private val mockLocationSharingManager: LocationSharingManager = mockk(relaxUnitFun = true)
     private val mockUserManager: UserManager = mockk(relaxUnitFun = true)
@@ -95,7 +94,7 @@ internal class AppFlowTest {
     private val mockLazyMeetupManager: Lazy<MeetupManager> = mockk(relaxUnitFun = true)
     private val mockLazyMailBox: Lazy<Mailbox> = mockk(relaxUnitFun = true)
     private val mockLazyCoroutineContextProvider: Lazy<CoroutineContextProvider> = mockk(relaxUnitFun = true)
-    private val mockLazyBeekeeper: Lazy<BeekeeperType> = mockk(relaxUnitFun = true)
+    private val mockLazyTracker: Lazy<TrackerType> = mockk(relaxUnitFun = true)
     private val mockLazyContext: Lazy<Context> = mockk(relaxUnitFun = true)
 	private val mockLazyLocationSharingManager: Lazy<LocationSharingManager> = mockk(relaxUnitFun = true)
     private val mockLazyUserManager: Lazy<UserManager> = mockk(relaxUnitFun = true)
@@ -141,7 +140,7 @@ internal class AppFlowTest {
         every { mockLazyMeetupManager.get() } returns mockMeetupManager
         every { mockLazyMailBox.get() } returns mockMailBox
         every { mockLazyCoroutineContextProvider.get() } returns mockCoroutineContextProvider
-        every { mockLazyBeekeeper.get() } returns mockBeekeeper
+        every { mockLazyTracker.get() } returns mockTracker
         every { mockLazyContext.get() } returns mockContext
         every { mockLazyLocationSharingManager.get() } returns mockLocationSharingManager
         every { mockLazyUserManager.get() } returns mockUserManager
@@ -192,7 +191,7 @@ internal class AppFlowTest {
             meetupManager = mockLazyMeetupManager
             mailbox = mockLazyMailBox
             coroutineContextProvider = mockLazyCoroutineContextProvider
-            beekeeper = mockLazyBeekeeper
+            tracker = mockLazyTracker
             locationSharingManager = mockLazyLocationSharingManager
             userManager = mockLazyUserManager
         }
@@ -255,7 +254,7 @@ internal class AppFlowTest {
         coVerify(exactly = 1) { mockPostOffice.fetchMessages() }
         coVerify(exactly = 1) { mockWebSocketReceiver.connect() }
 
-        verify(exactly = 1) { mockBeekeeper.setProperty(0, "android-$testPackageVersionCode") }
+        verify(exactly = 1) { mockTracker.setProperty(0, "android-$testPackageVersionCode") }
 
         verify(exactly = 1) { ProcessLifecycleOwner.get() }
         verify(exactly = 1) { mockWorkManager.enqueueUniquePeriodicWork(any(), any(), any()) }
@@ -301,25 +300,32 @@ internal class AppFlowTest {
         coVerify(exactly = 0) { mockWebSocketReceiver.connect() }
 
         verify(exactly = 1) { ProcessLifecycleOwner.get() }
-        verify(exactly = 1) { mockBeekeeper.setProperty(0, "android-$testPackageVersionCode") }
+        verify(exactly = 1) { mockTracker.setProperty(0, "android-$testPackageVersionCode") }
 
         Assertions.assertEquals(appFlow, weakReferenceSlot.captured.get())
     }
 
     @Test
     fun onStop() = runBlocking {
+        val slot = slot<TrackerEvent>()
+        every { mockTracker.track(capture(slot), any()) } answers { }
+
         appFlow.onStop()
 
         testDispatcher.advanceUntilIdle()
 
-        coVerify(exactly = 1) { mockBeekeeper.dispatch() }
-        verify(exactly = 1) { mockBeekeeper.track(event = BeekeeperEvent.sessionEnd(0L)) }
+        coVerify(exactly = 1) { mockTracker.dispatch() }
+        verify(exactly = 1) { mockTracker.track(any()) }
+        Assertions.assertEquals(slot.captured.name, "SessionEnd")
         coVerify(exactly = 1) { mockWebSocketReceiver.disconnect() }
     }
 
     @Test
     fun onMoveToForeground() = runBlocking {
         val defaultStatus = appFlow.status
+
+        val slot = slot<TrackerEvent>()
+        every { mockTracker.track(capture(slot), any()) } answers { }
 
         appFlow.onMoveToForeground()
 
@@ -328,7 +334,9 @@ internal class AppFlowTest {
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
         Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
 
-        verify(exactly = 1) { mockBeekeeper.track(event = BeekeeperEvent.sessionStart(testLanguage)) }
+        verify(exactly = 1) { mockTracker.track(any()) }
+        Assertions.assertEquals(slot.captured.name, "SessionStart")
+        Assertions.assertEquals(slot.captured.detail, testLanguage)
     }
 
     @Test

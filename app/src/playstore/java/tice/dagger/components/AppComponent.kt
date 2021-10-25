@@ -31,6 +31,7 @@ import tice.workers.MessageKeyCacheWorker
         MessagingModule::class,
         ConfigModule::class,
         FirebaseReceiverServiceBuilderModule::class,
+        TrackerModule::class,
         LocationServiceBuilderModule::class,
         UtilityModule::class
     ]

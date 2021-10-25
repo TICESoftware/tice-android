@@ -113,11 +113,6 @@ android {
         }
         fdroid {
             dimension = "store"
-
-            // TODO: Eliminate beekeeper dependency from F-Droid flavor
-            manifestPlaceholders = manifestPlaceholders + [
-                    beekeeperSecret : configVar("BEEKEEPER_SECRET")
-            ]
         }
     }
 

@@ -19,12 +19,11 @@ import tice.managers.messaging.WebSocketReceiverType
 import tice.managers.messaging.notificationHandler.VerifyDeviceHandlerType
 import tice.models.Platform
 import tice.models.SignedInUser
+import tice.models.TrackerEvent
 import tice.models.UserPublicKeys
 import tice.models.responses.CreateUserResponse
 import tice.utility.BuildFlavorStore
-import tice.utility.beekeeper.BeekeeperEvent
-import tice.utility.beekeeper.BeekeeperType
-import tice.utility.beekeeper.track
+import tice.utility.TrackerType
 import tice.utility.getLogger
 import tice.utility.provider.CoroutineContextProviderType
 import tice.utility.ui.verifyNameString
@@ -40,7 +39,7 @@ class RegisterViewModel @Inject constructor(
     private val conversationCryptoMiddleware: ConversationCryptoMiddlewareType,
     private val webSocketReceiver: WebSocketReceiverType,
     val verifyDeviceHandler: VerifyDeviceHandlerType,
-    val beekeeper: BeekeeperType,
+    val tracker: TrackerType,
     @Named("HCAPTCHA_SITE_KEY") private val hcaptchaSiteKey: String,
     @Named("DEVELOPMENT_VERIFICATION_CODE") val developmentVerificationCode: String
 ) : ViewModel() {
@@ -66,7 +65,7 @@ class RegisterViewModel @Inject constructor(
         val userName = verifyNameString(name)
         startTime = Date()
 
-        beekeeper.track(BeekeeperEvent.register(userName != null))
+        tracker.track(TrackerEvent.register(userName != null))
 
         if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(context)) {
             logger.debug("Google Play Services available. Register via push.")
@@ -115,7 +114,7 @@ class RegisterViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             logger.error("Creating user failed: $e")
-            beekeeper.track(BeekeeperEvent.registerFailed(e, Date().time - startTime.time))
+            tracker.track(TrackerEvent.registerFailed(e, Date().time - startTime.time))
             _event.emit(RegisterEvent.ErrorEvent.CreateUserError)
             _state.postValue(RegisterUserState.Idle)
             return
@@ -132,7 +131,7 @@ class RegisterViewModel @Inject constructor(
 
         webSocketReceiver.connect()
 
-        beekeeper.track(BeekeeperEvent.didRegister(Date().time - startTime.time))
+        tracker.track(TrackerEvent.didRegister(Date().time - startTime.time))
         _event.emit(RegisterEvent.Registered)
     }
 
