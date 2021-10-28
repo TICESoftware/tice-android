@@ -1,7 +1,0 @@
-In this release we have done the following:
-- We fixed a bug that caused the onboarding to fail under certain circumstances (e. g. a poor internet connection).
-- When there can't be resolved an address for a given location we now show you at least the corresponding coordinates.
-- The performance of the app has been improved when switching to foreground.
-- Many small bugs have been fixed.
-
-If you encounter a bug or want to share your thoughts on TICE feel free to reach out to us.

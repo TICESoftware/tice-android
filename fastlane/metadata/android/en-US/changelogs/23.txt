@@ -1,6 +1,0 @@
-In this release we have done the following:
-- We fixed a bug that prevented some users from seeing others on the map.
-- A problem has been resolved that caused the group list screen to flicker shortly on launch.
-- Before asking for location permission the app shows some information about how the location data are used.
-
-If you encounter a bug or want to share your thoughts on TICE feel free to reach out to us.

@@ -1,6 +1,0 @@
-In dieser Version haben wir wieder ein paar Verbesserungen eingepflegt:
-- Wir haben ein Problem behoben, durch das die anderen Teilnehmenden eines Treffens manchmal nicht auf der Karte zu sehen waren.
-- Ein Grafikproblem wurde gelöst, das die Gruppenliste beim Starten der App manchmal flackern ließ.
-- Bevor um Standortzugriff gefragt wird, erscheint eine Erklärung zur Nutzung der Standortdaten.
-
-Wenn ihr Fehler findet oder uns eure Meinung zu TICE mitteilen möchtet, kontaktiert uns gern.

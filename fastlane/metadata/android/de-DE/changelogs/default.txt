@@ -1,4 +1,3 @@
-Das Standortteilen wurde grundlegend überarbeitet und funktioniert nun viel einfacher.
-Es ist nicht mehr notwendig, ein Treffen zu erstellen bzw. einem Treffen beizutreten, um den Standort zu teilen. Einfach in einer Gruppe den Standort freigeben und fertig!
+TICE ist nun kompatibel mit Android-Geräten ohne Google Play Services.
 
 Wenn ihr Fehler findet oder uns eure Meinung zu TICE mitteilen möchtet, kontaktiert uns gern.
