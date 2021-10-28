@@ -40,7 +40,7 @@ platform :android do
       skip_upload_screenshots: true,
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
-      flavor: "adhoc",
+      flavor: "adhocPlaystore",
       track: "internal",
       package_name: "app.tice.TICE.testing"
     )
@@ -56,7 +56,7 @@ platform :android do
       skip_upload_screenshots: true,
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
-      flavor: "preview",
+      flavor: "previewPlaystore",
       track: "alpha",
       package_name: "app.tice.TICE.preview"
     )
@@ -72,7 +72,7 @@ platform :android do
       skip_upload_screenshots: options[:skip_uploading_screenshots],
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
-      flavor: "production",
+      flavor: "productionPlaystore",
       track: "production",
       package_name: "app.tice.TICE.production"
     )
@@ -88,7 +88,7 @@ platform :android do
       skip_upload_screenshots: options[:skip_uploading_screenshots],
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
-      flavor: "production",
+      flavor: "productionPlaystore",
       track: "internal",
       package_name: "app.tice.TICE.production"
     )
