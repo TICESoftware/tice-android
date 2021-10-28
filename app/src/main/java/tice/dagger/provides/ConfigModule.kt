@@ -62,8 +62,6 @@ class ConfigModule {
 
         const val LOCATION_SHARING_STATE_TIMER_INTERVAL = "LOCATION_SHARING_TIMER_INTERVAL"
         const val LOCATION_SHARING_STATE_MAX_AGE = "LOCATION_SHARING_STATE_MAX_AGE"
-
-        const val DEVELOPMENT_VERIFICATION_CODE = "DEVELOPMENT_VERIFICATION_CODE"
     }
 
     data class CryptoParams(
@@ -261,14 +259,6 @@ class ConfigModule {
     @Provides
     @Named(PLACES_SEARCH_REQUEST_CODE)
     fun providePlacesSearchRequestCode(): String = "1"
-
-    @Provides
-    @Named(DEVELOPMENT_VERIFICATION_CODE)
-    fun provideDevelopmentVerificationCode(context: Context): String =
-        context.packageManager.getApplicationInfo(
-            context.packageName,
-            PackageManager.GET_META_DATA
-        ).metaData.getString("development_verification_code")!!
 
     @Provides
     fun bindSodium(): LazySodiumAndroid = LazySodiumAndroid(SodiumAndroid(), Base64Coder)

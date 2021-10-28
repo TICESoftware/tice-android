@@ -1,5 +1,7 @@
 package tice.ui.viewModels
 
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ticeapp.TICE.BuildConfig
@@ -7,7 +9,7 @@ import kotlinx.coroutines.launch
 import tice.models.TrackerEvent
 import java.util.*
 
-fun RegisterViewModel.registerViaPush(userName: String?) {
+fun RegisterViewModel.registerViaPush(userName: String?, context: Context) {
     FirebaseMessaging
         .getInstance()
         .token
@@ -16,7 +18,7 @@ fun RegisterViewModel.registerViaPush(userName: String?) {
 
             viewModelScope.launch(coroutineContextProvider.IO) {
                 val verificationCode =
-                    if (BuildConfig.APPLICATION_ID == "app.tice.TICE.development" && developmentVerificationCode != "") developmentVerificationCode else try {
+                    if (BuildConfig.APPLICATION_ID == "app.tice.TICE.development") context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA).metaData.getString("development_verification_code")!! else try {
                         verifyDeviceHandler.verifyDeviceId(deviceId)
                     } catch (e: Exception) {
                         logger.error("Verification failed: $e")

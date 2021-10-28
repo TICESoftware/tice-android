@@ -40,8 +40,7 @@ class RegisterViewModel @Inject constructor(
     private val webSocketReceiver: WebSocketReceiverType,
     val verifyDeviceHandler: VerifyDeviceHandlerType,
     val tracker: TrackerType,
-    @Named("HCAPTCHA_SITE_KEY") private val hcaptchaSiteKey: String,
-    @Named("DEVELOPMENT_VERIFICATION_CODE") val developmentVerificationCode: String
+    @Named("HCAPTCHA_SITE_KEY") private val hcaptchaSiteKey: String
 ) : ViewModel() {
     val logger by getLogger()
 
@@ -69,7 +68,7 @@ class RegisterViewModel @Inject constructor(
 
         if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(context)) {
             logger.debug("Google Play Services available. Register via push.")
-            registerViaPush(userName)
+            registerViaPush(userName, context)
         } else {
             logger.debug("Google Play Services unavailable. Register via captcha.")
             registerViaCaptcha(userName, context)
