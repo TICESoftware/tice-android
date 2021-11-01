@@ -58,7 +58,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url  "https://dl.bintray.com/terl/lazysodium-maven" }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
