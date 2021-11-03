@@ -3,7 +3,10 @@ package tice
 import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mapbox.search.MapboxSearchSdk
+import com.mapbox.search.location.DefaultLocationProvider
 import kotlinx.coroutines.withTimeoutOrNull
+import tice.utility.BuildFlavorStore
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -16,4 +19,11 @@ suspend fun AppFlow.updatePushDeviceId() {
             }
         }
     }?.let { verifyDeviceHandler.get().startUpdatingDeviceId(it) }
+}
+fun AppFlow.storeSpecificSetup(context: Context) {
+    if (BuildFlavorStore.PLAY_STORE.gmsAvailable(application.applicationContext)) {
+        initFirebase(application.applicationContext)
+    } else {
+        MapboxSearchSdk.initialize(application, mapboxSecretToken.get(), DefaultLocationProvider(application))
+    }
 }

@@ -23,9 +23,6 @@ abstract class FragmentBuilderModule {
     abstract fun contributeMapFragment(): GroupMapFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeMapboxMapContainerFragment(): MapboxMapContainerFragment
-
-    @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment
 
     @ContributesAndroidInjector

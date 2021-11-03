@@ -263,8 +263,11 @@ dependencies {
     implementation 'com.github.hcaptcha:hcaptcha-android-sdk:1.1.0'
 
     //Mapbox
-    implementation 'com.mapbox.maps:android:10.0.0'
-    implementation 'com.mapbox.search:mapbox-search-android-ui:1.0.0-beta.20'
+    playstoreImplementation 'com.mapbox.maps:android:10.0.0'
+    playstoreImplementation 'com.mapbox.search:mapbox-search-android-ui:1.0.0-beta.20'
+
+    //osmdroid
+    fdroidImplementation 'org.osmdroid:osmdroid-android:6.1.11'
 
     //logback
     implementation 'org.slf4j:slf4j-api:1.7.25'

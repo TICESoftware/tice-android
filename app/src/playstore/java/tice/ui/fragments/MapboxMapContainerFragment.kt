@@ -36,6 +36,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tice.models.*
 import tice.ui.viewModels.MapboxContainerViewModel
+import tice.utility.point
+import tice.utility.pointCoordinates
 import tice.utility.ui.getViewModel
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -134,7 +136,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
 
     override fun markCustomPosition(coordinates: Coordinates) {
         val pointAnnotationOptions = PointAnnotationOptions()
-            .withPoint(coordinates.point)
+            .withPoint(coordinates.point())
             .withIconImage(getMarkerBitmapFromView("", Color.RED))
         markedLocationAnnotationManager.create(pointAnnotationOptions)
     }
@@ -281,7 +283,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
     override suspend fun locationString(coordinates: Coordinates): String {
         val fallbackString = "${coordinates.latitude}, ${coordinates.longitude}"
 
-        val options = ReverseGeoOptions(coordinates.point, limit = 1)
+        val options = ReverseGeoOptions(coordinates.point(), limit = 1)
 
         return suspendCoroutine { continuation ->
             reverseGeocodingSearchRequestTask =

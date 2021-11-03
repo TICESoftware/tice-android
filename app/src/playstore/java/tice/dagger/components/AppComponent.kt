@@ -19,9 +19,9 @@ import tice.workers.MessageKeyCacheWorker
 @Subcomponent(
     modules = [
         FragmentBuilderModule::class,
-        GoogleMapsContainerFragmentBuilderModule::class,
+        PlaystoreMapsContainerFragmentBuilderModule::class,
         TICEViewModelModule::class,
-        GoogleMapsContainerViewModelModule::class,
+        PlaystoreMapsContainerViewModelModule::class,
         ViewModelFactoryModule::class,
 
         BackendModule::class,

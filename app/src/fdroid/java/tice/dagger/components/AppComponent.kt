@@ -18,8 +18,10 @@ import tice.workers.MessageKeyCacheWorker
 @Subcomponent(
     modules = [
         FragmentBuilderModule::class,
+        OSMdroidMapContainerFragmentBuilderModule::class,
         TICEViewModelModule::class,
         ViewModelFactoryModule::class,
+        OSMdroidMapContainerViewModelModule::class,
 
         BackendModule::class,
         ManagerModule::class,

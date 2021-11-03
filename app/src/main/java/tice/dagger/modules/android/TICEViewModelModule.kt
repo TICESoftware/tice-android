@@ -35,10 +35,10 @@ abstract class TICEViewModelModule {
     @ViewModelKey(GroupMapViewModel::class)
     abstract fun bindMapViewModel(myViewModel: GroupMapViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(MapboxContainerViewModel::class)
-    abstract fun bindMapboxContainerViewModel(myViewModel: MapboxContainerViewModel): ViewModel
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(MapboxContainerViewModel::class)
+//    abstract fun bindMapboxContainerViewModel(myViewModel: MapboxContainerViewModel): ViewModel
 
     @Binds
     @IntoMap

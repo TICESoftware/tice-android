@@ -8,8 +8,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.mapbox.search.MapboxSearchSdk
-import com.mapbox.search.location.DefaultLocationProvider
 import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import dagger.Lazy
@@ -47,7 +45,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AppScope
-class AppFlow constructor(private val application: TICEApplication) : LifecycleObserver, AppStatusProvider {
+class AppFlow constructor(val application: TICEApplication) : LifecycleObserver, AppStatusProvider {
     val logger by getLogger()
 
     @Inject
@@ -171,11 +169,7 @@ class AppFlow constructor(private val application: TICEApplication) : LifecycleO
 
         locationManager.get().startMonitoringSharingStates(CoroutineScope(Dispatchers.IO))
 
-        if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(application.applicationContext)) {
-            initFirebase(application.applicationContext)
-        } else {
-            MapboxSearchSdk.initialize(application, mapboxSecretToken.get(), DefaultLocationProvider(application))
-        }
+        storeSpecificSetup(application.applicationContext)
 
         workManager = WorkManager.getInstance(application)
 

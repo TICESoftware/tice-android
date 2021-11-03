@@ -2,4 +2,4 @@ package tice.ui.fragments
 
 import android.content.Context
 
-fun GroupMapFragment.createMapFragment(context: Context) = MapboxMapContainerFragment()
+fun GroupMapFragment.createMapFragment(context: Context) = OSMdroidMapContainerFragment()
