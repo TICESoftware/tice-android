@@ -1,7 +1,11 @@
 package tice.ui.viewModels
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.osmdroid.views.MapView
 import tice.managers.LocationSharingManagerType
+import tice.managers.MapboxGeocodingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
 import tice.managers.storageManagers.GroupStorageManagerType
@@ -20,7 +24,8 @@ class OSMdroidContainerViewModel @Inject constructor(
     userManager: UserManagerType,
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
-    coroutineContextProvider: CoroutineContextProviderType,
+    private val coroutineContextProvider: CoroutineContextProviderType,
+    private val mapboxGeocodingManager: MapboxGeocodingManagerType,
     @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
 ) : MapContainerViewModel(
     groupStorageManager,
@@ -35,5 +40,5 @@ class OSMdroidContainerViewModel @Inject constructor(
         map.setTileSource(CustomMapboxTileSource(mapboxAccessToken))
     }
 
-    suspend fun locationString(coordinates: Coordinates): String = "${coordinates.latitude}, ${coordinates.longitude}"
+    suspend fun locationString(coordinates: Coordinates): String = withContext(coroutineContextProvider.IO) { mapboxGeocodingManager.reverseGeocoding(coordinates) }
 }

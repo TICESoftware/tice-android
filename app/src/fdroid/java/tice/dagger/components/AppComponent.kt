@@ -25,6 +25,7 @@ import tice.workers.MessageKeyCacheWorker
 
         BackendModule::class,
         ManagerModule::class,
+        FdroidManagerModule::class,
         DatabaseModule::class,
         StorageManagerModule::class,
         MessagingModule::class,
