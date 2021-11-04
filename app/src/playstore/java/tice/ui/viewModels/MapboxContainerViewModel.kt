@@ -20,7 +20,7 @@ class MapboxContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType,
-    @Named("MAPBOX_SECRET_TOKEN") private val mapboxSecretToken: String
+    @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
 ) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
@@ -31,6 +31,6 @@ class MapboxContainerViewModel @Inject constructor(
     coroutineContextProvider
 ) {
     fun initMapbox(context: Context) {
-        ResourceOptionsManager.getDefault(context, mapboxSecretToken)
+        ResourceOptionsManager.getDefault(context, mapboxAccessToken)
     }
 }

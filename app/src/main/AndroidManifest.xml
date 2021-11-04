@@ -59,11 +59,8 @@
             android:name="hcaptcha_site_key"
             android:value="${hcaptchaSiteKey}" />
         <meta-data
-            android:name="mapbox_public_token"
-            android:value="${mapboxPublicToken}" />
-        <meta-data
-            android:name="mapbox_secret_token"
-            android:value="${mapboxSecretToken}" />
+            android:name="mapbox_access_token"
+            android:value="${mapboxAccessToken}" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

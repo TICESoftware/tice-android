@@ -24,6 +24,6 @@ fun AppFlow.storeSpecificSetup(context: Context) {
     if (BuildFlavorStore.PLAY_STORE.gmsAvailable(application.applicationContext)) {
         initFirebase(application.applicationContext)
     } else {
-        MapboxSearchSdk.initialize(application, mapboxSecretToken.get(), DefaultLocationProvider(application))
+        MapboxSearchSdk.initialize(application, mapboxAccessToken.get(), DefaultLocationProvider(application))
     }
 }

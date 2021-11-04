@@ -115,8 +115,8 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
     lateinit var userManager: Lazy<UserManager>
 
     @Inject
-    @Named("MAPBOX_SECRET_TOKEN")
-    lateinit var mapboxSecretToken: Lazy<String>
+    @Named("MAPBOX_ACCESS_TOKEN")
+    lateinit var mapboxAccessToken: Lazy<String>
 
     private var _isInForeground: AppStatusProvider.Status = AppStatusProvider.Status.BACKGROUND
     override val status: AppStatusProvider.Status

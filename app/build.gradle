@@ -41,8 +41,7 @@ android {
 
     def commonPlaceholders = [
             "hcaptchaSiteKey"               : configVar("HCAPTCHA_SITE_KEY"),
-            "mapboxPublicToken"             : configVar("MAPBOX_PUBLIC_TOKEN"),
-            "mapboxSecretToken"             : configVar("MAPBOX_SECRET_TOKEN")
+            "mapboxAccessToken"             : configVar("MAPBOX_ACCESS_TOKEN")
     ]
 
     flavorDimensions "stage", "store"

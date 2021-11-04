@@ -49,8 +49,7 @@ class ConfigModule {
 
         const val HCAPTCHA_SITE_KEY = "HCAPTCHA_SITE_KEY"
 
-        const val MAPBOX_SECRET_TOKEN = "MAPBOX_SECRET_TOKEN"
-        const val MAPBOX_PUBLIC_TOKEN = "MAPBOX_PUBLIC_TOKEN"
+        const val MAPBOX_ACCESS_TOKEN = "MAPBOX_ACCESS_TOKEN"
 
         const val PLACES_SEARCH_REQUEST_CODE = "PLACES_SEARCH_REQUEST_CODE"
 
@@ -241,20 +240,12 @@ class ConfigModule {
         ).metaData.getString("hcaptcha_site_key")!!
 
     @Provides
-    @Named(MAPBOX_SECRET_TOKEN)
-    fun provideMapboxSecretToken(context: Context): String =
+    @Named(MAPBOX_ACCESS_TOKEN)
+    fun provideMapboxAccessToken(context: Context): String =
         context.packageManager.getApplicationInfo(
             context.packageName,
             PackageManager.GET_META_DATA
-        ).metaData.getString("mapbox_secret_token")!!
-
-    @Provides
-    @Named(MAPBOX_PUBLIC_TOKEN)
-    fun provideMapboxPublicToken(context: Context): String =
-        context.packageManager.getApplicationInfo(
-            context.packageName,
-            PackageManager.GET_META_DATA
-        ).metaData.getString("mapbox_public_token")!!
+        ).metaData.getString("mapbox_access_token")!!
 
     @Provides
     @Named(PLACES_SEARCH_REQUEST_CODE)

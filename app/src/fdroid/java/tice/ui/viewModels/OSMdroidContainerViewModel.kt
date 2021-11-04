@@ -1,10 +1,5 @@
 package tice.ui.viewModels
 
-import android.content.Context
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.MapView
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
@@ -26,7 +21,7 @@ class OSMdroidContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType,
-    @Named("MAPBOX_PUBLIC_TOKEN") private val mapboxPublicToken: String
+    @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
 ) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
@@ -37,7 +32,7 @@ class OSMdroidContainerViewModel @Inject constructor(
     coroutineContextProvider
 ) {
     fun setupTileSource(map: MapView) {
-        map.setTileSource(CustomMapboxTileSource(mapboxPublicToken))
+        map.setTileSource(CustomMapboxTileSource(mapboxAccessToken))
     }
 
     suspend fun locationString(coordinates: Coordinates): String = "${coordinates.latitude}, ${coordinates.longitude}"
