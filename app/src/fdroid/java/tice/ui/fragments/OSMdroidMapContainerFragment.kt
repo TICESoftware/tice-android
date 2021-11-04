@@ -34,6 +34,8 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import tice.models.*
 import tice.ui.viewModels.OSMdroidContainerViewModel
+import tice.utility.coordinates
+import tice.utility.geoPoint
 import tice.utility.ui.getViewModel
 import tice.utility.uuidString
 
@@ -77,7 +79,7 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         map = binding.mapView
-        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+        viewModel.setupTileSource(map)
 
         userLocationProvider = GpsMyLocationProvider(requireContext())
         userLocationProvider.startLocationProvider { location, _ ->
@@ -129,7 +131,6 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
 
         val position = GeoPoint(update.location.latitude, update.location.longitude)
 
-        // TODO: Move to ViewModel
         val tag = MarkerType.UserMarker(
             update.userId,
             update.location.timestamp,
@@ -259,9 +260,5 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
         map.zoomToBoundingBox(boundingBox, true, 70, 18.0, 1000L)
     }
 
-    override suspend fun locationString(coordinates: Coordinates): String = "${coordinates.latitude}, ${coordinates.longitude}"
+    override suspend fun locationString(coordinates: Coordinates): String = viewModel.locationString(coordinates)
 }
-
-fun android.location.Location.coordinates(): Coordinates = Coordinates(latitude, longitude)
-fun GeoPoint.coordinates(): Coordinates = Coordinates(latitude, longitude)
-fun Coordinates.geoPoint(): GeoPoint = GeoPoint(latitude, longitude)
