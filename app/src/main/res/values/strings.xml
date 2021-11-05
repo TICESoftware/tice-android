@@ -119,8 +119,6 @@ TICE Software UG (haftungsbeschränkt)"</string>
     <string name="notification_meetup_created_title">"Invited to meet up"</string>
     <string name="notification_group_updated_title">"Group updated"</string>
     <string name="notification_group_message_title_unknown">"New Message"</string>
-    <string name="notification_placeholder_title">"New message"</string>
-    <string name="notification_placeholder_body">"Something happened inside TICE."</string>
     <string name="notification_channel_name">"TICE Notification"</string>
     <!-- Migration Screen -->
     <string name="migration_info_text">Migrating data …</string>

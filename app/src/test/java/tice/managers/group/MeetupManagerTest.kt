@@ -1,6 +1,5 @@
 package tice.managers.group
 
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R
 import io.mockk.*
 import kotlinx.coroutines.runBlocking

@@ -23,7 +23,7 @@ class MapboxGeocodingManager @Inject constructor(
 
     private val baseURL = "https://api.mapbox.com/"
 
-    override suspend fun reverseGeocoding(coordinates: Coordinates): String {
+    override suspend fun reverseGeocoding(coordinates: Coordinates): String? {
         val urlString = baseURL +
                 "geocoding/v5/mapbox.places/" +
                 coordinates.longitude + "," +
@@ -38,7 +38,7 @@ class MapboxGeocodingManager @Inject constructor(
 
         if (response.code !in 200..300 || response.body == null) {
             logger.error("Reverse geocoding request failed: (${response.code}) ${response.message}")
-            return "${coordinates.latitude}, ${coordinates.longitude}"
+            return null
         }
 
         val json = Json.parseToJsonElement(response.body!!.string()) as JsonObject

@@ -40,5 +40,5 @@ class OSMdroidContainerViewModel @Inject constructor(
         map.setTileSource(CustomMapboxTileSource(mapboxAccessToken))
     }
 
-    suspend fun locationString(coordinates: Coordinates): String = withContext(coroutineContextProvider.IO) { mapboxGeocodingManager.reverseGeocoding(coordinates) }
+    suspend fun locationString(coordinates: Coordinates): String? = withContext(coroutineContextProvider.IO) { mapboxGeocodingManager.reverseGeocoding(coordinates) }
 }

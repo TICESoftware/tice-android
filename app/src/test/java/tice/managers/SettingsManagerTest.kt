@@ -2,7 +2,6 @@ package tice.managers
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.android.gms.maps.model.LatLng
 import com.ticeapp.TICE.R.string
 import io.mockk.clearAllMocks
 import io.mockk.every

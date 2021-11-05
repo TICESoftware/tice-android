@@ -30,6 +30,7 @@ import com.mapbox.search.*
 import com.mapbox.search.result.SearchAddress
 import com.mapbox.search.result.SearchResult
 import com.mapbox.search.ui.view.SearchBottomSheetView
+import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.MapboxContainerFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -210,6 +211,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
             } ?: run {
                 val pointAnnotationOptions = PointAnnotationOptions()
                     .withPoint(point)
+                    .withTextField(getString(R.string.map_location_meetingPoint))
                     .withIconImage(getMarkerBitmapFromView("", Color.RED))
                 meetingPointAnnotationManager.create(pointAnnotationOptions)
             }
@@ -281,7 +283,7 @@ class MapboxMapContainerFragment : MapContainerFragment() {
     }
 
     override suspend fun locationString(coordinates: Coordinates): String {
-        val fallbackString = "${coordinates.latitude}, ${coordinates.longitude}"
+        val fallbackString = getString(R.string.map_location_string, coordinates.latitude.toString(), coordinates.longitude.toString())
 
         val options = ReverseGeoOptions(coordinates.point(), limit = 1)
 

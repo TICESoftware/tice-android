@@ -151,8 +151,6 @@ TICE Software UG (haftungsbeschränkt)"</string>
     <string name="chat_metaInfo_self_meetup_joined_title">"Du bist dem Treffen beigetreten"</string>
     <string name="chat_metaInfo_self_meetup_deleteGroupMember_title_unknown">"Du hast jemanden aus dem Treffen entfernt"</string>
     <string name="chat_metaInfo_self_meetup_left_title">"Du hast das Treffen verlassen"</string>
-    <string name="notification_placeholder_title">Neue Nachricht</string>
-    <string name="notification_placeholder_body">Etwas ist bei TICE passiert.</string>
     <string name="team_locationSharing_start_title">Standort teilen</string>
     <string name="team_locationSharing_active_title">Standort wird geteilt</string>
     <string name="team_startLocationSharing_message">Dein Standort wird mit allen Mitgliedern der Gruppe geteilt.</string>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Notification + Foregroundservice -->
+    <string name="notification_placeholder_title">"New message"</string>
+    <string name="notification_placeholder_body">"Something happened inside TICE."</string>
+</resources>

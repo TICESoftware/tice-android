@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.preference.PreferenceManager
 import com.ticeapp.TICE.NavigationControllerDirections
+import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.OsmdroidContainerFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -177,7 +178,7 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
             } ?: run {
                 val marker = Marker(map)
                 marker.position = position
-                marker.title = "Meeting Point"
+                marker.title = getString(R.string.map_location_meetingPoint)
                 map.overlays.add(marker)
                 meetingPointMarker = marker
             }
@@ -260,5 +261,8 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
         map.zoomToBoundingBox(boundingBox, true, 70, 18.0, 1000L)
     }
 
-    override suspend fun locationString(coordinates: Coordinates): String = viewModel.locationString(coordinates)
+    override suspend fun locationString(coordinates: Coordinates): String {
+        val fallbackString = getString(R.string.map_location_string, coordinates.latitude.toString(), coordinates.longitude.toString())
+        return viewModel.locationString(coordinates) ?: fallbackString
+    }
 }

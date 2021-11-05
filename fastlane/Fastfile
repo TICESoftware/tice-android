@@ -11,7 +11,7 @@ platform :android do
   desc "Run linter"
   lane :lint do |options|
     skip_docs
-    lint_result = gradle(tasks: ["clean", "lintDevelopmentPlaystoreDebug", "lintKotlinMain"])
+    lint_result = gradle(tasks: ["clean", "lintDevelopmentPlaystoreDebug", "lintDevelopmentFdroidDebug", "lintKotlinMain"])
 
 
     if options[:strict] && (lint_result.include? "report") then
