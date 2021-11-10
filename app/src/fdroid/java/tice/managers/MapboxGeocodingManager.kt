@@ -1,5 +1,6 @@
 package tice.managers
 
+import android.net.Uri
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -24,13 +25,18 @@ class MapboxGeocodingManager @Inject constructor(
     private val baseURL = "https://api.mapbox.com/"
 
     override suspend fun reverseGeocoding(coordinates: Coordinates): String? {
-        val urlString = baseURL +
-                "geocoding/v5/mapbox.places/" +
-                coordinates.longitude + "," +
-                coordinates.latitude +
-                ".json" +
-                "?language=" + Locale.getDefault().language +
-                "&access_token=" + mapboxAccessToken
+        val urlString = Uri.Builder()
+            .scheme("https")
+            .authority("api.mapbox.com")
+            .appendPath("geocoding")
+            .appendPath("v5")
+            .appendPath("mapbox.places")
+            .appendPath("${coordinates.longitude},${coordinates.latitude}.json")
+            .appendQueryParameter("language", Locale.getDefault().language)
+            .appendQueryParameter("access_token", mapboxAccessToken)
+            .build()
+            .toString()
+
         val url = urlString.toHttpUrl()
 
         val request = Request.Builder().url(url).build()
@@ -42,12 +48,22 @@ class MapboxGeocodingManager @Inject constructor(
         }
 
         val json = Json.parseToJsonElement(response.body!!.string()) as JsonObject
-        return json
-            .jsonObject["features"]!!
-            .jsonArray[0]
-            .jsonObject["place_name"]
-            .toString()
-            .removePrefix("\"")
-            .removeSuffix("\"")
+        return try {
+            json
+                .jsonObject["features"]!!
+                .jsonArray[0]
+                .jsonObject["place_name"]
+                .toString()
+                .removePrefix("\"")
+                .removeSuffix("\"")
+        } catch (e: Exception) {
+            when (e) {
+                is IllegalArgumentException, is NullPointerException -> {
+                    logger.error("Received unexpected response body from reverse geocoding request.")
+                    null
+                }
+                else -> throw e
+            }
+        }
     }
 }
