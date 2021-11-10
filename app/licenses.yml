@@ -35,6 +35,12 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: androidx.paging:paging-runtime-ktx:+
+  name: paging-runtime-ktx
+  copyrightHolder: Google Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/jetpack/androidx/releases/paging#3.1.0-rc01
 - artifact: androidx.fragment:fragment-ktx:+
   name: Fragment Kotlin Extensions
   copyrightHolder: Google Inc.
