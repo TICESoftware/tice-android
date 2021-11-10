@@ -53,6 +53,8 @@
     <string name="team_stopLocationSharing_message">"Other members will not see your location anymore."</string>
     <string name="team_locationSharing_confirm">"Share location"</string>
     <!-- MeetupButton -->
+    <string name="meetup_meetingUp">"Sharing location"</string>
+    <string name="meetup_manageParticipation">"Stop sharing location"</string>
     <string name="meetup_snackbar_started">"Meetup was started"</string>
     <string name="alert_cancel">"Cancel"</string>
     <!-- Settings Preferences -->

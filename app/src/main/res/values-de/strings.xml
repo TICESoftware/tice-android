@@ -43,6 +43,8 @@
     <string name="map_location_lastSeen">Zuletzt gesehen um %1$s.</string>
     <string name="map_createMeetingPoint">"Als Treffpunkt setzen"</string>
     <!-- MeetupButton -->
+    <string name="meetup_meetingUp">"Standort wird geteilt"</string>
+    <string name="meetup_manageParticipation">"Standortteilen beenden"</string>
     <string name="alert_cancel">"Abbrechen"</string>
     <string name="meetup_snackbar_started">"Treffen wurde gestartet"</string>
     <!-- Settings Preferences -->
