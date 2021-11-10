@@ -1,7 +1,5 @@
 package tice.ui.viewModels
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.views.MapView
 import tice.managers.LocationSharingManagerType

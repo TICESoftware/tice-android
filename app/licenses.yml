@@ -65,12 +65,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/square/okio/
-- artifact: androidx.annotation:annotation:+
-  name: Android Support Library Annotations
-  copyrightHolder: Google Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: http://developer.android.com/tools/extras/support-library.html
 - artifact: androidx.navigation:navigation-common:+
   name: Android Navigation Common
   copyrightHolder: Google Inc.
@@ -402,6 +396,12 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.4.0-rc01
+- artifact: androidx.lifecycle:lifecycle-process:+
+  name: lifecycle-process
+  copyrightHolder: Google Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.4.0
 - artifact: androidx.interpolator:interpolator:+
   name: Android Support Library Interpolators
   copyrightHolder: Google Inc.
@@ -438,6 +438,12 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/jetpack/androidx/releases/room#2.3.0
+- artifact: androidx.room:room-paging:+
+  name: room-paging
+  copyrightHolder: Google Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/jetpack/androidx/releases/room#2.4.0-beta01
 - artifact: org.jetbrains.kotlin:kotlin-stdlib-jdk8:+
   name: Kotlin Stdlib Jdk8
   copyrightHolder: JetBrains s.r.o.

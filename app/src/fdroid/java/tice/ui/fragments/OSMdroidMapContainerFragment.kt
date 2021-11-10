@@ -1,19 +1,12 @@
 package tice.ui.fragments
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.location.Geocoder
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.preference.PreferenceManager
-import com.ticeapp.TICE.NavigationControllerDirections
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.OsmdroidContainerFragmentBinding
 import kotlinx.coroutines.CoroutineScope
@@ -21,17 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration.getInstance
 import org.osmdroid.events.MapEventsReceiver
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import tice.models.*
