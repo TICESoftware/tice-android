@@ -11,6 +11,7 @@ import okhttp3.Request
 import tice.dagger.scopes.AppScope
 import tice.models.Coordinates
 import tice.utility.getLogger
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -58,7 +59,7 @@ class MapboxGeocodingManager @Inject constructor(
                 .removeSuffix("\"")
         } catch (e: Exception) {
             when (e) {
-                is IllegalArgumentException, is NullPointerException -> {
+                is IllegalArgumentException, is NullPointerException, is IndexOutOfBoundsException -> {
                     logger.error("Received unexpected response body from reverse geocoding request.")
                     null
                 }
