@@ -19,7 +19,7 @@ android {
         applicationId 'app.tice.TICE'
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 33
+        versionCode 34
         versionName "2.1"
         testInstrumentationRunnerArguments clearPackageData: 'true'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
