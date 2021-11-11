@@ -43,7 +43,7 @@ class Dispatcher @Inject constructor(
 
         val response = okHttpClient.newCall(request).execute()
 
-        if (response.code !in 200..300) {
+        if (response.code !in 200 until 300) {
             val responseBody = response.body ?: throw HTTPRequesterException.EmptyErrorResponse(
                 response.code
             )

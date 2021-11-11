@@ -55,7 +55,7 @@ class HTTPRequester @Inject constructor(
 
         val response = okHttpClient.newCall(request.build()).execute()
 
-        if (response.code !in 200..300) {
+        if (response.code !in 200 until 300) {
             val responseBody = response.body ?: throw HTTPRequesterException.EmptyErrorResponse(response.code)
             val error = Json.safeParse(APIErrorDummy.serializer(), responseBody.string())
             throw APIError(error.type, error.description)

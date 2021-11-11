@@ -42,7 +42,7 @@ class MapboxGeocodingManager @Inject constructor(
         val request = Request.Builder().url(url).build()
         val response = okHttpClient.newCall(request).execute()
 
-        if (response.code !in 200..300 || response.body == null) {
+        if (response.code !in 200 until 300 || response.body == null) {
             logger.error("Reverse geocoding request failed: (${response.code}) ${response.message}")
             return null
         }
