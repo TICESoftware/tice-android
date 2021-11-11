@@ -2,13 +2,18 @@ ext {
     var = '3.5.1'
 
     configVar = { name ->
-        Properties properties = new Properties()
+        if (project.hasProperty(name)) {
+            logger.error("Using value from command line argument for {}", name)
+            return project.property(name)
+        }
+
         def envValue = System.getenv(name)
         if (envValue != null) {
             logger.error("Using environment variable as value for {}.", name)
             return envValue
         }
 
+        Properties properties = new Properties()
         def file = project.rootProject.file('local.properties')
         if (file.exists()) {
             properties.load(file.newDataInputStream())
