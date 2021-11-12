@@ -126,8 +126,6 @@ android {
             setIgnore(true)
         } else if (!(flavors.contains("development") || flavors.contains("instrumentation")) && buildType == "debug") {
             setIgnore(true)
-        } else if ((flavors.contains("adhoc") || flavors.contains("instrumentation") || flavors.contains("preview")) && flavors.contains("fdroid")) {
-            setIgnore(true)
         }
     }
 
