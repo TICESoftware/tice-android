@@ -307,16 +307,8 @@ internal class AppFlowTest {
 
     @Test
     fun onStop() = runBlocking {
-        val slot = slot<TrackerEvent>()
-        every { mockTracker.track(capture(slot), any()) } answers { }
-
         appFlow.onStop()
 
-        testDispatcher.advanceUntilIdle()
-
-        coVerify(exactly = 1) { mockTracker.dispatch() }
-        verify(exactly = 1) { mockTracker.track(any()) }
-        Assertions.assertEquals(slot.captured.name, "SessionEnd")
         coVerify(exactly = 1) { mockWebSocketReceiver.disconnect() }
     }
 
@@ -324,19 +316,12 @@ internal class AppFlowTest {
     fun onMoveToForeground() = runBlocking {
         val defaultStatus = appFlow.status
 
-        val slot = slot<TrackerEvent>()
-        every { mockTracker.track(capture(slot), any()) } answers { }
-
         appFlow.onMoveToForeground()
 
         val newStatus = appFlow.status
 
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
         Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
-
-        verify(exactly = 1) { mockTracker.track(any()) }
-        Assertions.assertEquals(slot.captured.name, "SessionStart")
-        Assertions.assertEquals(slot.captured.detail, testLanguage)
     }
 
     @Test

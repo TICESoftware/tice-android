@@ -126,6 +126,8 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
 
     private lateinit var workManager: WorkManager
 
+    private var appInitialized = false
+
     @OptIn(ExperimentalStdlibApi::class)
     fun initApp(): Job {
         val initJob = Job()
@@ -203,22 +205,32 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
         }
 
         val versionCode = BuildConfig.VERSION_CODE
-        tracker.get().setProperty(0, "android-$versionCode")
 
-        if (BuildConfig.APPLICATION_ID != "app.tice.TICE.development") {
-            tracker.get().start()
-        }
+        tracker.get().setProperty(0, "android-$versionCode")
+        tracker.get().start()
+        trackSessionStart()
+
+        appInitialized = true
 
         return initJob
     }
 
+    private fun trackSessionStart() {
+        val lang =
+            ConfigurationCompat.getLocales(application.applicationContext.resources.configuration)[0].language
+        tracker.get().track(TrackerEvent.sessionStart(lang))
+    }
+
     fun onStop() {
         logger.debug("OnStop called")
-        val sessionDuration = Date().time - (sessionStart ?: Date()).time
-        tracker.get().track(TrackerEvent.sessionEnd(sessionDuration))
 
-        CoroutineScope(coroutineContextProvider.get().IO).launch {
-            tracker.get().dispatch()
+        if (appInitialized) {
+            val sessionDuration = Date().time - (sessionStart ?: Date()).time
+            tracker.get().track(TrackerEvent.sessionEnd(sessionDuration))
+
+            CoroutineScope(coroutineContextProvider.get().IO).launch {
+                tracker.get().dispatch()
+            }
         }
 
         webSocketReceiver.get().disconnect()
@@ -228,10 +240,10 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
     fun onMoveToForeground() {
         _isInForeground = AppStatusProvider.Status.FOREGROUND
 
-        val lang =
-            ConfigurationCompat.getLocales(application.applicationContext.resources.configuration)[0].language
-        tracker.get().track(TrackerEvent.sessionStart(lang))
         sessionStart = Date()
+        if (appInitialized) {
+            trackSessionStart()
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
