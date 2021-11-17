@@ -3,7 +3,8 @@
     package="com.ticeapp.TICE">
 
     <application
-        android:name="tice.TICEApplication">
+        android:name="tice.TICEApplication"
+        android:networkSecurityConfig="@xml/network_security_config">
         <meta-data
             android:name="cnc_base_url"
             android:value="${cncBaseURL}" />
