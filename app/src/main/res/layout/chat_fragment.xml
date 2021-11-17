@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/chat_bar_placeholder"
             android:layout_marginBottom="10dp"
-            android:textColorHint="@color/primaryTextColor" />
+            android:textColorHint="@color/primaryTextColor"
+            android:maxLength="50000"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
