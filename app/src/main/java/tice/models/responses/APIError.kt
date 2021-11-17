@@ -51,6 +51,9 @@ data class APIError(val type: ErrorType, val description: String) : Exception() 
         @SerialName("groupIsParent")
         GROUP_IS_PARENT,
 
+        @SerialName("groupMemberLimitExceeded")
+        GROUP_MEMBER_LIMIT_EXCEEDED,
+
         @SerialName("clientBuildDeprecated")
         CLIENT_BUILD_DEPRECATED,
     }

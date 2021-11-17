@@ -22,6 +22,7 @@ import tice.models.*
 import tice.models.chat.Message
 import tice.models.chat.MessageStatus
 import tice.models.messaging.*
+import tice.models.responses.APIError
 import tice.utility.getLogger
 import tice.utility.provider.LocalizationProviderType
 import tice.utility.safeParse
@@ -237,7 +238,14 @@ class TeamManager @Inject constructor(
             authManager.createUserSignedMembershipCertificate(signedInUser.userId, team.groupId, false, signedInUser.userId, signedInUser.privateSigningKey)
 
         val joinGroupResponse = requestAndHandleGroupOutdated(team) {
-            backend.joinGroup(team.groupId, team.tag, selfSignedMembershipCertificate)
+            try {
+                backend.joinGroup(team.groupId, team.tag, selfSignedMembershipCertificate)
+            } catch (apiError: APIError) {
+                when (apiError.type) {
+                    APIError.ErrorType.GROUP_MEMBER_LIMIT_EXCEEDED -> throw TeamManagerException.MemberLimitExceeded
+                    else -> throw apiError
+                }
+            }
         }
 
         val fetchTeamResult = fetchTeam(team.groupId, team.groupKey, joinGroupResponse.serverSignedMembershipCertificate, null)

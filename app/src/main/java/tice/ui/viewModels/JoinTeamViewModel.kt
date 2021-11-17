@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
+import tice.exceptions.TeamManagerException
 import tice.managers.SignedInUserManagerType
 import tice.managers.group.TeamManagerType
 import tice.managers.storageManagers.GroupStorageManagerType
@@ -70,6 +71,9 @@ class JoinTeamViewModel @Inject constructor(
             try {
                 teamManager.join(team)
                 _event.emit(JoinTeamEvent.JoinedTeam)
+            } catch (e: TeamManagerException.MemberLimitExceeded) {
+                logger.info("Cannot join team because the member limit has been reached.")
+                _event.emit(JoinTeamEvent.ErrorEvent.MemberLimitExceeded)
             } catch (e: Exception) {
                 logger.error("Joining group failed.", e)
                 _event.emit(JoinTeamEvent.ErrorEvent.Error)
@@ -91,6 +95,7 @@ class JoinTeamViewModel @Inject constructor(
         sealed class ErrorEvent() : JoinTeamEvent() {
             object JoinTeamError : ErrorEvent()
             object TeamURLError : ErrorEvent()
+            object MemberLimitExceeded : ErrorEvent()
             object Error : ErrorEvent()
         }
     }

@@ -88,6 +88,7 @@ TICE Software UG (haftungsbeschränkt)"</string>
     <string name="joinGroup_participation_join">"Beitreten"</string>
     <string name="joinGroup_info_text">"Du hast eine Einladung zu der Gruppe \"%1$s\" erhalten. Möchtest du dieser Gruppe jetzt beitreten?"</string>
     <string name="joinGroup_already_member">"Du bist bereits ein Mitglied dieser Gruppe."</string>
+    <string name="joinGroup_member_limit_exceeded">"Die Gruppe kann keine weiteren Mitglieder aufnehmen."</string>
     <!-- MeetupInfo -->
     <string name="meetupSettings_title">"Treffen verwalten"</string>
     <string name="meetupSettings_participants_header">"Teilnehmer"</string>

@@ -118,6 +118,10 @@ class JoinTeamFragment : DialogFragment() {
                 Snackbar.make(requireParentFragment().requireView(), getString(R.string.error_process_group), Snackbar.LENGTH_LONG).show()
                 dialog?.dismiss()
             }
+            is JoinTeamViewModel.JoinTeamEvent.ErrorEvent.MemberLimitExceeded -> {
+                Snackbar.make(requireParentFragment().requireView(), getString(R.string.joinGroup_member_limit_exceeded), Snackbar.LENGTH_LONG).show()
+                dialog?.dismiss()
+            }
             is JoinTeamViewModel.JoinTeamEvent.ErrorEvent.Error -> {
                 Snackbar.make(requireParentFragment().requireView(), getString(R.string.error_message), Snackbar.LENGTH_LONG).show()
                 dialog?.dismiss()
