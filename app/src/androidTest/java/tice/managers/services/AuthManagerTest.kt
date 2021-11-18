@@ -144,7 +144,7 @@ class AuthManagerTest {
         val exp = Date(Date().time + 100 * 1000)
         val cert = createMembershipCertificate(userId, groupId, true, adminUserId, Date(Date().time - 10 * 1000), exp, privateKey)
 
-        Assertions.assertEquals(authManager.membershipCertificateExpirationDate(cert, publicKey).time.toFloat(), exp.time.toFloat(), 1000.0.toFloat())
+        Assertions.assertEquals(authManager.membershipCertificateExpirationDate(cert, publicKey).time.toFloat(), exp.time.toFloat(), 2000.0.toFloat())
     }
 
     @Test
