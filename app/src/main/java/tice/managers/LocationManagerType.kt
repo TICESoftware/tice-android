@@ -11,6 +11,4 @@ interface LocationManagerType {
     var delegate: WeakReference<LocationManagerDelegate>?
 
     suspend fun processLocationUpdate(location: Location)
-    fun startMonitoringSharingStates(scope: CoroutineScope): Job
-    fun getOwnLocationUpdateFlow(): SharedFlow<Location>
 }

@@ -2,6 +2,7 @@ package tice.ui.viewModels
 
 import kotlinx.coroutines.withContext
 import org.osmdroid.views.MapView
+import tice.managers.LocationServiceControllerType
 import tice.managers.LocationSharingManagerType
 import tice.managers.MapboxGeocodingManagerType
 import tice.managers.UserManagerType
@@ -22,6 +23,7 @@ class OSMdroidContainerViewModel @Inject constructor(
     userManager: UserManagerType,
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
+    locationServiceController: LocationServiceControllerType,
     private val coroutineContextProvider: CoroutineContextProviderType,
     private val mapboxGeocodingManager: MapboxGeocodingManagerType,
     @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
@@ -32,6 +34,7 @@ class OSMdroidContainerViewModel @Inject constructor(
     userManager,
     nameProvider,
     userDataGenerator,
+    locationServiceController,
     coroutineContextProvider
 ) {
     fun setupTileSource(map: MapView) {

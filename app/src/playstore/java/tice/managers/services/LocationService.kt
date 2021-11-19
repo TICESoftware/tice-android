@@ -105,28 +105,21 @@ class LocationService @Inject constructor() : Service(), LocationListener {
         startLocationTracking()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (locationServiceController.isForegroundService) {
-                logger.debug("Start foreground")
-                val channel = NotificationChannel(
-                    channelId,
-                    getString(R.string.notification_locationService_title),
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+            logger.debug("Call startForeground on Android 8.0+")
+            val channel = NotificationChannel(channelId, getString(R.string.notification_locationService_title), NotificationManager.IMPORTANCE_HIGH)
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
 
-                val notification = NotificationCompat.Builder(this, channelId)
-                    .setContentTitle(getString(R.string.notification_locationService_title))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setSmallIcon(R.drawable.ic_logo_tice_small)
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .build()
+            val notification = NotificationCompat.Builder(this, channelId)
+                .setContentTitle(getString(R.string.notification_locationService_title))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(R.drawable.ic_logo_tice_small)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build()
 
-                startForeground(1, notification)
-            } else {
-                logger.debug("Stop foreground")
-                stopForeground(STOP_FOREGROUND_REMOVE)
-            }
+            startForeground(1, notification)
         }
+
+        locationServiceController.locationServiceRunning = true
 
         return START_NOT_STICKY
     }
@@ -156,10 +149,11 @@ class LocationService @Inject constructor() : Service(), LocationListener {
     }
 
     override fun onDestroy() {
-        logger.debug("destroy LocationService")
+        logger.debug("Destroy Location service")
         fusedLocationProviderClient?.removeLocationUpdates(locationCallback)
         stopSelf(1)
         stopForeground(true)
+        locationServiceController.locationServiceRunning = false
         super.onDestroy()
     }
 

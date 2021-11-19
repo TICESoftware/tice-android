@@ -1,5 +1,9 @@
 package tice
 
+import android.Manifest
+import android.app.Service
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -68,9 +72,6 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
 
     @Inject
     lateinit var cryptoStorageManager: Lazy<CryptoStorageManagerType>
-
-    @Inject
-    lateinit var locationManager: Lazy<LocationManager>
 
     @Inject
     lateinit var verifyDeviceHandler: Lazy<VerifyDeviceHandler>
@@ -169,15 +170,15 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
 
         locationSharingManager.get().startOutdatedLocationSharingStateCheck()
 
-        locationManager.get().startMonitoringSharingStates(CoroutineScope(Dispatchers.IO))
-
         storeSpecificSetup(application.applicationContext)
 
         workManager = WorkManager.getInstance(application)
 
         if (signedInUserManager.get().signedIn()) {
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {
-                if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(application.applicationContext)) {
+                if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store)
+                        .gmsAvailable(application.applicationContext)
+                ) {
                     updatePushDeviceId()
                 }
 
@@ -244,6 +245,14 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
         if (appInitialized) {
             trackSessionStart()
         }
+
+        if (ActivityCompat.checkSelfPermission(application.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            logger.debug("Location permissions have been granted. Starting location service.")
+            locationServiceController.get().requestStartingLocationService()
+        } else {
+            logger.debug("Location permissions have been denied. Stopping location service.")
+            locationServiceController.get().stopLocationService()
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -253,8 +262,7 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
         onStop()
 
         CoroutineScope(coroutineContextProvider.get().IO).launch {
-            val userIsInMeetups = groupStorageManager.get()
-                .isUserInMeetups(signedInUserManager.get().signedInUser.userId)
+            val userIsInMeetups = groupStorageManager.get().isUserInMeetups(signedInUserManager.get().signedInUser.userId)
 
             if (userIsInMeetups) {
                 val work = PeriodicWorkRequestBuilder<BackendSyncWorker>(
@@ -275,8 +283,6 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        locationServiceController.get().restartService()
-
         if (signedInUserManager.get().signedIn()) {
             val work = PeriodicWorkRequestBuilder<MessageKeyCacheWorker>(
                 1,

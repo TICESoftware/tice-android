@@ -6,55 +6,38 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import tice.dagger.scopes.AppScope
 import tice.managers.services.LocationService
+import tice.utility.getLogger
 import javax.inject.Inject
 
 @AppScope
 class LocationServiceController @Inject constructor(private val context: Context) : LocationServiceControllerType {
+    val logger by getLogger()
 
     override var locationServiceRunning = false
-    override var isForegroundService: Boolean = false
 
-    override fun startLocationService() {
-        locationServiceRunning = true
-        val intent = Intent(context, LocationService::class.java)
-
-        context.startService(intent)
-    }
-
-    override fun stopLocationService() {
-        context.stopService(Intent(context, LocationService::class.java))
-        locationServiceRunning = false
-    }
-
-    override fun restartService() {
-        val intent = Intent(context, LocationService::class.java)
+    override fun requestStartingLocationService() {
+        logger.debug("Start location service.")
 
         if (locationServiceRunning) {
-            if (isForegroundService) {
-                ContextCompat.startForegroundService(context, intent)
-            } else {
-                context.startService(intent)
-            }
+            logger.debug("Location service already running.")
+            return
         }
-    }
 
-    override fun promoteToForeground() {
-        locationServiceRunning = true
         val intent = Intent(context, LocationService::class.java)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            isForegroundService = true
-            ContextCompat.startForegroundService(context, intent)
+            context.startForegroundService(intent)
         } else {
             context.startService(intent)
         }
     }
 
-    override fun demotetoBackground() {
-        locationServiceRunning = true
-        val intent = Intent(context, LocationService::class.java)
+    override fun stopLocationService() {
+        logger.debug("Stopping location service.")
 
-        isForegroundService = false
-        context.startService(intent)
+        if (locationServiceRunning) {
+            context.stopService(Intent(context, LocationService::class.java))
+        } else {
+            logger.debug("No location service instance running.")
+        }
     }
 }

@@ -88,6 +88,7 @@ abstract class MapContainerFragment : Fragment(), MapContainerFragmentInterface 
 
     private fun handleLocationPermissionChange(granted: Boolean) {
         if (granted) {
+            viewModel.handleGrantedLocationPermission()
             enableUserLocationIndicator()
         } else {
             logger.warn("Location permission denied.")

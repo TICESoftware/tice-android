@@ -2,6 +2,7 @@ package tice.ui.viewModels
 
 import android.content.Context
 import com.mapbox.maps.ResourceOptionsManager
+import tice.managers.LocationServiceControllerType
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
@@ -20,6 +21,7 @@ class MapboxContainerViewModel @Inject constructor(
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType,
+    locationServiceController: LocationServiceControllerType,
     @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
 ) : MapContainerViewModel(
     groupStorageManager,
@@ -28,6 +30,7 @@ class MapboxContainerViewModel @Inject constructor(
     userManager,
     nameProvider,
     userDataGenerator,
+    locationServiceController,
     coroutineContextProvider
 ) {
     fun initMapbox(context: Context) {

@@ -99,37 +99,36 @@ class LocationService @Inject constructor() : Service(), LocationListener {
             }
 
             androidLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            registerLocationListener()
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (locationServiceController.isForegroundService) {
-                logger.debug("Start foreground")
-                val channel = NotificationChannel(
-                    channelId,
-                    getString(R.string.notification_locationService_title),
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
-
-                val notification = NotificationCompat.Builder(this, channelId)
-                    .setContentTitle(getString(R.string.notification_locationService_title))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setSmallIcon(R.drawable.ic_logo_tice_small)
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .build()
-
-                startForeground(1, notification)
-            } else {
-                logger.debug("Stop foreground")
-                stopForeground(STOP_FOREGROUND_REMOVE)
-            }
-        }
+        locationServiceController.locationServiceRunning = true
 
         return START_NOT_STICKY
     }
 
     override fun onCreate() {
         (application as TICEApplication).appComponent.bind(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            logger.debug("Call startForeground on Android 8.0+")
+            val channel = NotificationChannel(
+                channelId,
+                getString(R.string.notification_locationService_title),
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+
+            val notification = NotificationCompat.Builder(this, channelId)
+                .setContentTitle(getString(R.string.notification_locationService_title))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(R.drawable.ic_logo_tice_small)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build()
+
+            startForeground(1, notification)
+        }
+
         super.onCreate()
     }
 
@@ -138,6 +137,7 @@ class LocationService @Inject constructor() : Service(), LocationListener {
         androidLocationManager?.removeUpdates(this)
         stopSelf(1)
         stopForeground(true)
+        locationServiceController.locationServiceRunning = false
         super.onDestroy()
     }
 
@@ -170,15 +170,11 @@ class LocationService @Inject constructor() : Service(), LocationListener {
         logger.debug("Status of $provider changed. status: $status | provider: $provider")
     }
 
-    @SuppressLint("MissingPermission")
     override fun onProviderEnabled(provider: String) {
-        registerLocationListener()
         logger.debug("$provider got enabled.")
     }
 
-    @SuppressLint("MissingPermission")
     override fun onProviderDisabled(provider: String) {
-        registerLocationListener()
         logger.debug("$provider got disabled.")
     }
 }

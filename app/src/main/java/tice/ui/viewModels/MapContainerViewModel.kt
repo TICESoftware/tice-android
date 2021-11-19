@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import tice.managers.LocationServiceController
+import tice.managers.LocationServiceControllerType
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
@@ -24,6 +26,7 @@ open class MapContainerViewModel(
     private val userManager: UserManagerType,
     private val nameProvider: NameProviderType,
     private val userDataGenerator: UserDataGeneratorType,
+    private val locationServiceController: LocationServiceControllerType,
     private val coroutineContextProvider: CoroutineContextProviderType,
 ) : ViewModel() {
     private val logger by getLogger()
@@ -49,6 +52,10 @@ open class MapContainerViewModel(
                 memberIds.minus(actualMemberIds).firstOrNull()
             }
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+
+    fun handleGrantedLocationPermission() {
+        locationServiceController.requestStartingLocationService()
+    }
 
     suspend fun getMemberNames(userId: UserId): Pair<String, String>? =
         userManager.getUser(userId)?.let {

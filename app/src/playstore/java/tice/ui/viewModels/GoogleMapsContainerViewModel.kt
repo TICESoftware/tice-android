@@ -1,6 +1,8 @@
 package tice.ui.viewModels
 
 import com.google.android.libraries.places.api.Places
+import tice.managers.LocationServiceController
+import tice.managers.LocationServiceControllerType
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
@@ -17,6 +19,7 @@ class GoogleMapsContainerViewModel @Inject constructor(
     userManager: UserManagerType,
     nameProvider: NameProviderType,
     userDataGenerator: UserDataGeneratorType,
+    locationServiceController: LocationServiceControllerType,
     coroutineContextProvider: CoroutineContextProviderType
 ) : MapContainerViewModel(
     groupStorageManager,
@@ -25,6 +28,7 @@ class GoogleMapsContainerViewModel @Inject constructor(
     userManager,
     nameProvider,
     userDataGenerator,
+    locationServiceController,
     coroutineContextProvider
 ) {
 

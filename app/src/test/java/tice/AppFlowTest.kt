@@ -1,8 +1,11 @@
 package tice
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
@@ -179,7 +182,6 @@ internal class AppFlowTest {
             signedInUserManager = mockLazySignedInUserManager
             webSocketReceiver = mockLazyWebSocketReceiver
             cryptoManager = mockLazyCryptoManager
-            locationManager = mockLazyLocationManager
             verifyDeviceHandler = mockLazyVerifyDeviceHandler
             popupNotificationManager = mockLazyPopupNotificationManager
             postOffice = mockLazyPostOffice
@@ -208,7 +210,6 @@ internal class AppFlowTest {
         mockkStatic(WorkManager::class)
         mockkConstructor(NotificationCompat.Builder::class)
 
-        every { mockLocationManager.startMonitoringSharingStates(any()) } returns mockk()
         every { mockSignedInUserManager.signedIn() } returns true
         every { WorkManager.initialize(any(), any()) } returns Unit
         every { WorkManager.getInstance(any()) } returns mockWorkManager
@@ -247,7 +248,6 @@ internal class AppFlowTest {
         verify(exactly = 1) { mockUserManager.registerEnvelopeReceiver() }
         verify(exactly = 1) { mockPopupNotificationManager.delegate = capture(weakReferenceSlot) }
         verify(exactly = 1) { mockLocationSharingManager.registerEnvelopeReceiver() }
-        verify(exactly = 1) { mockLocationManager.startMonitoringSharingStates(any()) }
 
         verify(exactly = 1) { mockCoroutineContextProvider.IO }
         verify(exactly = 1) { mockVerifyDeviceHandler.startUpdatingDeviceId(TEST_ID) }
@@ -268,7 +268,6 @@ internal class AppFlowTest {
         mockkStatic(WorkManager::class)
         mockkStatic(GoogleApiAvailability::class)
 
-        every { mockLocationManager.startMonitoringSharingStates(any()) } returns mockk()
         every { mockSignedInUserManager.signedIn() } returns false
         every { WorkManager.initialize(any(), any()) } returns Unit
         every { WorkManager.getInstance(any()) } returns mockWorkManager
@@ -291,7 +290,6 @@ internal class AppFlowTest {
         verify(exactly = 1) { mockGroupNotificationReceiver.registerEnvelopeReceiver() }
         verify(exactly = 1) { mockUserManager.registerEnvelopeReceiver() }
         verify(exactly = 1) { mockPopupNotificationManager.delegate = capture(weakReferenceSlot) }
-        verify(exactly = 1) { mockLocationManager.startMonitoringSharingStates(any()) }
         verify(exactly = 1) { mockLocationSharingManager.startOutdatedLocationSharingStateCheck() }
         verify(exactly = 1) { mockLocationSharingManager.registerEnvelopeReceiver() }
 
@@ -313,8 +311,14 @@ internal class AppFlowTest {
     }
 
     @Test
-    fun onMoveToForeground() = runBlocking {
+    fun onMoveToForegroundLocationPermissionGranted() = runBlocking {
         val defaultStatus = appFlow.status
+
+        mockkStatic(ActivityCompat::class)
+        every { ActivityCompat.checkSelfPermission(mockContext, Manifest.permission.ACCESS_FINE_LOCATION) } returns PackageManager.PERMISSION_GRANTED
+
+        val slot = slot<TrackerEvent>()
+        every { mockTracker.track(capture(slot), any()) } answers { }
 
         appFlow.onMoveToForeground()
 
@@ -322,19 +326,46 @@ internal class AppFlowTest {
 
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
         Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
+
+        verify(exactly = 1) { mockTracker.track(any()) }
+        Assertions.assertEquals(slot.captured.name, "SessionStart")
+        Assertions.assertEquals(slot.captured.detail, testLanguage)
+
+        verify { mockLocationServiceControllerType.requestStartingLocationService() }
+    }
+
+    @Test
+    fun onMoveToForegroundLocationPermissionDenied() = runBlocking {
+        val defaultStatus = appFlow.status
+
+        mockkStatic(ActivityCompat::class)
+        every { ActivityCompat.checkSelfPermission(mockContext, Manifest.permission.ACCESS_FINE_LOCATION) } returns PackageManager.PERMISSION_DENIED
+
+        val slot = slot<TrackerEvent>()
+        every { mockTracker.track(capture(slot), any()) } answers { }
+
+        appFlow.onMoveToForeground()
+
+        val newStatus = appFlow.status
+
+        Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
+        Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
+
+        verify(exactly = 1) { mockTracker.track(any()) }
+        Assertions.assertEquals(slot.captured.name, "SessionStart")
+        Assertions.assertEquals(slot.captured.detail, testLanguage)
+
+        verify { mockLocationServiceControllerType.stopLocationService() }
     }
 
     @Test
     fun onMoveToBackground() = runBlocking {
         val defaultStatus = appFlow.status
-        appFlow.onMoveToForeground()
-        val newStatus = appFlow.status
 
         appFlow.onMoveToBackground()
         val resultStatus = appFlow.status
 
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
-        Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
         Assertions.assertEquals(resultStatus, AppStatusProvider.Status.BACKGROUND)
     }
 
@@ -355,6 +386,5 @@ internal class AppFlowTest {
         verify(exactly = 0) { mockGroupNotificationReceiver.registerEnvelopeReceiver() }
         verify(exactly = 0) { mockLocationSharingManager.registerEnvelopeReceiver() }
         verify(exactly = 0) { mockUserManager.registerEnvelopeReceiver() }
-        verify(exactly = 0) { mockLocationManager.startMonitoringSharingStates(any()) }
     }
 }
