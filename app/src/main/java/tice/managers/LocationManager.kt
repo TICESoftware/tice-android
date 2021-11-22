@@ -1,14 +1,9 @@
 package tice.managers
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import tice.dagger.scopes.AppScope
-import tice.managers.messaging.PostOfficeType
-import tice.managers.storageManagers.LocationSharingStorageManagerType
-import tice.models.*
-import tice.utility.getLogger
+import tice.models.Location
 import tice.utility.provider.CoroutineContextProviderType
 import java.lang.ref.WeakReference
 import java.util.*

@@ -1,7 +1,6 @@
 package tice.ui.viewModels
 
 import com.google.android.libraries.places.api.Places
-import tice.managers.LocationServiceController
 import tice.managers.LocationServiceControllerType
 import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType

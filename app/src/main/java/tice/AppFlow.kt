@@ -1,7 +1,6 @@
 package tice
 
 import android.Manifest
-import android.app.Service
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.os.ConfigurationCompat
@@ -16,7 +15,6 @@ import com.ticeapp.TICE.BuildConfig
 import com.ticeapp.TICE.R
 import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import tice.crypto.CryptoManager
@@ -176,9 +174,7 @@ class AppFlow constructor(val application: TICEApplication) : LifecycleObserver,
 
         if (signedInUserManager.get().signedIn()) {
             CoroutineScope(coroutineContextProvider.get().IO + initJob).launch {
-                if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store)
-                        .gmsAvailable(application.applicationContext)
-                ) {
+                if (BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store).gmsAvailable(application.applicationContext)) {
                     updatePushDeviceId()
                 }
 

@@ -61,9 +61,6 @@ abstract class ManagerModule {
     abstract fun bindPopupNotificationManager(popupNotificationManager: PopupNotificationManager): PopupNotificationManagerType
 
     @Binds
-    abstract fun bindLocationServiceController(locationServiceController: LocationServiceController): LocationServiceControllerType
-
-    @Binds
     abstract fun bindLocationSharingStorageManager(locationSharingStorageManager: LocationSharingStorageManager): LocationSharingStorageManagerType
 
     @Binds

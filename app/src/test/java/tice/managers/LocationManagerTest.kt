@@ -2,12 +2,8 @@ package tice.managers
 
 import io.mockk.*
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tice.managers.messaging.PostOfficeType
@@ -26,16 +22,12 @@ internal class LocationManagerTest {
 
     private lateinit var locationManager: LocationManager
 
-    private val mockPostOffice: PostOfficeType = mockk(relaxUnitFun = true)
-    private val mockLocationServiceController: LocationServiceController = mockk(relaxUnitFun = true)
     private val mockCoroutineContextProvider: CoroutineContextProviderType = mockk(relaxUnitFun = true)
     private val mockSignedInUserManager: SignedInUserManagerType = mockk(relaxUnitFun = true)
     private val mockGroupStorageManager: GroupStorageManagerType = mockk(relaxUnitFun = true)
-    private val mockUserManager: UserManagerType = mockk(relaxUnitFun = true)
     private val mockLocationSharingStorageManager: LocationSharingStorageManagerType = mockk(relaxUnitFun = true)
 
     private val mockLocationManagerDelegate: LocationManagerDelegate = mockk(relaxUnitFun = true)
-    private val mockGroupInterface: GroupInterface = mockk(relaxUnitFun = true)
 
     private val mockTestUser: User = mockk(relaxUnitFun = true)
 
@@ -71,24 +63,17 @@ internal class LocationManagerTest {
         every { mockTestUser.publicName } returns TEST_USER_NAME
         every { mockTestUser.publicSigningKey } returns TEST_USER_PUBLIC_KEY
 
-        locationManager = LocationManager(
-            mockPostOffice,
-            mockLocationServiceController,
-            mockCoroutineContextProvider,
-            mockSignedInUserManager,
-            mockUserManager,
-            mockLocationSharingStorageManager
-        )
+        locationManager = LocationManager(mockCoroutineContextProvider)
     }
 
     @Test
-    fun processLocationUpdate_LocationSharingDisabled() = runBlockingTest {
+    fun processLocationUpdate() = runBlockingTest {
         val TEST_LOCATION = mockk<Location>()
 
         locationManager.delegate = WeakReference(mockLocationManagerDelegate)
 
         locationManager.processLocationUpdate(TEST_LOCATION)
 
-        coVerify(exactly = 0) { mockLocationManagerDelegate.processLocationUpdate(TEST_LOCATION) }
+        coVerify { mockLocationManagerDelegate.processLocationUpdate(TEST_LOCATION) }
     }
 }

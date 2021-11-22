@@ -317,19 +317,12 @@ internal class AppFlowTest {
         mockkStatic(ActivityCompat::class)
         every { ActivityCompat.checkSelfPermission(mockContext, Manifest.permission.ACCESS_FINE_LOCATION) } returns PackageManager.PERMISSION_GRANTED
 
-        val slot = slot<TrackerEvent>()
-        every { mockTracker.track(capture(slot), any()) } answers { }
-
         appFlow.onMoveToForeground()
 
         val newStatus = appFlow.status
 
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
         Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
-
-        verify(exactly = 1) { mockTracker.track(any()) }
-        Assertions.assertEquals(slot.captured.name, "SessionStart")
-        Assertions.assertEquals(slot.captured.detail, testLanguage)
 
         verify { mockLocationServiceControllerType.requestStartingLocationService() }
     }
@@ -341,19 +334,12 @@ internal class AppFlowTest {
         mockkStatic(ActivityCompat::class)
         every { ActivityCompat.checkSelfPermission(mockContext, Manifest.permission.ACCESS_FINE_LOCATION) } returns PackageManager.PERMISSION_DENIED
 
-        val slot = slot<TrackerEvent>()
-        every { mockTracker.track(capture(slot), any()) } answers { }
-
         appFlow.onMoveToForeground()
 
         val newStatus = appFlow.status
 
         Assertions.assertEquals(defaultStatus, AppStatusProvider.Status.BACKGROUND)
         Assertions.assertEquals(newStatus, AppStatusProvider.Status.FOREGROUND)
-
-        verify(exactly = 1) { mockTracker.track(any()) }
-        Assertions.assertEquals(slot.captured.name, "SessionStart")
-        Assertions.assertEquals(slot.captured.detail, testLanguage)
 
         verify { mockLocationServiceControllerType.stopLocationService() }
     }

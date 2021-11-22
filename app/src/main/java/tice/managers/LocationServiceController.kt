@@ -3,14 +3,12 @@ package tice.managers
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.core.content.ContextCompat
 import tice.dagger.scopes.AppScope
-import tice.managers.services.LocationService
 import tice.utility.getLogger
 import javax.inject.Inject
 
 @AppScope
-class LocationServiceController @Inject constructor(private val context: Context) : LocationServiceControllerType {
+class LocationServiceController @Inject constructor(private val context: Context, private val serviceClass: Class<*>) : LocationServiceControllerType {
     val logger by getLogger()
 
     override var locationServiceRunning = false
@@ -23,7 +21,7 @@ class LocationServiceController @Inject constructor(private val context: Context
             return
         }
 
-        val intent = Intent(context, LocationService::class.java)
+        val intent = Intent(context, serviceClass)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent)
         } else {
@@ -35,7 +33,7 @@ class LocationServiceController @Inject constructor(private val context: Context
         logger.debug("Stopping location service.")
 
         if (locationServiceRunning) {
-            context.stopService(Intent(context, LocationService::class.java))
+            context.stopService(Intent(context, serviceClass))
         } else {
             logger.debug("No location service instance running.")
         }

@@ -64,7 +64,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name="tice.managers.services.LocationService"
+            android:name="tice.managers.services.NonGMSLocationService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location"
