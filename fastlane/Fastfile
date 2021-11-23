@@ -34,8 +34,6 @@ platform :android do
   lane :testing do |options|
     skip_docs
 
-    provideAPK(stage: "adhoc", store: "fdroid")
-
     buildAndSubmit(
       skip_upload_metadata: true,
       skip_upload_images: true,
@@ -43,7 +41,6 @@ platform :android do
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
       stage: "adhoc",
-      store: "playstore",
       track: "internal",
       package_name: "app.tice.TICE.testing"
     )
@@ -53,8 +50,6 @@ platform :android do
   lane :preview do |options|
     skip_docs
 
-    provideAPK(stage: "preview", store: "fdroid")
-
     buildAndSubmit(
       skip_upload_metadata: true,
       skip_upload_images: true,
@@ -62,7 +57,6 @@ platform :android do
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
       stage: "preview",
-      store: "playstore",
       track: "alpha",
       package_name: "app.tice.TICE.preview"
     )
@@ -72,8 +66,6 @@ platform :android do
   lane :releaseProduction do |options|
     skip_docs
 
-    provideAPK(stage: "production", store: "fdroid")
-
     buildAndSubmit(
       skip_upload_metadata: false,
       skip_upload_images: options[:skip_uploading_screenshots],
@@ -81,7 +73,6 @@ platform :android do
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
       stage: "production",
-      store: "playstore",
       track: "production",
       package_name: "app.tice.TICE.production"
     )
@@ -91,8 +82,6 @@ platform :android do
   lane :releaseInternal do |options|
     skip_docs
 
-    provideAPK(stage: "production", store: "fdroid")
-
     buildAndSubmit(
       skip_upload_metadata: false,
       skip_upload_images: options[:skip_uploading_screenshots],
@@ -100,54 +89,9 @@ platform :android do
       skip_increment_version_code: options[:skip_increment_version_code],
       version_name: options[:version_name],
       stage: "production",
-      store: "playstore",
       track: "internal",
       package_name: "app.tice.TICE.production"
     )
-  end
-
-  desc "Provide APK on CI"
-  lane :provideAPK do |options|
-    skip_docs
-    ensure_git_status_clean
-
-    gradle(
-      task: 'assemble',
-      flavor: options[:stage].capitalize + options[:store].capitalize,
-      build_type: 'release',
-      properties: {
-        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
-        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => "upload",
-        "android.injected.signing.key.password" => ENV["UPLOAD_KEY_PASSWORD"]
-      }
-    )
-
-    puts 'Copying apk file to publicly accessible directory'
-
-    public_dir = "/usr/local/var/www/#{options[:stage]}"
-    base_url = "https://ci.tice.software/#{options[:stage]}/"
-    apk_file_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    apk_file_name = apk_file_path.split('/').last
-
-    copy_artifacts(artifacts: [apk_file_path], target_path: public_dir)
-    public_url = "#{base_url}/#{apk_file_name}"
-
-    slack(
-        message: "A new Android #{options[:stage]} (#{options[:store]}) build is ready to download.",
-        slack_url: ENV['SLACK_WEBHOOK_URL'],
-        attachment_properties: {
-          actions: [
-            {
-              type: 'button',
-              name: 'download_button',
-              text: 'Download on Android',
-              url: public_url,
-              style: 'primary'
-            }
-          ]
-        }
-      )
   end
 
   desc "Submit new build to Google Play Store"
@@ -166,9 +110,35 @@ platform :android do
     version_name = android_get_version_name
     version_code = android_get_version_code
 
+    puts 'Build F-droid version.'
+
+    gradle(
+      task: 'assemble',
+      flavor: options[:stage].capitalize + 'Fdroid',
+      build_type: 'release',
+      properties: {
+        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => "upload",
+        "android.injected.signing.key.password" => ENV["UPLOAD_KEY_PASSWORD"]
+      }
+    )
+
+    puts 'Copying apk file to publicly accessible directory.'
+
+    public_dir = "/usr/local/var/www/#{options[:stage]}"
+    base_url = "https://ci.tice.software/#{options[:stage]}/"
+    apk_file_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    apk_file_name = apk_file_path.split('/').last
+
+    copy_artifacts(artifacts: [apk_file_path], target_path: public_dir)
+    public_url = "#{base_url}/#{apk_file_name}"
+
+    puts 'Build Play Store version.'
+
     gradle(
       task: 'bundle',
-      flavor: options[:stage].downcase + options[:store].capitalize,
+      flavor: options[:stage].downcase + 'Playstore',
       build_type: 'release',
       properties: {
         "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
@@ -180,10 +150,28 @@ platform :android do
 
     if !options[:skip_increment_version_code] || options[:version_name]
       git_commit(path: "app/build.gradle", message: "Bump version code to #{version_code}")
-      add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:flavor]}")
+      add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:stage]}")
       push_to_git_remote
     end
 
+    puts 'Publish F-droid version.'
+    slack(
+        message: "A new Android #{options[:stage]} (F-droid) build is ready to download.",
+        slack_url: ENV['SLACK_WEBHOOK_URL'],
+        attachment_properties: {
+          actions: [
+            {
+              type: 'button',
+              name: 'download_button',
+              text: 'Download on Android',
+              url: public_url,
+              style: 'primary'
+            }
+          ]
+        }
+      )
+
+    puts 'Publish Play Store version.'
     supply(
       track: options[:track],
       package_name: options[:package_name],
