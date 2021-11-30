@@ -53,7 +53,6 @@ android {
         development {
             dimension = "stage"
             applicationIdSuffix = ".development"
-            versionNameSuffix = "-development"
             manifestPlaceholders = commonPlaceholders + [
                     baseURL         : configVar("SERVER_ADDRESS"),
                     websocketURL    : configVar("WS_SERVER_ADDRESS"),
@@ -78,7 +77,6 @@ android {
         adhoc {
             dimension = "stage"
             applicationIdSuffix = ".testing"
-            versionNameSuffix = "-testing"
             manifestPlaceholders = commonPlaceholders + [
                     baseURL         : "https://testing.api.tice.app",
                     websocketURL    : "wss://testing.api.tice.app",
@@ -89,7 +87,6 @@ android {
         preview {
             dimension = "stage"
             applicationIdSuffix = ".preview"
-            versionNameSuffix = "-preview"
             manifestPlaceholders = commonPlaceholders + [
                     baseURL         : "https://preview.api.tice.app",
                     websocketURL    : "wss://preview.api.tice.app",
