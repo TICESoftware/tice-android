@@ -1,1 +1,2 @@
 brew "rg"
+brew "fdroidserver"

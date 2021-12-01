@@ -30,15 +30,15 @@ platform :android do
     sh("open \"https://tenor.com\"")
   end
 
-  desc "Submit build for internal testing"
-  lane :testing do |options|
+  desc "Submit build for internal testing to Google Play Store"
+  lane :testingPlaystore do |options|
     skip_docs
 
-    buildAndSubmit(
+    buildPlaystoreAndSubmit(
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_increment_version_code: options[:skip_increment_version_code],
+      increment_version_code: options[:increment_version_code],
       version_name: options[:version_name],
       stage: "adhoc",
       track: "internal",
@@ -46,18 +46,40 @@ platform :android do
     )
   end
 
+  lane :testingFdroid do
+    skip_docs
+
+    buildFdroid(
+      increment_version_code: options[:increment_version_code],
+      version_name: options[:version_name],
+      stage: "adhoc",
+      package_name: "app.tice.TICE.testing"
+    )
+  end
+
   desc "Submit build for public beta testing"
-  lane :preview do |options|
+  lane :previewPlaystore do |options|
     skip_docs
 
     buildAndSubmit(
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_increment_version_code: options[:skip_increment_version_code],
+      increment_version_code: options[:increment_version_code],
       version_name: options[:version_name],
       stage: "preview",
       track: "alpha",
+      package_name: "app.tice.TICE.preview"
+    )
+  end
+
+  lane :previewFdroid do
+    skip_docs
+
+    buildFdroid(
+      increment_version_code: options[:increment_version_code],
+      version_name: options[:version_name],
+      stage: "preview",
       package_name: "app.tice.TICE.preview"
     )
   end
@@ -70,7 +92,7 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: options[:skip_uploading_screenshots],
       skip_upload_screenshots: options[:skip_uploading_screenshots],
-      skip_increment_version_code: options[:skip_increment_version_code],
+      increment_version_code: options[:increment_version_code],
       version_name: options[:version_name],
       stage: "production",
       track: "production",
@@ -86,7 +108,7 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: options[:skip_uploading_screenshots],
       skip_upload_screenshots: options[:skip_uploading_screenshots],
-      skip_increment_version_code: options[:skip_increment_version_code],
+      increment_version_code: options[:increment_version_code],
       version_name: options[:version_name],
       stage: "production",
       track: "internal",
@@ -94,47 +116,31 @@ platform :android do
     )
   end
 
-  desc "Submit new build to Google Play Store"
-  lane :buildAndSubmit do |options|
+  lane :productionFdroid do
+    skip_docs
+
+    buildFdroid(
+      increment_version_code: options[:increment_version_code],
+      version_name: options[:version_name],
+      stage: "production",
+      package_name: "app.tice.TICE.production"
+    )
+  end
+
+  desc "Create new Playstore build and submit to Google Play Store"
+  lane :buildPlaystoreAndSubmit do |options|
     skip_docs
     ensure_git_status_clean
 
-    if !options[:skip_increment_version_code]
-      increment_version_code(gradle_file_path: "app/build.gradle")
-    end
-
-    if options[:version_name]
-      android_set_version_name(version_name: options[:version_name])
-    end
-
-    version_name = android_get_version_name
-    version_code = android_get_version_code
-
-    puts 'Build F-droid version.'
-
-    gradle(
-      task: 'assemble',
-      flavor: options[:stage].capitalize + 'Fdroid',
-      build_type: 'release',
-      properties: {
-        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
-        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => "upload",
-        "android.injected.signing.key.password" => ENV["UPLOAD_KEY_PASSWORD"]
-      }
+    updateVersion(
+      increment_version_code: options[:increment_version_code],
+      version_name: options[:version_name]
     )
 
-    puts 'Copying apk file to publicly accessible directory.'
-
-    public_dir = "/usr/local/var/www/#{options[:stage]}"
-    base_url = "https://ci.tice.software/#{options[:stage]}/"
-    apk_file_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    apk_file_name = apk_file_path.split('/').last
-
-    copy_artifacts(artifacts: [apk_file_path], target_path: public_dir)
-    public_url = "#{base_url}/#{apk_file_name}"
-
-    puts 'Build Play Store version.'
+    tagBuild(
+      stage: options[:stage],
+      store: "Playstore"
+    )
 
     gradle(
       task: 'bundle',
@@ -148,13 +154,40 @@ platform :android do
       }
     )
 
-    if !options[:skip_increment_version_code] || options[:version_name]
-      git_commit(path: "app/build.gradle", message: "Bump version code to #{version_code}")
-      add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:stage]}")
-      push_to_git_remote
-    end
+    supply(
+      track: options[:track],
+      package_name: options[:package_name],
+      json_key: ENV["JSON_KEY_PATH"],
+      skip_upload_metadata: options[:skip_upload_metadata],
+      skip_upload_images: options[:skip_upload_images],
+      skip_upload_screenshots: options[:skip_upload_screenshots],
+      skip_upload_apk: true
+    )
+  end
 
-    puts 'Publish F-droid version.'
+  desc "Create new F-droid build and provide it via Slack"
+  lane :buildFdroid do |options|
+    updateVersion(
+      increment_version_code: options[:increment_version_code],
+      version_name: options[:version_name]
+    )
+
+    tagBuild(
+      stage: options[:stage],
+      store: "Fdroid"
+    )
+
+    apk_file_path = sh("../Scripts/buildFdroidVersion.sh", options[:package], options[:stage]).split().last
+
+    puts 'Copying apk file to publicly accessible directory.'
+
+    public_dir = "/usr/local/var/www/#{options[:stage]}"
+    base_url = "https://ci.tice.software/#{options[:stage]}/"
+    apk_file_name = apk_file_path.split('/').last
+
+    copy_artifacts(artifacts: [apk_file_path], target_path: public_dir)
+    public_url = "#{base_url}/#{apk_file_name}"
+
     slack(
         message: "A new Android #{options[:stage]} (F-droid) build is ready to download.",
         slack_url: ENV['SLACK_WEBHOOK_URL'],
@@ -170,31 +203,49 @@ platform :android do
           ]
         }
       )
+  end
 
-    puts 'Publish Play Store version.'
-    supply(
-      track: options[:track],
-      package_name: options[:package_name],
-      json_key: ENV["JSON_KEY_PATH"],
-      skip_upload_metadata: options[:skip_upload_metadata],
-      skip_upload_images: options[:skip_upload_images],
-      skip_upload_screenshots: options[:skip_upload_screenshots],
-      skip_upload_apk: true
+  desc "Add tag recognized by F-droid update bot"
+  lane :releaseFdroid do
+    tagBuild(
+      stage: "release",
+      store: "Fdroid"
     )
   end
 
-  desc "Bump version code"
-  lane :bumpVersionCode do
+  desc "Add a tag for the passed stage and store using the current version name and code"
+  lane :tagBuild do |options|
+    version_name = android_get_version_name
+    version_code = android_get_version_code
+
+    add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:stage].downcase}#{options[:store].capitalized}")
+    push_to_git_remote
+  end
+
+  desc "Update version name and bump version code"
+  lane :updateVersion do |options|
     skip_docs
     ensure_git_status_clean
 
-    increment_version_code(gradle_file_path: "app/build.gradle")
+    version_updated = false
+
+    if options[:increment_version_code]
+      increment_version_code(gradle_file_path: "app/build.gradle")
+      version_updated = true
+    end
+
+    if options[:version_name]
+      android_set_version_name(version_name: options[:version_name])
+      version_updated = true
+    end
 
     version_name = android_get_version_name
     version_code = android_get_version_code
 
-    git_commit(path: "app/build.gradle", message: "Bump version code to #{version_code}")
-    add_git_tag(tag: "#{version_name}-#{version_code}")
+    if version_updated
+      git_commit(path: "app/build.gradle", message: "Bump version to #{version_name}-#{version_code}")
+      push_to_git_remote
+    end
   end
 
   desc "Update translations"
