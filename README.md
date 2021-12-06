@@ -11,7 +11,12 @@ The secure app for meeting up, sharing locations and locating friends and family
 
 ## Download
 
-[![Download TICE from Google Play](https://ticeapp.com/wp-content/uploads/2020/02/en_badge_web_generic-300x116.png)](https://play.google.com/store/apps/details?id=app.tice.TICE.production)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="100">](https://f-droid.org/packages/app.tice.TICE.production/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="100">](https://play.google.com/store/apps/details?id=app.tice.TICE.production)
 
 # Open Source Development Goals
 
