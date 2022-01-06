@@ -68,12 +68,13 @@ class SettingsFragment : PreferenceFragmentCompat(), HasAndroidInjector {
         val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
         val versionNum = packageInfo.versionName
         val flavor = BuildConfig.FLAVOR
+        val store = BuildConfig.FLAVOR_store
 
         @Suppress("DEPRECATION")
         val versionCode: String =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode.toString() else packageInfo.versionCode.toString()
 
-        var versionString = "$versionTitle $versionNum ($versionCode)"
+        var versionString = "$versionTitle $versionNum ($versionCode) $store"
         if (BuildConfig.FLAVOR_stage != "production") {
             versionString += " $flavor"
         }
