@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tice.ui.models.GroupNameData
 import tice.ui.viewModels.SettingsViewModel
+import tice.utility.BuildFlavorStore
 import tice.utility.getLogger
 import tice.utility.ui.getViewModel
 import java.io.File
@@ -52,6 +53,14 @@ class SettingsFragment : PreferenceFragmentCompat(), HasAndroidInjector {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_preferences, rootKey)
+
+        val mapboxAccessTokenPreference = findPreference<EditTextPreference>(getString(R.string.settingsMapboxAccessToken))
+        mapboxAccessTokenPreference?.isVisible = BuildFlavorStore.fromFlavorString(BuildConfig.FLAVOR_store) == BuildFlavorStore.FDROID
+        mapboxAccessTokenPreference?.text = viewModel.currentMapboxAccessToken
+        mapboxAccessTokenPreference?.setOnPreferenceChangeListener { _, newValue ->
+            viewModel.setMapboxAccessToken(newValue as String)
+            true
+        }
 
         val versionPref = findPreference<Preference>(getString(R.string.versionKey))
         val versionTitle = getString(R.string.settings_version_title)

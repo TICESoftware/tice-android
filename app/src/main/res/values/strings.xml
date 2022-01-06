@@ -60,6 +60,7 @@
     <!-- Settings Preferences -->
     <string name="settings_name_header">"User Settings"</string>
     <string name="settings_name_title">"Your Name"</string>
+    <string name="settings_mapbox_access_token_title">"Mapbox access token"</string>
     <string name="settings_privacy_header">"Privacy"</string>
     <string name="settings_privacy_readPolicy">"Privacy Policy"</string>
     <string name="settings_account_header">"Your Data"</string>

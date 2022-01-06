@@ -1,11 +1,13 @@
 package tice.ui.fragments
 
+import android.app.AlertDialog
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.ticeapp.TICE.R
 import com.ticeapp.TICE.databinding.OsmdroidContainerFragmentBinding
@@ -21,6 +23,7 @@ import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import tice.exceptions.MapboxAccessTokenMissingException
 import tice.models.*
 import tice.ui.viewModels.OSMdroidContainerViewModel
 import tice.utility.coordinates
@@ -67,10 +70,24 @@ class OSMdroidMapContainerFragment : MapContainerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.attributionLinks.movementMethod = LinkMovementMethod.getInstance()
-
         map = binding.mapView
-        viewModel.setupTileSource(map)
+
+        try {
+            viewModel.setupTileSource(map)
+        } catch (e: MapboxAccessTokenMissingException.TokenMissing) {
+            logger.error("Cannot initialize map fragment because no Mapbox access token could be found.")
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.mapbox_token_missing_dialog_title))
+                .setMessage(getString(R.string.mapbox_token_missing_dialog_message))
+                .setNeutralButton(getString(R.string.mapbox_token_missing_dialog_button)) { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .setCancelable(false)
+                .show()
+            return
+        }
+
+        binding.attributionLinks.movementMethod = LinkMovementMethod.getInstance()
 
         userLocationProvider = GpsMyLocationProvider(requireContext())
         userLocationProvider.startLocationProvider { location, _ ->

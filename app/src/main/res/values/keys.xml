@@ -4,6 +4,7 @@
     tools:ignore="MissingTranslation">
 
     <string name="usernameKey" translatable="false">USERNAME</string>
+    <string name="settingsMapboxAccessToken" translatable="false">mapboxAccessToken</string>
     <string name="versionKey" translatable="false">VERSION</string>
     <string name="lastCameraPositionKeyLat" translatable="false">LAST_CAMERA_POSITION_KEY_LAT</string>
     <string name="lastCameraPositionKeyLng" translatable="false">LAST_CAMERA_POSITION_KEY_LNG</string>

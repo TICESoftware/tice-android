@@ -12,6 +12,7 @@ interface StorageLockerType {
         DATABASE_KEY_ENCRYPTION_IV("databaseKeyEncryptionIV"),
         ENCRYPTED_DATABASE_KEY("encryptedDatabaseKey"),
         PLAINTEXT_DATABASE_KEY("plaintextDatabaseKey"),
-        CRYPTO("crypto");
+        CRYPTO("crypto"),
+        MAPBOX_ACCESS_TOKEN("mapboxAccessToken");
     }
 }

@@ -7,6 +7,7 @@ import tice.managers.LocationSharingManagerType
 import tice.managers.UserManagerType
 import tice.managers.group.TeamManagerType
 import tice.managers.storageManagers.GroupStorageManagerType
+import tice.managers.storageManagers.MapboxAccessTokenStorageManagerType
 import tice.utility.provider.CoroutineContextProviderType
 import tice.utility.provider.NameProviderType
 import tice.utility.provider.UserDataGeneratorType
@@ -22,7 +23,7 @@ class MapboxContainerViewModel @Inject constructor(
     userDataGenerator: UserDataGeneratorType,
     coroutineContextProvider: CoroutineContextProviderType,
     locationServiceController: LocationServiceControllerType,
-    @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
+    private val mapboxAccessTokenStorageManager: MapboxAccessTokenStorageManagerType
 ) : MapContainerViewModel(
     groupStorageManager,
     teamManager,
@@ -34,6 +35,6 @@ class MapboxContainerViewModel @Inject constructor(
     coroutineContextProvider
 ) {
     fun initMapbox(context: Context) {
-        ResourceOptionsManager.getDefault(context, mapboxAccessToken)
+        ResourceOptionsManager.getDefault(context, mapboxAccessTokenStorageManager.requireToken())
     }
 }

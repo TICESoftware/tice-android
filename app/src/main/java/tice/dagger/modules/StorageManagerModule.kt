@@ -35,4 +35,7 @@ abstract class StorageManagerModule {
 
     @Binds
     abstract fun bindChatStorageManager(chatStorageManager: ChatStorageManager): ChatStorageManagerType
+
+    @Binds
+    abstract fun bindMapboxAccessTokenStorageManager(mapboxAccessTokenStorageManager: MapboxAccessTokenStorageManager): MapboxAccessTokenStorageManagerType
 }

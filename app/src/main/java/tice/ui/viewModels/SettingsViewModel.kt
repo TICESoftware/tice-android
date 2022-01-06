@@ -11,10 +11,7 @@ import kotlinx.coroutines.launch
 import tice.backend.BackendType
 import tice.managers.SignedInUserManagerType
 import tice.managers.messaging.WebSocketReceiverType
-import tice.managers.storageManagers.CryptoStorageManagerType
-import tice.managers.storageManagers.DeviceIdStorageManagerType
-import tice.managers.storageManagers.GroupStorageManagerType
-import tice.managers.storageManagers.LocationSharingStorageManager
+import tice.managers.storageManagers.*
 import tice.ui.models.GroupNameData
 import tice.utility.getLogger
 import tice.utility.provider.CoroutineContextProviderType
@@ -26,11 +23,11 @@ class SettingsViewModel @Inject constructor(
     private val signedInUserManager: SignedInUserManagerType,
     private val cryptoStorageManager: CryptoStorageManagerType,
     private val groupStorageManager: GroupStorageManagerType,
-    private val locationSharingStorageManager: LocationSharingStorageManager,
     private val backend: BackendType,
     private val webSocketReceiver: WebSocketReceiverType,
     private val userDataGenerator: UserDataGeneratorType,
-    private val deviceIdStorageManager: DeviceIdStorageManagerType
+    private val deviceIdStorageManager: DeviceIdStorageManagerType,
+    private val mapboxAccessTokenStorageManager: MapboxAccessTokenStorageManagerType
 ) : ViewModel() {
     private val logger by getLogger()
 
@@ -66,6 +63,13 @@ class SettingsViewModel @Inject constructor(
                 _event.emit(SettingsEvent.ErrorEvent.ChangeNameError)
             }
         }
+    }
+
+    val currentMapboxAccessToken: String?
+        get() = mapboxAccessTokenStorageManager.customToken
+
+    fun setMapboxAccessToken(token: String) {
+        mapboxAccessTokenStorageManager.setCustomToken(token)
     }
 
     fun deleteAllData() {

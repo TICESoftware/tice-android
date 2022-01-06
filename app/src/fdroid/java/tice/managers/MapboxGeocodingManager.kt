@@ -9,6 +9,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import tice.dagger.scopes.AppScope
+import tice.exceptions.MapboxAccessTokenMissingException
+import tice.managers.storageManagers.MapboxAccessTokenStorageManager
+import tice.managers.storageManagers.MapboxAccessTokenStorageManagerType
 import tice.models.Coordinates
 import tice.utility.getLogger
 import java.lang.IndexOutOfBoundsException
@@ -19,13 +22,18 @@ import javax.inject.Named
 @AppScope
 class MapboxGeocodingManager @Inject constructor(
     private val okHttpClient: OkHttpClient,
-    @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
+    private val mapboxAccessTokenStorageManager: MapboxAccessTokenStorageManagerType
 ) : MapboxGeocodingManagerType {
     private val logger by getLogger()
 
-    private val baseURL = "https://api.mapbox.com/"
-
     override suspend fun reverseGeocoding(coordinates: Coordinates): String? {
+        val mapboxAccessToken = try {
+            mapboxAccessTokenStorageManager.requireToken()
+        } catch (e: MapboxAccessTokenMissingException) {
+            logger.error("Reverse geocoding request could not be sent because no mapbox access token could be found.")
+            return null
+        }
+
         val urlString = Uri.Builder()
             .scheme("https")
             .authority("api.mapbox.com")
