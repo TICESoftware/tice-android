@@ -9,7 +9,7 @@ import javax.inject.Named
 class MapboxAccessTokenStorageManager @Inject constructor(
     private val storageLocker: StorageLockerType,
     @Named("MAPBOX_ACCESS_TOKEN") private val mapboxAccessToken: String
-): MapboxAccessTokenStorageManagerType {
+) : MapboxAccessTokenStorageManagerType {
 
     override val customToken: String?
         get() = storageLocker.load(StorageLockerType.StorageKey.MAPBOX_ACCESS_TOKEN)

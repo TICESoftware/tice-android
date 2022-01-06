@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mapbox_footer" translatable="false"><a href="https://www.mapbox.com/about/maps/">(c) Mapbox</a> <a href="http://www.openstreetmap.org/about/">(c) OpenStreetMap</a> <a href="https://www.mapbox.com/map-feedback/#/-74.5/40/10">Improve this map</a></string>
-    <string name="mapbox_logo_description" translatable="false">mapbox logo</string>
     <string name="mapbox_token_missing_dialog_title">Kein Mapbox-Access-Token vorhanden</string>
     <string name="mapbox_token_missing_dialog_message">Für die F-Droid-Version von TICE werden Kartenausschnitte von Mapbox verwendet. Du kannst einen entsprechenden Account unter https://mapbox.com anlegen und einen Access-Token generieren lassen. In den TICE-Einstellungen kannst du den Token dann hinterlegen.</string>
     <string name="mapbox_token_missing_dialog_button">Okay</string>
