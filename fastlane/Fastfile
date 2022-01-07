@@ -218,7 +218,7 @@ platform :android do
     version_name = android_get_version_name
     version_code = android_get_version_code
 
-    add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:stage].downcase}#{options[:store].capitalized}")
+    add_git_tag(tag: "#{version_name}-#{version_code}-#{options[:stage].downcase}#{options[:store].capitalize}")
     push_to_git_remote
   end
 
