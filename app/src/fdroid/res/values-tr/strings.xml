@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="mapbox_token_missing_dialog_title">Mapbox erişim belirteci sağlanmadı</string>
+    <string name="mapbox_token_missing_dialog_button">Tamam</string>
+    <string name="mapbox_token_missing_dialog_message">Haritayı F-Droid sürümünde görüntülemek için TICE Mapbox tarafından sağlanan harita döşemelerini kullanır. https://mapbox.com adresinde ücretsiz olarak bir Mapbox hesabı oluşturabilir ve erişim belirtcenizi oluşturabilirsiniz. TICE uygulamasının ayarlar ekranında belirtecinizi girebilirsiniz.</string>
+</resources>
