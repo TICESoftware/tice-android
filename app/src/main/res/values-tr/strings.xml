@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="groupSettings_participation_leave">Gruptan çık</string>
-    <string name="groupSettings_participation_delete">Grubu sil</string>
+    <string name="groupSettings_participation_leave">Gruptan Çık</string>
+    <string name="groupSettings_participation_delete">Grubu Sil</string>
     <string name="groupSettings_title">Grup Bilgisi</string>
     <string name="register_register">Hadi gidelim</string>
-    <string name="register_name_title">Adınız, diğerlerine gösterildiği şekliyle:</string>
+    <string name="register_name_title">Adınız başkalarına gösterildiği gibi:</string>
     <string name="register_welcome">Hoşgeldiniz</string>
     <string name="teams_title">Gruplar</string>
     <string name="teams_empty_title">İlk TICE grubunuzu oluşturun</string>
@@ -68,7 +68,7 @@
     <string name="joinGroup_participation_join">Katıl</string>
     <string name="joinGroup_already_member">Zaten bu grubun bir üyesisiniz.</string>
     <string name="settings_title">Ayarlar</string>
-    <string name="register_name_placeholder">Herkese Açık İsim</string>
+    <string name="register_name_placeholder">Genel Ad</string>
     <string name="register_sign_in">Bir gruba katılmak için önce kaydolmanız gerekir.</string>
     <string name="team_stopLocationSharing_title">Konum paylaşımı durdurulsun mu\?</string>
     <string name="team_locationSharing_active_title">Konum paylaşılıyor</string>
@@ -148,4 +148,6 @@
     <string name="chat_metaInfo_self_meetup_created_title">Bir buluşma başlattın</string>
     <string name="chat_metaInfo_self_meetup_joined_title">Buluşmaya katıldın</string>
     <string name="chat_metaInfo_self_meetup_left_title">Buluşmadan ayrıldınız</string>
+    <string name="teams_owner_name_endsWith_s">%1$s kişisinin grubu</string>
+    <string name="createTeamInvite_invitation_text">"%1$s\'a katılın ve güvenli TICE uygulamasıyla veya doğrudan tarayıcınızda buluşun. Buraya dokunun: "</string>
 </resources>
