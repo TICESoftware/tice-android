@@ -149,5 +149,5 @@
     <string name="chat_metaInfo_self_meetup_joined_title">Buluşmaya katıldın</string>
     <string name="chat_metaInfo_self_meetup_left_title">Buluşmadan ayrıldınız</string>
     <string name="teams_owner_name_endsWith_s">%1$s kişisinin grubu</string>
-    <string name="createTeamInvite_invitation_text">"%1$s\'a katılın ve güvenli TICE uygulamasıyla veya doğrudan tarayıcınızda buluşun. Buraya dokunun: "</string>
+    <string name="createTeamInvite_invitation_text">"%1$s katılın ve güvenli TICE uygulamasıyla veya doğrudan tarayıcınızda buluşun. Buraya dokunun: "</string>
 </resources>
