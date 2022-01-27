@@ -87,7 +87,7 @@
     <string name="chat_bar_placeholder">Yeni Mesaj…</string>
     <string name="chat_metaInfo_other_meetup_created_title">Buluşma başladı</string>
     <string name="chat_metaInfo_self_meetup_deleteGroupMember_title_unknown">Bir grup üyesini sildiniz</string>
-    <string name="createTeamInvite_chooserTitle">Davetiye gönder</string>
+    <string name="createTeamInvite_chooserTitle">Davetiyeyi gönderme yöntemi</string>
     <string name="register_title">TICE</string>
     <string name="joinGroup_info_text">Bu gruba katılmak için bir davetiye aldın: \"%1$s\". Şimdi katılmak istiyor musun\?</string>
     <string name="joinGroup_member_limit_exceeded">Bu grup için maksimum üye sayısına ulaşıldı.</string>
